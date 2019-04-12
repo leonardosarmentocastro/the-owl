@@ -1,0 +1,30 @@
+{
+  "name": "the-owl",
+  "version": "1.0.0",
+  "description": "Generate api docs based on functional tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardosarmentocastro/the-owl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leonardosarmentocastro/the-owl/issues"
+  },
+  "homepage": "https://github.com/leonardosarmentocastro/the-owl#readme",
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "errorhandler": "^1.5.0",
+    "express": "^4.16.4",
+    "jest": "^24.7.1",
+    "morgan": "^1.9.1"
+  },
+  "dependencies": {}
+}
