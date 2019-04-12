@@ -11,9 +11,10 @@ export const collectRequestInformation = (id, req) => ({
   },
 });
 
-export const collectResponseInformation = (response) => ({
+export const collectResponseInformation = (id, response) => ({
   type: docsTypes.COLLECT_RESPONSE_INFORMATION,
   payload: {
+    id,
     response: {
       body: response.body,
       headers: response.headers,

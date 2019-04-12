@@ -36,15 +36,14 @@ export const collectRequestInformation = (state, action) => {
 };
 
 export const collectResponseInformation = (state, action) => {
-  const { response } = action.payload;
-  const [ lastId ] = state.allIds.slice(-1);
+  const { id, response } = action.payload;
 
   return {
     ...state,
     byId: {
       ...state.byId,
-      [lastId]: {
-        ...state.byId[lastId],
+      [id]: {
+        ...state.byId[id],
         response,
       },
     },

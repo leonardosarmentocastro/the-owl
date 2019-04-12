@@ -9,4 +9,41 @@ _Generate api docs based on functional tests_
 <!-- * maybe skip getting the test name and focus on turning the solution agnostic to "axios" -->
 <!-- * on backend, use headers as tracking resource (turning it agnostic to axios) -->
 <!-- * save request information on a - redux shape - state tree (looks interesting) -->
-* generate github page
+<!-- * fix: responseMiddleware is not fired when response ends up with 500 -->
+  <!-- * https://github.com/richardschneider/express-mung/blob/master/test/json.js#L63 -->
+* adicionar algum atributo no "request" que eu possa usar pra agrupar requests feitas pelo mesmo path
+  * PELO JEITO não tem nada disso então super-fodase
+* filter headers like "x-powered-by" and "x-the-owl-id"
+  * maybe not filter "x-the-owl-id" in case we want expose some methods that gives access to the store
+    > like "theOwl.getDoc(id)" which would perform "state.doc.byId[id]"
+* generate README.md files under "/docs"
+  * like AVA: https://github.com/avajs/ava/tree/master/docs
+  * how to run a code after all tests are run with ava?
+* on example server:
+  * construct sample function test API instance
+  https://github.com/avajs/ava/blob/master/docs/01-writing-tests.md#before--after-hooks
+  https://github.com/avajs/ava/blob/master/docs/01-writing-tests.md
+  * add a "after" hook which will execute a `theOwl` function that gets the current state, and outputs README.md file under "/docs"
+  following the convention "[method]path_subpath.js", example: "[post]users_sign-up.js"
+  * the `.md` files can be constructed using `string templates`, ex:
+  ```js
+  const markdown = `
+    ### [post]users_sign-up.js
+    bla bla bla...
+  `.trim();
+  ```
+  * after creating a doc file for this test file, we clean the store (maybe raise bugs if I program it bad, since tests runs concurrently)
+
+### Working
+
+terminal 1:
+```
+cd the-owl
+npm run start # watches for changes and build files to dist
+```
+
+terminal 2:
+```
+cd the-owl/examples/using-express-ava
+npm run start # uses nodemon to reboot the server on file changes
+```
