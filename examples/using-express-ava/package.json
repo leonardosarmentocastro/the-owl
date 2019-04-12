@@ -1,0 +1,17 @@
+{
+  "name": "using-express-ava",
+  "version": "1.0.0",
+  "description": "Usage example with Express.js server and AVA test runner.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "ava"
+  },
+  "author": "Leonardo Sarmento de Castro",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^1.4.1",
+    "nodemon": "^1.18.11",
+    "the-owl": "../../"
+  }
+}

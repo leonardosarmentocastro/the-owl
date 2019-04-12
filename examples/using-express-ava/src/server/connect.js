@@ -3,15 +3,15 @@ const cors = require('cors');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 
-const usersRouter = require('../modules/users/router');
+const { theOwl } = require('the-owl'); // Outcome from the "build" process.
+const { usersRouter } = require('../modules/users');
 
 const middlewares = (app) => ({
   connect() {
-    this.bodyParser();
-    this.cors();
-    this.logErrorsOnConsole();
-    this.logRequestsOnConsole();
-    this.prettifyJsonOutput();
+    // Executes all functions except "connect".
+    Object.keys(this)
+      .filter(method => method !== 'connect')
+      .forEach(method => this[method]());
   },
 
   bodyParser() {
@@ -21,7 +21,11 @@ const middlewares = (app) => ({
   cors() {
     app.use(cors());
   },
-  logErrorsOnConsole() {
+  generateApiDocs() {
+    // * TODO: maybe export the middleware as default?
+    theOwl.connect(app);
+  },
+  prettifyStacktraceOnBrowser() {
     app.use(errorhandler());
   },
   logRequestsOnConsole() {
