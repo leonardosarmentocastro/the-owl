@@ -34,6 +34,25 @@ _Generate api docs based on functional tests_
   ```
   * after creating a doc file for this test file, we clean the store (maybe raise bugs if I program it bad, since tests runs concurrently)
 
+
+### MVP
+
+  * lets works with serial tests for this instance
+  * tests are going to be generated on `test.after.always` hooks of each file
+  * each test file will output a `doc` file under `/docs`
+    * pass a header named `the-owl-file-name` where you set the doc file name (`[post]users_sign-up.js`).
+      - Can use nodejs `__filename` if none is passed (might be tricky, but we will try)
+      - Since each test file corresponds to an API endpoint test, we can use the request information under redux state to build the doc, following the format `[method]endpoint.js`.
+  * flag `GENERATE_API_DOCS=TRUE` needs to be passed in order to enable doc generation
+    - to avoid problems with test runner on `watch` mode
+  * command should be somethink like `ava --serial GENERATE_API_DOCS=true`
+  * find a way to use this inside CI, so doc files are generated and automatically commited to the source tree.
+
+  1. on `theOwl` main file, export a method that will generate api docs with the current state and then clean it
+    - for first instance, the file name will be generated using only using the information we have on the store
+    - second instance, we can set the file name manually to the axios API instance
+  2. ...
+
 ### Working
 
 terminal 1:
