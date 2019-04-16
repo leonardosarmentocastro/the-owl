@@ -34,6 +34,10 @@ _Generate api docs based on functional tests_
   ```
   * after creating a doc file for this test file, we clean the store (maybe raise bugs if I program it bad, since tests runs concurrently)
 
+### Notes
+
+* If you sent a request to `/users` (which doesnt exist) using the proper headers, it will still be added to the store as a "doc". We need to figure out a way to fix it
+
 ### Working
 
 terminal 1:
