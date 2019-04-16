@@ -1,12 +1,12 @@
 import uuidv4 from 'uuid/v4';
 import mung from 'express-mung';
 
-import { store } from './redux';
+import { store } from '../redux';
 import {
   collectRequestInformation,
   collectResponseInformation,
   createDoc,
-} from './redux/ducks/docs';
+} from '../redux/ducks/docs';
 
 const TEST_NAME_HEADER = 'x-the-owl-test-name';
 const ID_HEADER = 'x-the-owl-id';

@@ -4,8 +4,8 @@
   "description": "Generate api docs based on functional tests",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "parcel build src/index.js",
-    "start": "parcel watch src/index.js",
+    "build": "parcel build src/index.js --target node",
+    "start": "parcel watch src/index.js --target node",
     "test": "ava"
   },
   "repository": {
@@ -19,11 +19,24 @@
   },
   "homepage": "https://github.com/leonardosarmentocastro/the-owl#readme",
   "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/register": "^7.4.0",
     "ava": "^1.4.1",
     "axios": "^0.18.0",
+    "express-mung": "^0.5.1",
+    "lodash": "^4.17.11",
     "nodemon": "^1.18.11",
     "parcel-bundler": "^1.12.3",
     "redux": "^4.0.1",
     "uuid": "^3.3.2"
+  },
+  "dependencies": {},
+  "ava": {
+		"require": [
+			"./config/test-setup.js"
+    ]
+  },
+  "babel": {
+    "presets": ["@ava/stage-4"]
   }
 }

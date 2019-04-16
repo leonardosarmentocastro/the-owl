@@ -11,6 +11,8 @@ _Generate api docs based on functional tests_
 <!-- * save request information on a - redux shape - state tree (looks interesting) -->
 <!-- * fix: responseMiddleware is not fired when response ends up with 500 -->
   <!-- * https://github.com/richardschneider/express-mung/blob/master/test/json.js#L63 -->
+* collect "body" and "headers" on "requestMiddleware"
+* Generate CURL for each doc entry
 * adicionar algum atributo no "request" que eu possa usar pra agrupar requests feitas pelo mesmo path
   * PELO JEITO não tem nada disso então super-fodase
 * filter headers like "x-powered-by" and "x-the-owl-id"
