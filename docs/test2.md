@@ -2,6 +2,8 @@
 
 * [(200) returns the given user if it exists](#8c49c58e-f04c-4ea0-b4b7-82d7f6c9e46c)
 
+---
+
 ### :chicken: (200) returns the given user if it exists <a name="8c49c58e-f04c-4ea0-b4b7-82d7f6c9e46c"></a>
 
 :egg: **Request**
