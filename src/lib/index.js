@@ -1,4 +1,4 @@
-export { default as createDocs } from './create-docs';
+export { default as createDocFiles } from './create-doc-files';
 
 export * from './middlewares';
 export * from './utils';

@@ -4,12 +4,12 @@ test.before('before 1', t => {
   console.log('> before 1');
 });
 
-test('returns the given user if it exists', t => {
+test('(200) returns the given user if it exists', t => {
   console.log('### test');
   t.pass();
 });
 
-test('returns an error if the given user doesnt exist', t => {
+test('(500) returns an error if the given user doesnt exist', t => {
   t.pass();
 });
 

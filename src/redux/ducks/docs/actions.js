@@ -1,10 +1,13 @@
 import * as docsTypes from './types';
+import { filterHeaders } from './utils';
 
 export const collectRequestInformation = (id, req) => ({
   type: docsTypes.COLLECT_REQUEST_INFORMATION,
   payload: {
     id,
     request: {
+      body: req.body,
+      headers: filterHeaders(req.headers),
       method: req.method,
       path: req.path,
     },
@@ -17,7 +20,7 @@ export const collectResponseInformation = (id, response) => ({
     id,
     response: {
       body: response.body,
-      headers: response.headers,
+      headers: filterHeaders(response.headers),
       statusCode: response.statusCode,
     },
   }

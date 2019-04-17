@@ -1,49 +1,34 @@
 # [GET] /users/1
 
-## Summary
+* [(200) returns the given user if it exists](#585b2045-42a1-47eb-b0a9-e4541c6b2d68)
 
-* [(200) returns the given user if it exists](#200-returns-the-given-user-if-it-exists)
+---
 
-## Definitions
+### :chicken: (200) returns the given user if it exists <a name="585b2045-42a1-47eb-b0a9-e4541c6b2d68"></a>
 
-### (200) returns the given user if it exists
+:egg: **Request**
 
-**Request**
+Method: GET
 
-* Method: GET
+Headers:
 
-* Headers:
+| Key | Value |
+| :--- | :--- |
+| x-request-header | 1 |
 
+Body: _empty_
 
-  | Key | Value |
-  | :--- | :--- |
-  | x-request-header | 1 |
+:hatching_chick: **Response**
 
+Status: 200
 
-* Body:
+Headers: _empty_
 
-
-```
-
-```
-
-
-
-**Response**
-
-* Status: 200
-
-* Headers:
-
-
-  | Key | Value |
-  | :--- | :--- |
-  | x-response-header | 1 |
-
-
-* Body:
-
+Body:
 
 ```
-
+{
+  "id": 1,
+  "name": "Leonardo"
+}
 ```

@@ -11,6 +11,10 @@ _Generate api docs based on functional tests_
 <!-- * save request information on a - redux shape - state tree (looks interesting) -->
 <!-- * fix: responseMiddleware is not fired when response ends up with 500 -->
   <!-- * https://github.com/richardschneider/express-mung/blob/master/test/json.js#L63 -->
+<!-- * Markdown links may fail if the test has hyphens, e.g.: "(500) returns an error if the given user doesn't exist" (fail due to "doesn't") -->
+* Document the usage of `LOG_REDUX_STATE_CHANGES`
+* Create a issue on "ava" repo to ask about "transpiling my source files before running tests"
+  * The only solution that worked was this one: https://github.com/avajs/ava/issues/1309#issuecomment-356807355
 * collect "body" and "headers" on "requestMiddleware"
 * Generate CURL for each doc entry
 * adicionar algum atributo no "request" que eu possa usar pra agrupar requests feitas pelo mesmo path
