@@ -1,12 +1,12 @@
-:chicken: # [GET] /users/1
+# :chicken: [GET] /users/1
 
 ## Summary
 
-* [(200) returns the given user if it exists](#b6810c71-e117-43a1-b889-2a1428595a91)
+* [(200) returns the given user if it exists](#463df8da-0077-47e0-b0fd-e71c12b61f9b)
 
 ## Definitions
 
-### :thumbsdown: (200) returns the given user if it exists {#b6810c71-e117-43a1-b889-2a1428595a91}
+### :thumbsup: (200) returns the given user if it exists <a name="463df8da-0077-47e0-b0fd-e71c12b61f9b"></a>
 
 :egg: **Request**
 
@@ -24,7 +24,7 @@
 
 :hatching_chick: **Response**
 
-**Status**: 500
+**Status**: 200
 
 **Headers**: _empty_
 
