@@ -15,9 +15,9 @@
 * Headers:
 
 
-| Key | Value |
-| :--- | :--- |
-| x-request-header | 1 |
+  | Key | Value |
+  | :--- | :--- |
+  | x-request-header | 1 |
 
 
 * Body:
@@ -36,9 +36,9 @@
 * Headers:
 
 
-| Key | Value |
-| :--- | :--- |
-| x-response-header | 1 |
+  | Key | Value |
+  | :--- | :--- |
+  | x-response-header | 1 |
 
 
 * Body:
