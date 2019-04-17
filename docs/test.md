@@ -1,10 +1,11 @@
  # [GET] /users/1
 
-* [(200) returns the given user if it exists](#200-returns-the-given-user-if-it-exists)
+* :large_blue_circle: [:large_blue_circle: (200) returns the given user if it exists](#200-returns-the-given-user-if-it-exists)
+* :red_circle: [:red_circle: (200) returns the given user if it exists](#200-returns-the-given-user-if-it-exists)
 
 ---
 
-### (200) returns the given user if it exists
+### :large_blue_circle: (200) returns the given user if it exists
 
 ##### Request
 
@@ -30,3 +31,5 @@
 * Body:
     ```
     ```
+
+### :red_circle: (200) returns the given user if it exists
