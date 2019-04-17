@@ -2,33 +2,33 @@
 
 ## Summary
 
-* [(200) returns the given user if it exists](#463df8da-0077-47e0-b0fd-e71c12b61f9b)
+* [(200) returns the given user if it exists](#c51a72b6-e877-40c1-85bd-84c65aa0ba8f)
 
 ## Definitions
 
-### :thumbsup: (200) returns the given user if it exists <a name="463df8da-0077-47e0-b0fd-e71c12b61f9b"></a>
+### (200) returns the given user if it exists <a name="c51a72b6-e877-40c1-85bd-84c65aa0ba8f"></a>
 
 :egg: **Request**
 
-Method: GET
+**Method**: GET
 
-Headers:
+**Headers**:
 
 | Key | Value |
 | :--- | :--- |
 | x-request-header | 1 |
 
 
-Body: _empty_
+**Body**: _empty_
 
 
 :hatching_chick: **Response**
 
-**Status**: 200
+Status: 200
 
-**Headers**: _empty_
+Headers: _empty_
 
-**Body**:
+Body:
 
 ```
 {
