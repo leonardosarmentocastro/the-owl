@@ -10,16 +10,16 @@
 
 :egg: **Request**
 
-**Method**: GET
+Method: GET
 
-**Headers**:
+Headers:
 
 | Key | Value |
 | :--- | :--- |
 | x-request-header | 1 |
 
 
-**Body**: _empty_
+Body: _empty_
 
 
 :hatching_chick: **Response**
