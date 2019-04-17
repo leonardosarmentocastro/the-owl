@@ -2,24 +2,24 @@
 
 ## Summary
 
-* [(200) returns the given user if it exists](#c51a72b6-e877-40c1-85bd-84c65aa0ba8f)
+* [(200) returns the given user if it exists](#4bb4ec75-0f87-42d1-bb7d-9480d40990e9)
 
 ## Definitions
 
-### (200) returns the given user if it exists <a name="c51a72b6-e877-40c1-85bd-84c65aa0ba8f"></a>
+### (200) returns the given user if it exists <a name="4bb4ec75-0f87-42d1-bb7d-9480d40990e9"></a>
 
 :egg: **Request**
 
-**Method**: GET
+Method: GET
 
-**Headers**:
+Headers:
 
 | Key | Value |
 | :--- | :--- |
 | x-request-header | 1 |
 
 
-**Body**: _empty_
+Body: _empty_
 
 
 :hatching_chick: **Response**
