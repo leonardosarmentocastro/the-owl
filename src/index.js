@@ -1,1 +1,2 @@
-export { default as theOwl } from './the-owl';
+import theOwl from './the-owl';
+export default theOwl;

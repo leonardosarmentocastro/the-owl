@@ -34,6 +34,14 @@
   },
   "dependencies": {},
   "ava": {
+    "files": [
+      "test.js ",
+      "test-*.js ",
+      "test/**/*.js ",
+      "**/__tests__/**/*.js ",
+      "**/*.test.js",
+      "!examples/**/*.js"
+    ],
     "require": [
       "./config/test-setup.js"
     ]

@@ -87,7 +87,7 @@ const writeSummary = (docs) =>
 
 export const writeDefinitions = (docs) =>
   docs.map(doc => [
-    `### :chicken: ${doc.testName} <a name="${doc.id}"></a>\r\n`,
+    `### :chicken: \`${doc.testName}\` <a name="${doc.id}"></a>\r\n`,
     `${writeRequestDefinitions(doc)}\r\n`,
     `${writeResponseDefinitions(doc)}\r\n`
   ].join('\r\n'));

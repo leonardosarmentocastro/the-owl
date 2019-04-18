@@ -23,4 +23,5 @@ const theOwl = {
   },
 };
 
-module.exports = theOwl;
+export default theOwl;
+

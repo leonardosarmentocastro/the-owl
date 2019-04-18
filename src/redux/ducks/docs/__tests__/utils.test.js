@@ -2,7 +2,7 @@ import test from 'ava';
 
 import { filterHeaders, ignoredHeaders } from '../utils';
 
-test('must not include any entry from "ignored headers" list', t => {
+test('(filterHeaders) must not include any entry from "ignored headers" list', t => {
   // Build "headers" object like express's request.
   // E.g.: `{ 'content-type': 'application/json' }`
   const headers = ignoredHeaders.reduce((accumulator, ignoredHeader, index) => ({
@@ -18,7 +18,7 @@ test('must not include any entry from "ignored headers" list', t => {
     });
 });
 
-test('must return an empty object when filtering null/undefined/empty object', t => {
+test('(filterHeaders) must return an empty object when filtering null/undefined/empty object', t => {
   t.deepEqual(filterHeaders(null), {});
   t.deepEqual(filterHeaders(undefined), {});
   t.deepEqual(filterHeaders({}), {});
