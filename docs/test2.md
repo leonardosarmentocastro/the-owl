@@ -1,10 +1,10 @@
-# [GET] /users/1
+ # [GET] /users/1
 
-* [(200) returns the given user if it exists](#585b2045-42a1-47eb-b0a9-e4541c6b2d68)
+* [(200) returns the given user if it exists](#3bf374a8-5cc8-47f0-be83-c0b615760803)
 
 ---
 
-### :chicken: (200) returns the given user if it exists <a name="585b2045-42a1-47eb-b0a9-e4541c6b2d68"></a>
+### :chicken: `(200) returns the given user if it exists` <a name="3bf374a8-5cc8-47f0-be83-c0b615760803"></a>
 
 :egg: **Request**
 
@@ -31,4 +31,3 @@ Body:
   "id": 1,
   "name": "Leonardo"
 }
-```
