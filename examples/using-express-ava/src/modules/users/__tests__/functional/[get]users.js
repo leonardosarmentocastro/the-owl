@@ -6,7 +6,7 @@ const { users } = require('../../_fixtures');
 const { server } = require('../../../../server');
 
 const PATH = `/users`; // TODO: fix file name generation
-const ENDPOINT = `http://localhost:${process.env.PORT}/${PATH}`;
+const ENDPOINT = `http://localhost:${process.env.PORT}${PATH}`;
 test.before('setup', async t => {
   t.context.api = await server.start();
 });
