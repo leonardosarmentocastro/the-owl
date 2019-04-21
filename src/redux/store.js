@@ -7,7 +7,7 @@ const rootReducer = combineReducers(reducers);
 const store = createStore(rootReducer);
 
 // TODO: document it
-if (process.env.LOG_REDUX_STATE_CHANGES) {
+if (process.env.LOG_MESSAGES) {
   store.subscribe(() => {
     const message = [
       `${chalk.white.bgHex('#764abc')('\r\n REDUX STATE CHANGED ')}`,

@@ -1,6 +1,7 @@
 import * as docsTypes from './types';
 import { filterHeaders } from './utils';
 
+// TODO: test
 export const collectRequestInformation = (id, req) => ({
   type: docsTypes.COLLECT_REQUEST_INFORMATION,
   payload: {
@@ -14,6 +15,7 @@ export const collectRequestInformation = (id, req) => ({
   },
 });
 
+// TODO: test
 export const collectResponseInformation = (id, response) => ({
   type: docsTypes.COLLECT_RESPONSE_INFORMATION,
   payload: {
@@ -26,6 +28,7 @@ export const collectResponseInformation = (id, response) => ({
   }
 });
 
+// TODO: test
 export const createDoc = (id, testName) => ({
   type: docsTypes.CREATE_DOC,
   payload: {

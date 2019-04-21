@@ -1,4 +1,4 @@
-const { users } = require('./fixtures');
+const { users } = require('./_fixtures');
 
 const usersController = {
   createUser(req, res) {

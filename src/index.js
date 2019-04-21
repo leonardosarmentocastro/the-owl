@@ -1,2 +1,2 @@
 import theOwl from './the-owl';
-export default theOwl;
+module.exports = theOwl;

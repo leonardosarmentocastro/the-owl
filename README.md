@@ -4,27 +4,11 @@ _Generate api docs based on functional tests_
 
 ### Roadmap
 
-<!-- * construct a small server under "/bin" as proof of concept -->
-<!-- * clever way to grab test name -->
-<!-- * maybe skip getting the test name and focus on turning the solution agnostic to "axios" -->
-<!-- * on backend, use headers as tracking resource (turning it agnostic to axios) -->
-<!-- * save request information on a - redux shape - state tree (looks interesting) -->
-<!-- * fix: responseMiddleware is not fired when response ends up with 500 -->
-  <!-- * https://github.com/richardschneider/express-mung/blob/master/test/json.js#L63 -->
-<!-- * Markdown links may fail if the test has hyphens, e.g.: "(500) returns an error if the given user doesn't exist" (fail due to "doesn't") -->
-* Document the usage of `LOG_REDUX_STATE_CHANGES`
+* Document the usage of `LOG_MESSAGES`
 * Create a issue on "ava" repo to ask about "transpiling my source files before running tests"
   * The only solution that worked was this one: https://github.com/avajs/ava/issues/1309#issuecomment-356807355
-* collect "body" and "headers" on "requestMiddleware"
-* Generate CURL for each doc entry
-* adicionar algum atributo no "request" que eu possa usar pra agrupar requests feitas pelo mesmo path
-  * PELO JEITO não tem nada disso então super-fodase
-* filter headers like "x-powered-by" and "x-the-owl-id"
-  * maybe not filter "x-the-owl-id" in case we want expose some methods that gives access to the store
-    > like "theOwl.getDoc(id)" which would perform "state.doc.byId[id]"
-* generate README.md files under "/docs"
-  * like AVA: https://github.com/avajs/ava/tree/master/docs
-  * how to run a code after all tests are run with ava?
+<!-- * collect "body" and "headers" on "requestMiddleware" -->
+* (NICE TO HAVE) Generate CURL for each doc entry
 * on example server:
   * construct sample function test API instance
   https://github.com/avajs/ava/blob/master/docs/01-writing-tests.md#before--after-hooks

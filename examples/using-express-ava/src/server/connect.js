@@ -3,7 +3,7 @@ const cors = require('cors');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 
-const { theOwl } = require('the-owl'); // Outcome from the "build" process.
+const theOwl = require('the-owl'); // Outcome from the "build" process.
 const { usersRouter } = require('../modules/users');
 
 const middlewares = (app) => ({
@@ -22,7 +22,6 @@ const middlewares = (app) => ({
     app.use(cors());
   },
   generateApiDocs() {
-    // * TODO: maybe export the middleware as default?
     theOwl.connect(app);
   },
   prettifyStacktraceOnBrowser() {

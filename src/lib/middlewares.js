@@ -8,8 +8,9 @@ import {
   createDoc,
 } from '../redux/ducks/docs';
 
-const TEST_NAME_HEADER = 'x-the-owl-test-name';
-const ID_HEADER = 'x-the-owl-id';
+const TEST_NAME_HEADER = 'x-test-name';
+const TEST_ID_HEADER = 'x-test-id';
+
 const mustCollectInformation = (req) => !!req.header(TEST_NAME_HEADER);
 export const requestMiddleware = (req, res, next) => {
   if (!mustCollectInformation(req)) return next();
@@ -20,7 +21,7 @@ export const requestMiddleware = (req, res, next) => {
   store.dispatch(collectRequestInformation(id, req));
 
   // Store id on header so we can properly collect response information for this doc.
-  res.setHeader(ID_HEADER, id);
+  res.setHeader(TEST_ID_HEADER, id);
 
   return next();
 };
@@ -28,7 +29,7 @@ export const requestMiddleware = (req, res, next) => {
 export const responseMiddleware = mung.json((body, req, res) => {
   if (!mustCollectInformation(req)) return body;
 
-  const id = res.getHeader(ID_HEADER);
+  const id = res.getHeader(TEST_ID_HEADER);
   const response = {
     body,
     headers: res.getHeaders(),

@@ -20,6 +20,7 @@ import * as docsTypes from './types';
 //   },
 // };
 
+// TODO: test?
 export const collectRequestInformation = (state, action) => {
   const { id, request } = action.payload;
 
@@ -35,6 +36,7 @@ export const collectRequestInformation = (state, action) => {
   };
 };
 
+// TODO: test?
 export const collectResponseInformation = (state, action) => {
   const { id, response } = action.payload;
 
@@ -50,6 +52,7 @@ export const collectResponseInformation = (state, action) => {
   };
 };
 
+// TODO: test?
 export const createDoc = (state, action) => {
   const { id, testName } = action.payload;
 
@@ -62,6 +65,7 @@ export const createDoc = (state, action) => {
   };
 };
 
+// TODO: test?
 const defaultState = {
   byId: {},
   allIds: [],

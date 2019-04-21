@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 import { createFile, createDirectory, formatRequestPath } from './utils';
 import { writeMarkdown } from './write-markdown';
 
@@ -17,7 +19,13 @@ export const createDocFiles = (docs) => {
   err = createFile(fileName, content);
   if (err) return err;
 
+  // TODO: document it
+  if (process.env.LOG_MESSAGES) console.log(getSuccessMessage(fileName));
+
   return null;
 };
+
+export const getSuccessMessage = (fileName) =>
+  `${chalk.white.bgHex('#046824')('\r\n SUCCESS ')} Doc created on "${chalk.gray(fileName)}" path.`;
 
 export default createDocFiles;

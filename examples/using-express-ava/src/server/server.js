@@ -22,8 +22,10 @@ const server = {
   },
 
   listen(app) {
-    // NOTE: In real world scenario, would come from env variables.
-    const options = { port: 8080, environment: 'development' };
+    const options = {
+      port: process.env.PORT,
+      environment: process.env.NODE_ENV,
+    };
 
     return new Promise((resolve, reject) => {
       app.listen(options, function() {

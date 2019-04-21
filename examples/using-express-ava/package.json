@@ -4,13 +4,14 @@
   "description": "Usage example with Express.js server and AVA test runner.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "ava"
+    "start": "PORT=8080 NODE_ENV=development nodemon index.js",
+    "test": "PORT=8081 NODE_ENV=test ava --serial"
   },
   "author": "Leonardo Sarmento de Castro",
   "license": "ISC",
   "devDependencies": {
     "ava": "^1.4.1",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
