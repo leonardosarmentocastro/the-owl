@@ -1,18 +1,23 @@
 import { createFile, createDirectory, formatRequestPath } from './utils';
 import { writeMarkdown } from './write-markdown';
 
+export const buildFileName = (folderPath, request) =>
+  `${folderPath}/[${request.method}]${formatRequestPath(request.path)}.md`
+
 export const createDocFiles = (docs) => {
+  let err = null;
+
   const folderPath = `${process.cwd()}/docs`;
-  createDirectory(folderPath);
+  err = createDirectory(folderPath);
+  if (err) return err;
 
   const [ doc ] = docs;
-  const { method, path } = doc.request;
-  const fileName = `${folderPath}/[${method}]${formatRequestPath(path)}.md`;
+  const fileName = buildFileName(folderPath, doc.request);
   const content = writeMarkdown(docs);
-  const err = createFile(fileName, content);
+  err = createFile(fileName, content);
+  if (err) return err;
 
-  if (err) throw err; // TODO: how to handle errors on file generation?
-  return null; // TODO: maybe the same "err/null" approach?
+  return null;
 };
 
 export default createDocFiles;
