@@ -4,47 +4,8 @@ _Generate api docs based on functional tests_
 
 ### Roadmap
 
-* Document the usage of `THE_OWL_LOG_MESSAGES`
-* Create a issue on "ava" repo to ask about "transpiling my source files before running tests"
-  * The only solution that worked was this one: https://github.com/avajs/ava/issues/1309#issuecomment-356807355
-<!-- * collect "body" and "headers" on "requestMiddleware" -->
+* Document the usage of environment variables
 * (NICE TO HAVE) Generate CURL for each doc entry
-* on example server:
-  * construct sample function test API instance
-  https://github.com/avajs/ava/blob/master/docs/01-writing-tests.md#before--after-hooks
-  https://github.com/avajs/ava/blob/master/docs/01-writing-tests.md
-  * add a "after" hook which will execute a `theOwl` function that gets the current state, and outputs README.md file under "/docs"
-  following the convention "[method]path_subpath.js", example: "[post]users_sign-up.js"
-  * the `.md` files can be constructed using `string templates`, ex:
-  ```js
-  const markdown = `
-    ### [post]users_sign-up.js
-    bla bla bla...
-  `.trim();
-  ```
-  * after creating a doc file for this test file, we clean the store (maybe raise bugs if I program it bad, since tests runs concurrently)
-
-### Notes
-
-* If you sent a request to `/users` (which doesnt exist) using the proper headers, it will still be added to the store as a "doc". We need to figure out a way to fix it
-
-### MVP
-
-  * lets works with serial tests for this instance
-  * tests are going to be generated on `test.after.always` hooks of each file
-  * each test file will output a `doc` file under `/docs`
-    * pass a header named `the-owl-file-name` where you set the doc file name (`[post]users_sign-up.js`).
-      - Can use nodejs `__filename` if none is passed (might be tricky, but we will try)
-      - Since each test file corresponds to an API endpoint test, we can use the request information under redux state to build the doc, following the format `[method]endpoint.js`.
-  * flag `GENERATE_API_DOCS=TRUE` needs to be passed in order to enable doc generation
-    - to avoid problems with test runner on `watch` mode
-  * command should be somethink like `ava --serial GENERATE_API_DOCS=true`
-  * find a way to use this inside CI, so doc files are generated and automatically commited to the source tree.
-
-  1. on `theOwl` main file, export a method that will generate api docs with the current state and then clean it
-    - for first instance, the file name will be generated using only using the information we have on the store
-    - second instance, we can set the file name manually to the axios API instance
-  2. ...
 
 ### Working
 
