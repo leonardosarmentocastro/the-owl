@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "PORT=8080 NODE_ENV=development nodemon index.js",
-    "test": "PORT=8081 NODE_ENV=test ava --serial"
+    "test": "PORT=8081 NODE_ENV=test ava --serial",
+    "test:doc-disable": "PORT=8081 NODE_ENV=test THE_OWL_DISABLE=true ava --serial",
+    "test:log-messages": "PORT=8081 NODE_ENV=test THE_OWL_LOG_MESSAGES=true ava --serial",
+    "test:log-redux": "PORT=8081 NODE_ENV=test THE_OWL_LOG_REDUX=true ava --serial"
   },
   "author": "Leonardo Sarmento de Castro",
   "license": "ISC",

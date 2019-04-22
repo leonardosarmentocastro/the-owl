@@ -29,7 +29,7 @@ export const writeHeaders = (headers) =>
 export const writeHeading = (docs) => {
   const [ doc ] = docs;
   const { method, originalPath } = doc.request;
-  return `# [${method.toUpperCase()}] ${originalPath}`;
+  return `# [${method.toLowerCase()}] ${originalPath}`;
 }
 
 export const writeKeyValueTable = (object) =>

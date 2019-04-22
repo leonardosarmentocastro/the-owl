@@ -9,13 +9,12 @@ import {
   createDoc,
 } from '../redux/ducks/docs';
 
-const TEST_ID_HEADER = 'x-test-id';
+export const TEST_ID_HEADER = 'x-test-id';
 export const TEST_NAME_HEADER = 'x-test-name';
 export const REQ_ORIGINAL_PATH_HEADER = 'x-req-original-path';
-export const THE_OWL_HEADERS = [ TEST_NAME_HEADER, TEST_ID_HEADER, REQ_ORIGINAL_PATH_HEADER ];
 const WARN_TO_PROVIDE_HEADERS = [
   [
-    `\r\n ${chalk.white.bgHex('#512da8')(' WARNING ')}`,
+    `\r\n${chalk.black.bgHex('#F5B400')(' WARNING ')}`,
     `${chalk.gray('Docs will not be generated for requests missing the following headers:')}`,
   ].join(' '),
   [
@@ -25,7 +24,7 @@ const WARN_TO_PROVIDE_HEADERS = [
   ].join('\r\n')
 ].join('\r\n');
 
-const mustCollectInformation = (req) => (!!req.header(TEST_NAME_HEADER) && !!req.header(TEST_NAME_HEADER));
+const mustCollectInformation = (req) => (!!req.header(TEST_NAME_HEADER) && !!req.header(REQ_ORIGINAL_PATH_HEADER));
 export const requestMiddleware = (req, res, next) => {
   if (!mustCollectInformation(req)) {
     if (process.env.THE_OWL_LOG_MESSAGES) console.log(WARN_TO_PROVIDE_HEADERS);
@@ -45,10 +44,7 @@ export const requestMiddleware = (req, res, next) => {
 };
 
 export const responseMiddleware = mung.json((body, req, res) => {
-  if (!mustCollectInformation(req)) {
-    if (process.env.THE_OWL_LOG_MESSAGES) console.log(WARN_TO_PROVIDE_HEADERS);
-    return body;
-  }
+  if (!mustCollectInformation(req)) return body;
 
   const id = res.getHeader(TEST_ID_HEADER);
   const response = {

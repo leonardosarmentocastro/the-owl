@@ -1,2 +1,2 @@
-const theOwl = require('./the-owl');
+import { theOwl } from './the-owl';
 module.exports = theOwl;

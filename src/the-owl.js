@@ -7,16 +7,18 @@ import {
 } from './lib';
 import { store } from './redux';
 
-const theOwl = {
+export const theOwl = {
   connect(app) {
     app.use(requestMiddleware);
     app.use(responseMiddleware);
   },
 
   createDocs() {
+    if (process.env.THE_OWL_DISABLE) return; // Flag to optionally disable doc creation when running tests on "watch" mode.
+
     const state = store.getState();
     const docs = Object.values(state.docs.byId);
-    if (!docs) return null; // Idempotent: no need to generate docs if there are no registries.
+    if (docs.length === 0) return null; // Idempotent: no need to generate docs if there are no registries.
 
     createDocFiles(docs);
   },
@@ -26,6 +28,3 @@ const theOwl = {
     [REQ_ORIGINAL_PATH_HEADER]: reqOriginalPath,
   }),
 };
-
-export default theOwl;
-

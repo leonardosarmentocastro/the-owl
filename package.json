@@ -4,8 +4,8 @@
   "description": "Generate api docs based on functional tests",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "parcel build src/index.js --target node",
-    "start": "parcel watch src/index.js --target node",
+    "build": "parcel build src/index.js --target node --global theOwl",
+    "start": "rm -rf dist/ && parcel watch src/index.js --target node --global theOwl",
     "test": "ava --verbose",
     "test:log-messages": "THE_OWL_LOG_MESSAGES=true ava --verbose"
   },

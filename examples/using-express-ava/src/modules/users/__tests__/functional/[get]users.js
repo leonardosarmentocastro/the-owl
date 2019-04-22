@@ -15,7 +15,10 @@ test.before('start server', async t => {
 test('(200) returns the given user if it exists', async t => {
   const [ user ] = users;
   const response = await axios.get(getEndpoint(user.id), {
-    headers: { 'x-test-name': t.title },
+    headers: {
+      'your-header': 'your-value',
+      ...theOwl.buildHeaders(t.title, ORIGINAL_PATH),
+    },
   });
 
   t.deepEqual(response.data, user);
@@ -24,7 +27,7 @@ test('(200) returns the given user if it exists', async t => {
 test('(500) returns an error if the given user doesnt exist', async t => {
   const userId = 999;
   await axios.get(getEndpoint(userId), {
-    headers: { 'x-test-name': t.title },
+    headers: { ...theOwl.buildHeaders(t.title, ORIGINAL_PATH) },
   }).catch(err => {
     const error = { code: 'USER_NOT_FOUND', message: `User "${userId}" not found!` };
     t.deepEqual(err.response.data, error);
