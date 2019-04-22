@@ -20,7 +20,7 @@ test.before('creating a "doc" object on store', t => {
 
 test('(buildFileName) must be a combination of "folder path" + "request method" + "formatted request path" + ".md extension"', t => {
   const folderPath = process.cwd();
-  const request = { path: '/users/sign-up', method: 'get' };
+  const request = { originalPath: '/users/sign-up', method: 'get' };
 
   t.snapshot(buildFileName(folderPath, request));
 });
@@ -52,7 +52,7 @@ test('(createDocFiles) if "/docs" folder already exists, the operation must be i
   t.assert(err === null);
 });
 
-test.after.cb('cleaning up: deleting "docs/" folder', t => {
+test.after.always.cb('cleaning up: deleting "docs/" folder', t => {
   const folderPath = `${process.cwd()}/docs`;
   rimraf(folderPath, t.end);
 });

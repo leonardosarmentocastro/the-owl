@@ -6,8 +6,8 @@
   "scripts": {
     "build": "parcel build src/index.js --target node",
     "start": "parcel watch src/index.js --target node",
-    "test": "ava",
-    "test:log-redux": "LOG_REDUX_STATE_CHANGES=true ava"
+    "test": "ava --verbose",
+    "test:log-messages": "THE_OWL_LOG_MESSAGES=true ava --verbose"
   },
   "repository": {
     "type": "git",

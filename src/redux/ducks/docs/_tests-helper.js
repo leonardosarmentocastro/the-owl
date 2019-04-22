@@ -13,6 +13,8 @@ const DEFAULT = {
       method: 'get',
       path: '/users/1',
       headers: null,
+      originalPath: '/users/:id',
+      query: {},
     },
     res: {
       body: {

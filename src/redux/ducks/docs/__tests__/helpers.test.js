@@ -1,11 +1,11 @@
 import test from 'ava';
 
-import { filterHeaders, ignoredHeaders } from '../utils';
+import { filterHeaders, IGNORED_HEADERS } from '../helpers';
 
 test('(filterHeaders) must not include any entry from "ignored headers" list', t => {
   // Build "headers" object like express's request.
   // E.g.: `{ 'content-type': 'application/json' }`
-  const headers = ignoredHeaders.reduce((accumulator, ignoredHeader, index) => ({
+  const headers = IGNORED_HEADERS.reduce((accumulator, ignoredHeader, index) => ({
     ...accumulator,
     [ignoredHeader]: 'ignoredHeader',
     [`headers-${index}`]: 'After filtering headers, these must be the only ones left.'
@@ -14,7 +14,7 @@ test('(filterHeaders) must not include any entry from "ignored headers" list', t
   const filteredHeaders = filterHeaders(headers);
   Object.keys(filteredHeaders)
     .forEach(header => {
-      t.assert(!ignoredHeaders.includes(header));
+      t.assert(!IGNORED_HEADERS.includes(header));
     });
 });
 

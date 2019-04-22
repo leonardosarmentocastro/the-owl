@@ -4,7 +4,7 @@ import { createFile, createDirectory, formatRequestPath } from './utils';
 import { writeMarkdown } from './write-markdown';
 
 export const buildFileName = (folderPath, request) =>
-  `${folderPath}/[${request.method}]${formatRequestPath(request.path)}.md`
+  `${folderPath}/[${request.method.toLowerCase()}]${formatRequestPath(request.originalPath)}.md`
 
 export const createDocFiles = (docs) => {
   let err = null;
@@ -20,7 +20,7 @@ export const createDocFiles = (docs) => {
   if (err) return err;
 
   // TODO: document it
-  if (process.env.LOG_MESSAGES) console.log(getSuccessMessage(fileName));
+  if (process.env.THE_OWL_LOG_MESSAGES) console.log(getSuccessMessage(fileName));
 
   return null;
 };

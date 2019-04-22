@@ -1,5 +1,5 @@
 import * as docsTypes from './types';
-import { filterHeaders } from './utils';
+import { filterHeaders } from './helpers';
 
 // TODO: test
 export const collectRequestInformation = (id, req) => ({
@@ -9,8 +9,10 @@ export const collectRequestInformation = (id, req) => ({
     request: {
       body: req.body,
       headers: filterHeaders(req.headers),
+      originalPath: req.originalPath, // Value is set by us.
       method: req.method,
       path: req.path,
+      queryParameters: req.query,
     },
   },
 });
@@ -33,6 +35,6 @@ export const createDoc = (id, testName) => ({
   type: docsTypes.CREATE_DOC,
   payload: {
     id,
-    testName,
+    testName, // Value is collected from our custom headers.
   },
 });

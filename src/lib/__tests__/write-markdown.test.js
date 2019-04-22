@@ -14,6 +14,11 @@ test.before('creating a "doc" object on store', t => {
       method: 'get',
       path: '/users/999',
       headers: null,
+      originalPath: '/users/:id',
+      query: {
+        sort: 'desc',
+        page: 1,
+      },
     },
     res: {
       body: { code: 'USER_NOT_FOUND', message: `User "1b42d891-41d1-4066-b458-61d1d901adcb" not found!` },
@@ -23,6 +28,7 @@ test.before('creating a "doc" object on store', t => {
       statusCode: 500,
     }
   };
+
   createDocForTests(doc);
 });
 

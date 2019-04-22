@@ -1,7 +1,9 @@
 import {
   createDocFiles,
   requestMiddleware,
-  responseMiddleware
+  responseMiddleware,
+  TEST_NAME_HEADER,
+  REQ_ORIGINAL_PATH_HEADER,
 } from './lib';
 import { store } from './redux';
 
@@ -18,6 +20,11 @@ const theOwl = {
 
     createDocFiles(docs);
   },
+
+  buildHeaders: (testName, reqOriginalPath) => ({
+    [TEST_NAME_HEADER]: testName,
+    [REQ_ORIGINAL_PATH_HEADER]: reqOriginalPath,
+  }),
 };
 
 export default theOwl;

@@ -4,7 +4,7 @@ _Generate api docs based on functional tests_
 
 ### Roadmap
 
-* Document the usage of `LOG_MESSAGES`
+* Document the usage of `THE_OWL_LOG_MESSAGES`
 * Create a issue on "ava" repo to ask about "transpiling my source files before running tests"
   * The only solution that worked was this one: https://github.com/avajs/ava/issues/1309#issuecomment-356807355
 <!-- * collect "body" and "headers" on "requestMiddleware" -->

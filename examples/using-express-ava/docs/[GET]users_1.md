@@ -1,11 +1,11 @@
 # [GET] /users/1
 
-* [(200) returns the given user if it exists](#64c0ecde-4f4c-43f0-9e9d-e9ea8666d06e)
-* [(500) returns an error if the given user doesnt exist](#bb82e153-3959-444e-91f8-f269c0917bf7)
+* [(200) returns the given user if it exists](#a1c9c74c-7fca-4060-98b2-2b6ace461998)
+* [(500) returns an error if the given user doesnt exist](#854eb9ea-a6cd-44ce-b3f1-7d799179a536)
 
 ---
 
-### :chicken: `(200) returns the given user if it exists` <a name="64c0ecde-4f4c-43f0-9e9d-e9ea8666d06e"></a>
+### :chicken: `(200) returns the given user if it exists` <a name="a1c9c74c-7fca-4060-98b2-2b6ace461998"></a>
 
 :egg: **Request**
 
@@ -31,7 +31,7 @@ Headers:
 
 | Key | Value |
 | :--- | :--- |
-| x-test-id | 64c0ecde-4f4c-43f0-9e9d-e9ea8666d06e |
+| x-test-id | a1c9c74c-7fca-4060-98b2-2b6ace461998 |
 
 Body: 
 
@@ -42,7 +42,7 @@ Body:
 }
 ```
 
-### :chicken: `(500) returns an error if the given user doesnt exist` <a name="bb82e153-3959-444e-91f8-f269c0917bf7"></a>
+### :chicken: `(500) returns an error if the given user doesnt exist` <a name="854eb9ea-a6cd-44ce-b3f1-7d799179a536"></a>
 
 :egg: **Request**
 
@@ -68,7 +68,7 @@ Headers:
 
 | Key | Value |
 | :--- | :--- |
-| x-test-id | bb82e153-3959-444e-91f8-f269c0917bf7 |
+| x-test-id | 854eb9ea-a6cd-44ce-b3f1-7d799179a536 |
 
 Body: 
 

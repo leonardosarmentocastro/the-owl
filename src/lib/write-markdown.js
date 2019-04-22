@@ -1,41 +1,6 @@
 import { isEmpty } from 'lodash/lang';
 
-//// Doc shape:
-// # [GET] /users/1
-
-// * [(200) returns the given user if it exists](#585b2045-42a1-47eb-b0a9-e4541c6b2d68)
-
-// ---
-
-// ### :chicken: (200) returns the given user if it exists <a name="585b2045-42a1-47eb-b0a9-e4541c6b2d68"></a>
-
-// :egg: **Request**
-
-// Method: GET
-
-// Headers:
-
-// | Key | Value |
-// | :--- | :--- |
-// | x-request-header | 1 |
-
-// Body: _empty_
-
-// :hatching_chick: **Response**
-
-// Status: 200
-
-// Headers: _empty_
-
-// Body:
-
-// ```
-// {
-//   "id": 1,
-//   "name": "Leonardo"
-// }
-// ```
-
+// NOTE: Document shape can be found on the snapshot test of this file.
 export const writeBody = (body) => {
   const hasBody = !!body;
   const isObject = (hasBody && typeof body === 'object');
@@ -51,28 +16,38 @@ export const writeBody = (body) => {
   return '_empty_';
 };
 
+export const writeDefinitions = (docs) =>
+  docs.map(doc => [
+    `### :chicken: \`${doc.testName}\` <a name="${doc.id}"></a>\r\n`,
+    `${writeRequestDefinitions(doc)}\r\n`,
+    `${writeResponseDefinitions(doc)}\r\n`
+  ].join('\r\n'));
+
 export const writeHeaders = (headers) =>
-  isEmpty(headers) ? (
+  writeKeyValueTable(headers);
+
+export const writeHeading = (docs) => {
+  const [ doc ] = docs;
+  const { method, originalPath } = doc.request;
+  return `# [${method.toUpperCase()}] ${originalPath}`;
+}
+
+export const writeKeyValueTable = (object) =>
+  isEmpty(object) ? (
     '_empty_'
   ) : (
     [
       '\r\n',
       '| Key | Value |',
       '| :--- | :--- |',
-      Object.entries(headers) // Write a table row for each header entry.
-        .map(header => {
-          const [ key, value ] = header;
+      Object.entries(object) // Write a table row for each entry.
+        .map(object => {
+          const [ key, value ] = object;
           return `| ${key} | ${value} |`;
         })
         .join('\r\n')
     ].join('\r\n')
   );
-
-export const writeHeading = (docs) => {
-  const [ doc ] = docs;
-  const { method, path } = doc.request;
-  return `# [${method.toUpperCase()}] ${path}`;
-}
 
 export const writeMarkdown = (docs) =>
   [
@@ -85,18 +60,13 @@ export const writeMarkdown = (docs) =>
 const writeSummary = (docs) =>
   docs.map(doc => `* [${doc.testName}](#${doc.id})`);
 
-export const writeDefinitions = (docs) =>
-  docs.map(doc => [
-    `### :chicken: \`${doc.testName}\` <a name="${doc.id}"></a>\r\n`,
-    `${writeRequestDefinitions(doc)}\r\n`,
-    `${writeResponseDefinitions(doc)}\r\n`
-  ].join('\r\n'));
-
 export const writeRequestDefinitions = (doc) =>
   [
     ':egg: **Request**\r\n',
+    `Path: \`${doc.request.path}\`\r\n`,
     `Method: ${doc.request.method.toUpperCase()}\r\n`,
     `Headers: ${writeHeaders(doc.request.headers)}\r\n`,
+    `Query parameters: ${writeQueryParameters(doc.request.queryParameters)}\r\n`,
     `Body: ${writeBody(doc.request.body)}`,
   ].join('\r\n');
 
@@ -107,3 +77,6 @@ export const writeResponseDefinitions = (doc) =>
     `Headers: ${writeHeaders(doc.response.headers)}\r\n`,
     `Body: ${writeBody(doc.response.body)}`,
   ].join('\r\n');
+
+export const writeQueryParameters = (queryParameters) =>
+  writeKeyValueTable(queryParameters);
