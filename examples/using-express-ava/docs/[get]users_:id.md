@@ -1,11 +1,11 @@
 # [get] /users/:id
 
-* [(200) returns the given user if it exists](#8889354f-ae45-4327-a769-72e7e6bfbdf0)
-* [(500) returns an error if the given user doesnt exist](#bb9a346e-9294-40d2-8b20-34d9a26cddca)
+* [(200) returns the given user if it exists](#e41c6b7f-cdc7-497f-bd2a-81dda7160a2e)
+* [(500) returns an error if the given user doesnt exist](#e3460a90-ef27-4706-887a-6254e8072d10)
 
 ---
 
-### :chicken: `(200) returns the given user if it exists` <a name="8889354f-ae45-4327-a769-72e7e6bfbdf0"></a>
+### :chicken: `(200) returns the given user if it exists` <a name="e41c6b7f-cdc7-497f-bd2a-81dda7160a2e"></a>
 
 :egg: **Request**
 
@@ -21,11 +21,6 @@ Headers:
 
 Query parameters: _empty_
 
-Body: 
-
-```
-{}
-```
 
 :hatching_chick: **Response**
 
@@ -42,7 +37,7 @@ Body:
 }
 ```
 
-### :chicken: `(500) returns an error if the given user doesnt exist` <a name="bb9a346e-9294-40d2-8b20-34d9a26cddca"></a>
+### :chicken: `(500) returns an error if the given user doesnt exist` <a name="e3460a90-ef27-4706-887a-6254e8072d10"></a>
 
 :egg: **Request**
 
@@ -54,11 +49,6 @@ Headers: _empty_
 
 Query parameters: _empty_
 
-Body: 
-
-```
-{}
-```
 
 :hatching_chick: **Response**
 
