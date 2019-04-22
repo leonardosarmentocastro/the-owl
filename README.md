@@ -4,6 +4,7 @@ _Generate api docs based on functional tests_
 
 ### Roadmap
 
+* Create a decent README.md
 * Document the usage of environment variables
 * (NICE TO HAVE) Generate CURL for each doc entry
 

@@ -7,7 +7,8 @@
     "build": "parcel build src/index.js --target node --global theOwl",
     "start": "rm -rf dist/ && parcel watch src/index.js --target node --global theOwl",
     "test": "ava --verbose",
-    "test:log-messages": "THE_OWL_LOG_MESSAGES=true ava --verbose"
+    "test:log-messages": "THE_OWL_LOG_MESSAGES=true ava --verbose",
+    "test:log-redux": "THE_OWL_LOG_REDUX=true ava --verbose"
   },
   "repository": {
     "type": "git",

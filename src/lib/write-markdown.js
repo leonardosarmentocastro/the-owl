@@ -67,7 +67,6 @@ export const writeRequestDefinitions = (doc) =>
     `Method: ${doc.request.method.toUpperCase()}\r\n`,
     `Headers: ${writeHeaders(doc.request.headers)}\r\n`,
     `Query parameters: ${writeQueryParameters(doc.request.queryParameters)}\r\n`,
-    `Body: ${writeBody(doc.request.body)}`,
   ].join('\r\n');
 
 export const writeResponseDefinitions = (doc) =>
