@@ -4,6 +4,7 @@ _Generate api docs based on functional tests_
 
 ### Roadmap
 
+* Change "write-docs.js" functions to [mdx](https://mdxjs.com/) (used by Docussaurus v2);
 * Create a decent README.md
 * Document the usage of environment variables
 * (NICE TO HAVE) Generate CURL for each doc entry
