@@ -1,8 +1,8 @@
 import test from 'ava';
 
-import { store } from '../../redux';
-import { createDocForTests } from '../../redux/ducks/docs';
-import { writeMarkdown } from '../write-markdown';
+import { store } from '../../../redux';
+import { createDocForTests } from '../../../redux/ducks/docs';
+import writeMarkdown from '../write-markdown';
 
 test.before('creating a "doc" object on store', t => {
   // Specify our own "doc" object instead of using the DEFAULT provided by
@@ -35,7 +35,7 @@ test.before('creating a "doc" object on store', t => {
   createDocForTests(doc);
 });
 
-test('generated markdown must match snapshot', t => {
+test('(snapshot) must match snapshot', t => {
   const state = store.getState();
   const docs = Object.values(state.docs.byId);
   const markdown = writeMarkdown(docs);

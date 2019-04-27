@@ -8,7 +8,7 @@ import {
   buildFileName,
   createDirectory,
   createDocFiles,
-  writeMarkdown,
+  writeMarkdown
 } from '../';
 
 test.before('creating a "doc" object on store', t => {

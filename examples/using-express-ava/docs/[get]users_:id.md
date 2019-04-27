@@ -1,11 +1,11 @@
 # [get] /users/:id
 
-* [(200) returns the given user if it exists](#a2a7b08c-6737-44bf-965e-d24df1272908)
-* [(500) returns an error if the given user doesnt exist](#ca5e738e-d3f0-4e8f-b317-75d92c77d619)
+* [(200) returns the given user if it exists](#55e23415-b72d-4445-b118-d85bdf3b1703)
+* [(500) returns an error if the given user doesnt exist](#b503b6bc-3313-4821-b4ca-e980b26f1a71)
 
 ---
 
-### :chicken: `(200) returns the given user if it exists` <a name="a2a7b08c-6737-44bf-965e-d24df1272908"></a>
+### :chicken: `(200) returns the given user if it exists` <a name="55e23415-b72d-4445-b118-d85bdf3b1703"></a>
 
 ```sh
 curl -X GET \
@@ -25,11 +25,7 @@ Headers:
 | :--- | :--- |
 | your-header | your-value |
 
-Body: 
-
-```
-{}
-```
+Body: _empty_
 
 **Response** :hatching_chick:
 
@@ -46,7 +42,7 @@ Body:
 }
 ```
 
-### :chicken: `(500) returns an error if the given user doesnt exist` <a name="ca5e738e-d3f0-4e8f-b317-75d92c77d619"></a>
+### :chicken: `(500) returns an error if the given user doesnt exist` <a name="b503b6bc-3313-4821-b4ca-e980b26f1a71"></a>
 
 ```sh
 curl -X GET \
@@ -61,11 +57,7 @@ Query parameters: _empty_
 
 Headers: _empty_
 
-Body: 
-
-```
-{}
-```
+Body: _empty_
 
 **Response** :hatching_chick:
 
