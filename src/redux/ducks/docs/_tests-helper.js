@@ -10,10 +10,13 @@ const DEFAULT = {
     id: 'b72fd729-69c5-4979-900c-dd9dbe2ceb3c',
     testName: '(200) returns the given user if it exists',
     req: {
-      method: 'get',
-      path: '/users/1',
+      get: (key) => (key === 'host' ? 'localhost' : ''),
       headers: null,
+      method: 'get',
       originalPath: '/users/:id',
+      originalUrl: '/users/1',
+      path: '/users/1',
+      protocol: 'http',
       query: {},
     },
     res: {

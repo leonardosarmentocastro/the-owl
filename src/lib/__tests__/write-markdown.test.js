@@ -11,10 +11,15 @@ test.before('creating a "doc" object on store', t => {
     id: '1b42d891-41d1-4066-b458-61d1d901adcb',
     testName: '(500) returns an error if the given user doesnt exist',
     req: {
+      get: (key) => (key === 'host' ? 'localhost' : ''),
       method: 'get',
       path: '/users/999',
-      headers: null,
+      headers: {
+        'x-request-header': 'not important value',
+      },
       originalPath: '/users/:id',
+      originalUrl: '/users/999',
+      protocol: 'http',
       query: {
         sort: 'desc',
         page: 1,
@@ -22,9 +27,7 @@ test.before('creating a "doc" object on store', t => {
     },
     res: {
       body: { code: 'USER_NOT_FOUND', message: `User "1b42d891-41d1-4066-b458-61d1d901adcb" not found!` },
-      headers: {
-        'x-response-header': 'not important value',
-      },
+      headers: null,
       statusCode: 500,
     }
   };

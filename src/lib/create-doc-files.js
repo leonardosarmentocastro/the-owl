@@ -20,7 +20,7 @@ export const createDocFiles = (docs) => {
   if (err) return err;
 
   // TODO: document it
-  if (process.env.THE_OWL_LOG_MESSAGES) console.log(getSuccessMessage(fileName));
+  if (process.env.THE_OWL_LOG_MESSAGES) console.info(getSuccessMessage(fileName));
 
   return null;
 };

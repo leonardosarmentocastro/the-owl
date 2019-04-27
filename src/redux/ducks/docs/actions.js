@@ -1,5 +1,5 @@
 import * as docsTypes from './types';
-import { filterHeaders } from './helpers';
+import { filterHeaders, getUrl } from './helpers';
 
 // TODO: test
 export const collectRequestInformation = (id, req) => ({
@@ -13,6 +13,7 @@ export const collectRequestInformation = (id, req) => ({
       method: req.method,
       path: req.path,
       queryParameters: req.query,
+      url: getUrl(req),
     },
   },
 });

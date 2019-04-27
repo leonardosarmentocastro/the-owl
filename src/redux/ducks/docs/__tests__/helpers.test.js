@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { filterHeaders, IGNORED_HEADERS } from '../helpers';
+import { filterHeaders, getUrl, IGNORED_HEADERS } from '../helpers';
 import { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } from '../../../../lib/middlewares';
 
 test('(filterHeaders) must not include any entry from "ignored headers" list', t => {
@@ -43,4 +43,14 @@ test('(filterHeaders) must return an empty object when filtering null/undefined/
   t.deepEqual(filterHeaders(null), {});
   t.deepEqual(filterHeaders(undefined), {});
   t.deepEqual(filterHeaders({}), {});
+});
+
+test('(getUrl) must return the full request url', t => {
+  const req = {
+    protocol: 'http',
+    get: (key) => (key === 'host' ? 'localhost' : ''),
+    originalUrl: '/users/1',
+  };
+
+  t.snapshot(getUrl(req));
 });

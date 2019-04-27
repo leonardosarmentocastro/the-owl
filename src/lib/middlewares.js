@@ -27,7 +27,7 @@ const WARN_TO_PROVIDE_HEADERS = [
 const mustCollectInformation = (req) => (!!req.header(TEST_NAME_HEADER) && !!req.header(REQ_ORIGINAL_PATH_HEADER));
 export const requestMiddleware = (req, res, next) => {
   if (!mustCollectInformation(req)) {
-    if (process.env.THE_OWL_LOG_MESSAGES) console.log(WARN_TO_PROVIDE_HEADERS);
+    if (process.env.THE_OWL_LOG_MESSAGES) console.info(WARN_TO_PROVIDE_HEADERS);
     return next();
   }
 

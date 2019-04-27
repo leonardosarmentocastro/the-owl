@@ -26,3 +26,5 @@ export const filterHeaders = (headers) => {
       [key]: headers[key],
     }), {});
 }
+
+export const getUrl = (req) => `${req.protocol}://${req.get('host')}${req.originalUrl}`;

@@ -1,17 +1,23 @@
 # [get] /users/:id
 
-* [(200) returns the given user if it exists](#e41c6b7f-cdc7-497f-bd2a-81dda7160a2e)
-* [(500) returns an error if the given user doesnt exist](#e3460a90-ef27-4706-887a-6254e8072d10)
+* [(200) returns the given user if it exists](#a2a7b08c-6737-44bf-965e-d24df1272908)
+* [(500) returns an error if the given user doesnt exist](#ca5e738e-d3f0-4e8f-b317-75d92c77d619)
 
 ---
 
-### :chicken: `(200) returns the given user if it exists` <a name="e41c6b7f-cdc7-497f-bd2a-81dda7160a2e"></a>
+### :chicken: `(200) returns the given user if it exists` <a name="a2a7b08c-6737-44bf-965e-d24df1272908"></a>
 
-:egg: **Request**
+```sh
+curl -X GET \
+http://localhost:8081/users/1 \
+-H 'your-header: your-value'
+```
+
+**Request** :egg:
 
 Path: `/users/1`
 
-Method: GET
+Query parameters: _empty_
 
 Headers: 
 
@@ -19,10 +25,13 @@ Headers:
 | :--- | :--- |
 | your-header | your-value |
 
-Query parameters: _empty_
+Body: 
 
+```
+{}
+```
 
-:hatching_chick: **Response**
+**Response** :hatching_chick:
 
 Status: 200
 
@@ -37,20 +46,28 @@ Body:
 }
 ```
 
-### :chicken: `(500) returns an error if the given user doesnt exist` <a name="e3460a90-ef27-4706-887a-6254e8072d10"></a>
+### :chicken: `(500) returns an error if the given user doesnt exist` <a name="ca5e738e-d3f0-4e8f-b317-75d92c77d619"></a>
 
-:egg: **Request**
+```sh
+curl -X GET \
+http://localhost:8081/users/999
+```
+
+**Request** :egg:
 
 Path: `/users/999`
 
-Method: GET
+Query parameters: _empty_
 
 Headers: _empty_
 
-Query parameters: _empty_
+Body: 
 
+```
+{}
+```
 
-:hatching_chick: **Response**
+**Response** :hatching_chick:
 
 Status: 500
 

@@ -7,8 +7,13 @@ import * as docsTypes from './types';
 //         id: '123',
 //         testTitle: '(200) The actual test name',
 //         request: {
+//           body: {},
+//           headers: { content-type: "text/json" },
+//           originalPath: '/users/:id',
 //           method: 'get',
-//           path: '/users/:id',
+//           path: '/users/1',
+//           queryParameters: {},
+//           url: 'http://localhost:8080/users/1'
 //         },
 //         response: {
 //           body: { /* ... */ },

@@ -16,9 +16,44 @@ export const writeBody = (body) => {
   return '_empty_';
 };
 
+export const writeCurl = (doc) => {
+  const { body, headers, method, url } = doc.request;
+
+  const bodyOptions = !isEmpty(body) ? (
+    `-d '${JSON.stringify(body, null, 2)}'`
+  ) : ('');
+  const headerOptions = !isEmpty(headers) ? (
+    Object.entries(headers)
+      .map((header, index, array) => {
+        const [ key, value ] = header;
+
+        const isLastHeader = (index === array.length - 1);
+        const hasMoreCommandsToWrite = !!bodyOptions;
+
+        const hasToEscape = (isLastHeader ? hasMoreCommandsToWrite : true);
+        const command = `-H '${key}: ${value}' ${hasToEscape ? '\\' : '' }`;
+
+        return command;
+      })
+      .join('\r\n')
+  ) : ('');
+
+  return [
+    '```sh',
+    `curl -X ${method.toUpperCase()} \\`,
+    `${url} ${headerOptions ? '\\' : ''}`.trim(),
+    headerOptions.trim(),
+    bodyOptions,
+    '```',
+  ]
+  .filter(Boolean) // Remove null, undefined, empty strings...
+  .join('\r\n');
+};
+
 export const writeDefinitions = (docs) =>
   docs.map(doc => [
     `### :chicken: \`${doc.testName}\` <a name="${doc.id}"></a>\r\n`,
+    `${writeCurl(doc)}\r\n`,
     `${writeRequestDefinitions(doc)}\r\n`,
     `${writeResponseDefinitions(doc)}\r\n`
   ].join('\r\n'));
@@ -62,16 +97,16 @@ const writeSummary = (docs) =>
 
 export const writeRequestDefinitions = (doc) =>
   [
-    ':egg: **Request**\r\n',
+    '**Request** :egg:\r\n',
     `Path: \`${doc.request.path}\`\r\n`,
-    `Method: ${doc.request.method.toUpperCase()}\r\n`,
-    `Headers: ${writeHeaders(doc.request.headers)}\r\n`,
     `Query parameters: ${writeQueryParameters(doc.request.queryParameters)}\r\n`,
+    `Headers: ${writeHeaders(doc.request.headers)}\r\n`,
+    `Body: ${writeBody(doc.request.body)}`,
   ].join('\r\n');
 
 export const writeResponseDefinitions = (doc) =>
   [
-    ':hatching_chick: **Response**\r\n',
+    '**Response** :hatching_chick:\r\n',
     `Status: ${doc.response.statusCode}\r\n`,
     `Headers: ${writeHeaders(doc.response.headers)}\r\n`,
     `Body: ${writeBody(doc.response.body)}`,
