@@ -1,6 +1,6 @@
 {
   "name": "the-owl",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generate api docs based on functional tests",
   "main": "./dist/index.js",
   "scripts": {
@@ -15,27 +15,39 @@
     "type": "git",
     "url": "git+https://github.com/leonardosarmentocastro/the-owl.git"
   },
-  "author": "",
+  "author": "Leonardo Sarmento de Castro",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/leonardosarmentocastro/the-owl/issues"
   },
   "homepage": "https://github.com/leonardosarmentocastro/the-owl#readme",
+  "keywords": [
+    "create",
+    "docs",
+    "doc",
+    "documentation",
+    "functional",
+    "tests",
+    "test",
+    "ava",
+    "api",
+    "express"
+  ],
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/register": "^7.4.0",
     "ava": "^1.4.1",
     "axios": "^0.18.0",
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
     "chalk": "^2.4.2",
     "express-mung": "^0.5.1",
     "lodash": "^4.17.11",
-    "nodemon": "^1.18.11",
-    "parcel-bundler": "^1.12.3",
     "redux": "^4.0.1",
-    "rimraf": "^2.6.3",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "rimraf": "^2.6.3"
   },
-  "dependencies": {},
   "ava": {
     "files": [
       "test.js ",
