@@ -1,17 +1,11 @@
 import chalk from 'chalk';
-import mung from 'express-mung';
 import uuidv4 from 'uuid/v4';
 
-import { store } from '../redux';
-import {
-  collectRequestInformation,
-  collectResponseInformation,
-  createDoc,
-} from '../redux/ducks/docs';
+import { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } from './headers';
+import { mustCollectInformation } from './must-collect-information';
+import { store } from '../../redux';
+import { collectRequestInformation, createDoc } from '../../redux/ducks/docs';
 
-export const TEST_ID_HEADER = 'x-test-id';
-export const TEST_NAME_HEADER = 'x-test-name';
-export const REQ_ORIGINAL_PATH_HEADER = 'x-req-original-path';
 const WARN_TO_PROVIDE_HEADERS = [
   [
     `\r\n${chalk.black.bgHex('#F5B400')(' WARNING ')}`,
@@ -24,7 +18,6 @@ const WARN_TO_PROVIDE_HEADERS = [
   ].join('\r\n')
 ].join('\r\n');
 
-const mustCollectInformation = (req) => (!!req.header(TEST_NAME_HEADER) && !!req.header(REQ_ORIGINAL_PATH_HEADER));
 export const requestMiddleware = (req, res, next) => {
   if (!mustCollectInformation(req)) {
     if (process.env.THE_OWL_LOG_MESSAGES) console.info(WARN_TO_PROVIDE_HEADERS);
@@ -42,17 +35,3 @@ export const requestMiddleware = (req, res, next) => {
 
   return next();
 };
-
-export const responseMiddleware = mung.json((body, req, res) => {
-  if (!mustCollectInformation(req)) return body;
-
-  const id = res.getHeader(TEST_ID_HEADER);
-  const response = {
-    body,
-    headers: res.getHeaders(),
-    statusCode: res.statusCode,
-  };
-  store.dispatch(collectResponseInformation(id, response));
-
-  return body;
-}, { mungError: true });

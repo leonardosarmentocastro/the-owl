@@ -4,34 +4,11 @@ import {
   collectRequestInformation,
 } from './actions';
 import store from '../../store';
+import { _doc } from './__fixtures__/_doc.fixture';
 
 const DEFAULT = {
-  doc: {
-    id: 'b72fd729-69c5-4979-900c-dd9dbe2ceb3c',
-    testName: '(200) returns the given user if it exists',
-    req: {
-      get: (key) => (key === 'host' ? 'localhost' : ''),
-      headers: null,
-      method: 'get',
-      originalPath: '/users/:id',
-      originalUrl: '/users/1',
-      path: '/users/1',
-      protocol: 'http',
-      query: {},
-    },
-    res: {
-      body: {
-        id: 1,
-        name: 'Leonardo',
-      },
-      headers: {
-        'x-response-header': 'not important value',
-      },
-      statusCode: 200,
-    },
-  }
+  doc: { ..._doc },
 };
-
 export const createDocForTests = (doc = DEFAULT.doc) => {
   const { id, testName, req, res } = doc;
 
