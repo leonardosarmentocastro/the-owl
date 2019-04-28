@@ -1,6 +1,6 @@
 {
   "name": "the-owl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate api docs based on functional tests",
   "main": "./dist/index.js",
   "scripts": {
