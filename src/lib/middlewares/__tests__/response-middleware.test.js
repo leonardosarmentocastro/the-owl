@@ -5,25 +5,33 @@ import { setupRequestMiddleware } from './_helper';
 import { requestMiddleware } from '../request-middleware';
 import { fn as responseMiddleware } from '../response-middleware';
 import { store } from '../../../redux';
+import { _req, _res } from '../../../redux/ducks/docs/__fixtures__';
 
-test.beforeEach('Setup the request middleware', t => {
+const simulateResponseMiddlewareUsage = (t) => {
   setupRequestMiddleware(t);
   requestMiddleware(t.context.req, t.context.res, () => null);
-});
-
-test.beforeEach(`Simulate the usage of "requestMiddleware/responseMiddleware" for each test case,
-where a request middleware happens first to collect data which will be later refered on "responseMiddleware"
-through headers`, t => {
   responseMiddleware(t.context.res.body, t.context.req, t.context.res);
-});
+}
 
-test.beforeEach('Save the result on store, in order to assert it later', t => {
+const getDocs = () => {
   const state = store.getState();
-  t.context.docs = Object.values(state.docs.byId);
+  const docs = Object.values(state.docs.byId);
+
+  return docs;
+}
+
+test.serial('must not fill the store with response data when information must not be collected', t => {
+  const req = { ..._req };
+  const res = { ..._res };
+  responseMiddleware(res.body, req, res);
+
+  const docs = getDocs();
+  t.assert(docs.length === 0);
 });
 
-test('must fill the store with response data when information must be collected', t => {
-  const [ doc ] = t.context.docs; // Doc created by first set of "beforeEach" invocations.
+test.serial('must fill the store with response data when information must be collected', t => {
+  simulateResponseMiddlewareUsage(t);
+  const [ doc ] = getDocs();
 
   t.falsy(isEmpty(doc));
   t.falsy(isEmpty(doc.response));
