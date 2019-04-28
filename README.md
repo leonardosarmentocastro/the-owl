@@ -2,7 +2,7 @@
 
 _Create docs for your API using functional tests_
 
-![](https://user-images.githubusercontent.com/11094572/56867964-840aa800-69ec-11e9-82ab-e2ae31590228.png)
+<img width="901" alt="Screenshot 2019-04-28 at 19 32 15" src="https://user-images.githubusercontent.com/11094572/56867964-840aa800-69ec-11e9-82ab-e2ae31590228.png">
 
 
 ## How does it works
@@ -70,7 +70,7 @@ CREATE_DOCS=true npm run test
 
 The `docs/` folder will be created (if doesn't exists) with the results:
 
-![](https://user-images.githubusercontent.com/11094572/56868513-90463380-69f3-11e9-96b8-3c9f3d99b1b8.png)
+<img width="289" alt="Screenshot 2019-04-28 at 20 23 51" src="https://user-images.githubusercontent.com/11094572/56868513-90463380-69f3-11e9-96b8-3c9f3d99b1b8.png">
 
 
 ### Process variables (aka `process.env`)
