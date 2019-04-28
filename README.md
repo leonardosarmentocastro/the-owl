@@ -108,29 +108,16 @@ Use this variable if you are (for any reason...) interested on seeing the output
 
 ### Caveats
 
-For instance (I think), doc creation will _only_ work for **functional tests executed serially**.
+For instance, doc creation will _only_ work for **functional tests executed serially**.
 
 
 ## Motivation
 
-1. **Enforce functional tests development by earning something tangible from it.**
+**Enforce functional tests development by earning something tangible from it.**
 
 Usually, API contract changes are done on code and documentations gets obsolete, as it's usually a `.yml` or `@jsdoc` that developers forget to update or it uses boring specific markup rules.
 
 This package was built with the mindset that **all changes should be made in code**.
-
-2. **Documentation should be part of the repository**
-
-If you ever worked with micro-services architecture, you probably have seen yourself in this situation:
-
-> You are working on a frontend application, the endpoint `/users/1` crashes:
-> "Hey, where this data comes from?" you ask for your collegue
-> "From the "potato-service" he answers
-> You visit "potato-service" on github and `README.md` only tells you to run `npm start`.
-
-Now you have to navigate into the code visceras to see if certain attribute stopped being served or not.
-
-If someone had functional tested and a documentation was created from the result, you would spent less than 5 minutes to find the answer you desire.
 
 
 ## Contributing
