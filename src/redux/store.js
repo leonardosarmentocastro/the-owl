@@ -6,8 +6,7 @@ import * as reducers from './ducks';
 const rootReducer = combineReducers(reducers);
 const store = createStore(rootReducer);
 
-// TODO: document it
-if (process.env.THE_OWL_LOG_REDUX) {
+if (process.env.LOG_REDUX) {
   store.subscribe(() => {
     const message = [
       `${chalk.white.bgHex('#764abc')('\r\n REDUX STATE CHANGED ')}`,

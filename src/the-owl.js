@@ -14,7 +14,7 @@ export const theOwl = {
   },
 
   createDocs() {
-    if (process.env.THE_OWL_DISABLE) return; // Flag to optionally disable doc creation when running tests on "watch" mode.
+    if (!process.env.CREATE_DOCS) return; // Flag to optionally disable doc creation when running tests on "watch" mode.
 
     const state = store.getState();
     const docs = Object.values(state.docs.byId);

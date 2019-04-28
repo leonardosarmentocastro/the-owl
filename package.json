@@ -8,8 +8,8 @@
     "cleanup": "rm -rf dist/ .cache/",
     "start": "npm run cleanup && parcel watch src/index.js --target node --global theOwl",
     "test": "ava --verbose",
-    "test:log-messages": "THE_OWL_LOG_MESSAGES=true npm run test",
-    "test:log-redux": "THE_OWL_LOG_REDUX=true npm run test"
+    "test:log-messages": "LOG_MESSAGES=true npm run test",
+    "test:log-redux": "LOG_REDUX=true npm run test"
   },
   "repository": {
     "type": "git",

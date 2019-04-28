@@ -20,7 +20,7 @@ const WARN_TO_PROVIDE_HEADERS = [
 
 export const requestMiddleware = (req, res, next) => {
   if (!mustCollectInformation(req)) {
-    if (process.env.THE_OWL_LOG_MESSAGES) console.info(WARN_TO_PROVIDE_HEADERS);
+    if (process.env.LOG_MESSAGES) console.info(WARN_TO_PROVIDE_HEADERS);
     return next();
   }
 
