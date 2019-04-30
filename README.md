@@ -31,7 +31,7 @@ const app = express();
 theOwl.connect(app);
 ```
 
-In your [functional tests](https://github.com/avajs/ava/), set custom headers on requests that you want to collect information:
+In your [functional tests](./examples/using-express-ava/src/modules/users/__tests__/functional/[get]users_:id.js), set custom headers on requests that you want to collect information:
 
 ```js
 const axios = require('axios');
