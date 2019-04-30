@@ -31,11 +31,12 @@ const app = express();
 theOwl.connect(app);
 ```
 
-In your functional tests, set custom headers on requests that you want to collect information:
+In your [functional tests](https://github.com/avajs/ava/), set custom headers on requests that you want to collect information:
 
 ```js
-const ORIGINAL_PATH = `/users/:id`;
+const axios = require('axios');
 
+const ORIGINAL_PATH = `/users/:id`;
 test.serial('(200) returns the given user if it exists', async t => {
   const response = await axios.get(`http://localhost:8080/users/1`, {
     headers: {
