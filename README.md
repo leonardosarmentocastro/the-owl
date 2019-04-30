@@ -37,7 +37,7 @@ In your [functional tests](https://github.com/avajs/ava/), set custom headers on
 const axios = require('axios');
 
 const ORIGINAL_PATH = `/users/:id`;
-const URL = `http://localhost:8080${ORIGINAL_PATH}`;';
+const URL = `http://localhost:8080${ORIGINAL_PATH}`;
 const getEndpoint = (userId) => URL.replace(':id', userId);
 
 test.serial('(200) returns the given user if it exists', async t => {
