@@ -110,6 +110,9 @@ Redux is used internally to manage the object tree that holds all request and re
 
 Use this variable if you are (for any reason...) interested on seeing the output of each state update.
 
+### Recipes
+
+A full example project can be found [here](./examples/using-express-ava/README.md).
 
 ### Caveats
 
