@@ -1,10 +1,10 @@
+# the-owl
+
+Create docs for your API using functional tests.
+
 <meta property="og:image" content="https://user-images.githubusercontent.com/11094572/57013840-ae877b80-6c0d-11e9-89b8-45a365d38971.png" />
 
 ![the-owl-template](https://user-images.githubusercontent.com/11094572/57013840-ae877b80-6c0d-11e9-89b8-45a365d38971.png)
-
-# the-owl
-
-_Create docs for your API using functional tests_
 
 
 ## How does it works
