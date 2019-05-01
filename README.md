@@ -1,8 +1,8 @@
+![the-owl-template](https://user-images.githubusercontent.com/11094572/57013840-ae877b80-6c0d-11e9-89b8-45a365d38971.png)
+
 # the-owl
 
 _Create docs for your API using functional tests_
-
-<img width="901" alt="Screenshot 2019-04-28 at 19 32 15" src="https://user-images.githubusercontent.com/11094572/56867964-840aa800-69ec-11e9-82ab-e2ae31590228.png">
 
 
 ## How does it works
@@ -13,6 +13,7 @@ _Create docs for your API using functional tests_
 
 Pretty interesting, right? Follow along to learn more.
 
+<img width="901" alt="Screenshot 2019-04-28 at 19 32 15" src="https://user-images.githubusercontent.com/11094572/56867964-840aa800-69ec-11e9-82ab-e2ae31590228.png">
 
 ## Usage
 
