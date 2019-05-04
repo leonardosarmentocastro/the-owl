@@ -32,8 +32,13 @@ const _formatErrorMessage = (err, message) => [
   `${chalk.gray(JSON.stringify(err, null, 2))}`,
 ].join('\r\n');
 
+// https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
+const isEmpty = obj =>
+  [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
+
 module.exports = {
   createFile,
   createDirectory,
   formatRequestPath,
+  isEmpty,
 };

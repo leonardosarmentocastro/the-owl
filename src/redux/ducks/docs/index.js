@@ -1,6 +1,8 @@
 // NOTE: Fixtures are not shipped on distribution code.
-const optional = require('optional');
-const fixtures = optional('./__fixtures__') || {};
+const fixtures = (() => {
+  try { return require('./__fixtures__'); }
+  catch(err) { return {}; }
+})();
 
 module.exports = {
   // CONVENTION: reducer exports functions with same name as actions, so export reducer first.

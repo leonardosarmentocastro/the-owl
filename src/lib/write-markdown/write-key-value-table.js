@@ -1,4 +1,4 @@
-const { isEmpty } = require('lodash/lang');
+const { isEmpty } = require('../utils');
 
 exports.writeKeyValueTable = (object) =>
   !isEmpty(object) ? (

@@ -1,6 +1,6 @@
 const test = require('ava');
-const { isEmpty } = require('lodash/lang');
 
+const { isEmpty } = require('../../utils');
 const { _req, _res, store } = require('../../../redux');
 const { requestMiddleware } = require('../request-middleware');
 const { fn: responseMiddleware } = require('../response-middleware');

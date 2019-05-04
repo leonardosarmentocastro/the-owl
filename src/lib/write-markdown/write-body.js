@@ -1,4 +1,4 @@
-const { isEmpty } = require('lodash/lang');
+const { isEmpty } = require('../utils');
 
 const _writeCodeBlock = (content) => [
   '\r\n',
