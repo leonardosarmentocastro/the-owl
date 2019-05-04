@@ -6,6 +6,7 @@
 # Folders
 examples/
 documentation/
+coverage/
 
 # Files
 contributing.md
