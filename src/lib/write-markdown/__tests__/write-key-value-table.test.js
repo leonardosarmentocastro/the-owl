@@ -1,6 +1,6 @@
-import test from 'ava';
+const test = require('ava');
 
-import writeKeyValueTable from '../write-key-value-table';
+const { writeKeyValueTable } = require('../write-key-value-table');
 
 test('(snapshot) must write a table of "key/value" combination for each object entry', t => {
   const object = {

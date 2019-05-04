@@ -1,6 +1,6 @@
-import test from 'ava';
+const test = require('ava');
 
-import { formatRequestPath } from '../utils';
+const { formatRequestPath } = require('../utils');
 
 test('(formatRequestPath) 01. must remove the first slash from path', t => {
   const path = '/users/sign-up';

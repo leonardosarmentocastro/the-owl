@@ -1,21 +1,19 @@
-import { isEmpty } from 'lodash/lang';
+const { isEmpty } = require('lodash/lang');
 
-const writeCodeBlock = (content) => [
+const _writeCodeBlock = (content) => [
   '\r\n',
   '\`\`\`',
   content,
   '\`\`\`',
 ].join('\r\n');
 
-const writeBody = (body) => {
+exports.writeBody = (body) => {
   const hasBody = !!body;
   const isObject = (typeof body === 'object');
 
   if (isObject)
     if (isEmpty(body)) return '_empty_';
-    else return writeCodeBlock(JSON.stringify(body, null, 2));
-  if (hasBody) return writeCodeBlock(body);
+    else return _writeCodeBlock(JSON.stringify(body, null, 2));
+  if (hasBody) return _writeCodeBlock(body);
   return '_empty_';
 };
-
-export default writeBody;

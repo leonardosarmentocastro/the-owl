@@ -1,13 +1,13 @@
-import {
+const {
   createDocFiles,
   requestMiddleware,
   responseMiddleware,
   TEST_NAME_HEADER,
   REQ_ORIGINAL_PATH_HEADER,
-} from './lib';
-import { store } from './redux';
+} = require('./lib');
+const store = require('./redux');
 
-export const theOwl = {
+const theOwl = {
   connect(app) {
     app.use(requestMiddleware);
     app.use(responseMiddleware);
@@ -28,3 +28,5 @@ export const theOwl = {
     [REQ_ORIGINAL_PATH_HEADER]: reqOriginalPath,
   }),
 };
+
+module.exports = theOwl;

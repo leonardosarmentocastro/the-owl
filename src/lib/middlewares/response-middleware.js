@@ -1,14 +1,12 @@
-import mung from 'express-mung';
+const mung = require('express-mung');
 
-import { TEST_ID_HEADER } from './headers';
-import { mustCollectInformation } from './must-collect-information';
-import { store } from '../../redux';
-import { collectResponseInformation } from '../../redux/ducks/docs';
+const { collectResponseInformation, store } = require('../../redux');
+const { TEST_ID_HEADER } = require('./headers');
+const { mustCollectInformation } = require('./must-collect-information');
 
 const options = { mungError: true };
-export const fn = (body, req, res) => {
+const fn = (body, req, res) => {
   if (!mustCollectInformation(req)) return body;
-
   const id = res.getHeader(TEST_ID_HEADER);
   const response = {
     body,
@@ -19,5 +17,6 @@ export const fn = (body, req, res) => {
 
   return body;
 };
+const responseMiddleware = mung.json(fn, options);
 
-export const responseMiddleware = mung.json(fn, options);
+module.exports = { fn, responseMiddleware };

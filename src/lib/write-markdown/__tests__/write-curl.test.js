@@ -1,6 +1,6 @@
-import test from 'ava';
+const test = require('ava');
 
-import writeCurl from '../write-curl';
+const { writeCurl } = require('../write-curl');
 
 test.before(t => {
   t.context.doc = {

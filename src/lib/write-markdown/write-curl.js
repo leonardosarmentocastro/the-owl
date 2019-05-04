@@ -1,6 +1,6 @@
-import { isEmpty } from 'lodash/lang';
+const { isEmpty } = require('lodash/lang');
 
-const writeBodyOptions = (body) => {
+const _writeBodyOptions = (body) => {
   const hasBody = !!body;
   const isObject = (typeof body === 'object');
 
@@ -11,7 +11,7 @@ const writeBodyOptions = (body) => {
   return '';
 };
 
-const writeHeaderOptions = (headers) =>
+const _writeHeaderOptions = (headers) =>
   !isEmpty(headers) ? (
     Object.entries(headers)
       .map((header) => {
@@ -21,13 +21,13 @@ const writeHeaderOptions = (headers) =>
       .join('\r\n')
   ) : ('');
 
-const writeCurl = (doc) => {
+exports.writeCurl = (doc) => {
   const { body, headers, method, url } = doc.request;
   const instructions = [
     `curl -X ${method.toUpperCase()}`,
     url,
-    writeBodyOptions(body),
-    writeHeaderOptions(headers),
+    _writeBodyOptions(body),
+    _writeHeaderOptions(headers),
   ]
   .filter(Boolean) // Remove null, undefined, empty strings (...)
   .reduce((accumulator, currentValue, index, array) => { // Escape each instruction line
@@ -44,5 +44,3 @@ const writeCurl = (doc) => {
   ]
   .join('\r\n');
 };
-
-export default writeCurl;

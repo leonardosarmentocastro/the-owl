@@ -2,11 +2,8 @@
   "name": "the-owl",
   "version": "1.0.2",
   "description": "Generate api docs based on functional tests",
-  "main": "./dist/index.js",
+  "main": "./src/the-owl.js",
   "scripts": {
-    "build": "npm run cleanup && parcel build src/index.js --target node --global theOwl",
-    "cleanup": "rm -rf dist/ .cache/",
-    "start": "npm run cleanup && parcel watch src/index.js --target node --global theOwl",
     "test": "ava --verbose",
     "test:log-messages": "LOG_MESSAGES=true npm run test",
     "test:log-redux": "LOG_REDUX=true npm run test"
@@ -34,11 +31,8 @@
     "express"
   ],
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/register": "^7.4.0",
     "ava": "^1.4.1",
-    "axios": "^0.18.0",
-    "parcel-bundler": "^1.12.3"
+    "axios": "^0.18.0"
   },
   "dependencies": {
     "chalk": "^2.4.2",
@@ -56,14 +50,6 @@
       "**/__tests__/**/*.js ",
       "**/*.test.js",
       "!examples/**/*.js"
-    ],
-    "require": [
-      "./config/test-setup.js"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "@ava/stage-4"
     ]
   }
 }

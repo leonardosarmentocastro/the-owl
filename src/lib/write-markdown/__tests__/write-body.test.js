@@ -1,6 +1,6 @@
-import test from 'ava';
+const test = require('ava');
 
-import writeBody from '../write-body';
+const { writeBody } = require('../write-body');
 
 test('(snapshot) must render empty when receiving an empty object', t => {
   const body = {};

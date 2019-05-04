@@ -1,11 +1,10 @@
-import chalk from 'chalk';
-import { createStore, combineReducers } from 'redux';
+const chalk = require('chalk');
+const { createStore, combineReducers } = require('redux');
 
-import * as reducers from './ducks';
+const reducers = require('./ducks');
 
 const rootReducer = combineReducers(reducers);
 const store = createStore(rootReducer);
-
 if (process.env.LOG_REDUX) {
   store.subscribe(() => {
     const message = [
@@ -19,4 +18,4 @@ if (process.env.LOG_REDUX) {
   });
 }
 
-export default store;
+module.exports = { store };

@@ -1,8 +1,8 @@
-import test from 'ava';
+const test = require('ava');
 
-import { store } from '../../../redux';
-import { createDocForTests } from '../../../redux/ducks/docs';
-import writeResponseDefinitions from '../write-response-definitions';
+const { store } = require('../../../redux');
+const { createDocForTests } = require('../../../__helpers__');
+const { writeResponseDefinitions } = require('../write-response-definitions');
 
 test.before(t => createDocForTests());
 

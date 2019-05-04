@@ -1,7 +1,7 @@
-import { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } from '../headers';
-import { _req, _res } from '../../../redux/ducks/docs/__fixtures__';
+const { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('../headers');
+const { _req, _res } = require('../../../redux');
 
-export const setupRequestMiddleware = t => {
+exports.setupRequestMiddleware = t => {
   t.context.req = { ..._req };
   t.context.res = { ..._res };
 

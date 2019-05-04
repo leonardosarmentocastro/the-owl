@@ -1,4 +1,6 @@
-export * from './create-doc-files';
-export * from './middlewares';
-export * from './utils';
-export * from './write-markdown';
+module.exports = {
+  ...require('./create-doc-files'),
+  ...require('./middlewares'),
+  ...require('./utils'),
+  ...require('./write-markdown'),
+};

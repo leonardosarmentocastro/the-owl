@@ -1,6 +1,6 @@
-import * as docsTypes from './types';
+const docsTypes = require('./types');
 
-export const collectRequestInformation = (state, action) => {
+const collectRequestInformation = (state, action) => {
   const { id, request } = action.payload;
 
   return {
@@ -15,8 +15,7 @@ export const collectRequestInformation = (state, action) => {
   };
 };
 
-// TODO: test?
-export const collectResponseInformation = (state, action) => {
+const collectResponseInformation = (state, action) => {
   const { id, response } = action.payload;
 
   return {
@@ -31,7 +30,7 @@ export const collectResponseInformation = (state, action) => {
   };
 };
 
-export const createDoc = (state, action) => {
+const createDoc = (state, action) => {
   const { id, testName } = action.payload;
 
   return {
@@ -43,11 +42,11 @@ export const createDoc = (state, action) => {
   };
 };
 
-export const defaultState = {
+const defaultState = {
   byId: {},
   allIds: [],
 };
-export default function reducer(state = defaultState, action) {
+function reducer(state = defaultState, action) {
   switch(action.type) {
     case docsTypes.COLLECT_REQUEST_INFORMATION: return collectRequestInformation(state, action);
     case docsTypes.COLLECT_RESPONSE_INFORMATION: return collectResponseInformation(state, action);
@@ -56,4 +55,12 @@ export default function reducer(state = defaultState, action) {
       return state;
     };
   }
+};
+
+module.exports = {
+  collectRequestInformation,
+  collectResponseInformation,
+  createDoc,
+  defaultState,
+  reducer,
 };

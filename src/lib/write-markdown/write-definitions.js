@@ -1,15 +1,13 @@
-import writeCurl from './write-curl';
-import writeRequestDefinitions from './write-request-definitions';
-import writeResponseDefinitions from './write-response-definitions';
+const { writeCurl } = require('./write-curl');
+const { writeRequestDefinitions } = require('./write-request-definitions');
+const { writeResponseDefinitions } = require('./write-response-definitions');
 
 const emoji = ':chicken:';
-const writeHeading = (doc) => `### ${emoji} \`${doc.testName}\` <a name="${doc.id}"></a>\r\n`;
-const writeDefinitions = (docs) =>
+const _writeHeading = (doc) => `### ${emoji} \`${doc.testName}\` <a name="${doc.id}"></a>\r\n`;
+exports.writeDefinitions = (docs) =>
   docs.map(doc => [
-    writeHeading(doc),
+    _writeHeading(doc),
     `${writeCurl(doc)}\r\n`,
     `${writeRequestDefinitions(doc)}\r\n`,
     `${writeResponseDefinitions(doc)}\r\n`
   ].join('\r\n'));
-
-export default writeDefinitions;

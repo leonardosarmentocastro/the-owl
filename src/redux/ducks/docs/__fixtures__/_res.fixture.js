@@ -1,5 +1,5 @@
 // Fixture for Express "res" object.
-export const _res = {
+exports._res = {
   body: {
     id: 1,
     name: 'Leonardo',

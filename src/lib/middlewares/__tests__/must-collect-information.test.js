@@ -1,7 +1,7 @@
-import test from 'ava';
+const test = require('ava');
 
-import { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } from '../headers';
-import { mustCollectInformation } from '../must-collect-information';
+const { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('../headers');
+const { mustCollectInformation } = require('../must-collect-information');
 
 const testName = '(200) must return user';
 const reqOriginalPath = '/users/:id';

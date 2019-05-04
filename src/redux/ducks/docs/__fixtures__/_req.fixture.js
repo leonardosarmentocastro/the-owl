@@ -1,5 +1,5 @@
 // Fixture for Express.js "req" object.
-export const _req = {
+exports._req = {
   get: (key) => (key === 'host' ? 'localhost' : ''),
   header(key) { return this.headers[key]; },
   headers: {},

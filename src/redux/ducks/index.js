@@ -1,2 +1,4 @@
-// name export all your reducers
-export { default as docs } from './docs';
+// Name export all your reducers.
+module.exports = {
+  docs: require('./docs').reducer,
+};

@@ -1,7 +1,7 @@
-import * as docsTypes from './types';
-import { filterHeaders, getUrl } from './helpers';
+const docsTypes = require('./types');
+const { filterHeaders, getUrl } = require('./helpers');
 
-export const collectRequestInformation = (id, req) => ({
+exports.collectRequestInformation = (id, req) => ({
   type: docsTypes.COLLECT_REQUEST_INFORMATION,
   payload: {
     id,
@@ -17,7 +17,7 @@ export const collectRequestInformation = (id, req) => ({
   },
 });
 
-export const collectResponseInformation = (id, response) => ({
+exports.collectResponseInformation = (id, response) => ({
   type: docsTypes.COLLECT_RESPONSE_INFORMATION,
   payload: {
     id,
@@ -29,7 +29,7 @@ export const collectResponseInformation = (id, response) => ({
   }
 });
 
-export const createDoc = (id, testName) => ({
+exports.createDoc = (id, testName) => ({
   type: docsTypes.CREATE_DOC,
   payload: {
     id,

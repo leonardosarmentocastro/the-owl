@@ -1,4 +1,6 @@
-export * from './headers';
-export * from './must-collect-information';
-export * from './request-middleware';
-export * from './response-middleware';
+module.exports = {
+  ...require('./headers'),
+  ...require('./must-collect-information'),
+  ...require('./request-middleware'),
+  ...require('./response-middleware'),
+};

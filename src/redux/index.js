@@ -1,1 +1,4 @@
-export { default as store } from './store';
+module.exports = {
+  ...require('./store'),
+  ...require('./ducks/docs'),
+};

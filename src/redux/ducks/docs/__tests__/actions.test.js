@@ -1,14 +1,10 @@
-import test from 'ava';
-import uuidv4 from 'uuid/v4';
+const test = require('ava');
+const uuidv4 = require('uuid/v4');
 
-import * as docsTypes from '../types';
-import { filterHeaders, getUrl } from '../helpers';
-import { _doc, _req, _res } from '../__fixtures__';
-import {
-  collectRequestInformation,
-  collectResponseInformation,
-  createDoc
-} from '../actions';
+const docsTypes = require('../types');
+const { collectRequestInformation, collectResponseInformation, createDoc } = require('../actions');
+const { filterHeaders, getUrl } = require('../helpers');
+const { _doc, _req, _res } = require('../__fixtures__');
 
 test('(collectRequestInformation) must create an action', t => {
   const id = uuidv4();

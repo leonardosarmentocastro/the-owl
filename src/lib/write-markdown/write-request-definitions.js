@@ -1,20 +1,18 @@
-import writeBody from './write-body';
-import writeKeyValueTable from './write-key-value-table';
+const { writeBody } = require('./write-body');
+const { writeKeyValueTable } = require('./write-key-value-table');
 
-const writeHeaders = (headers) =>
+const _writeHeaders = (headers) =>
   writeKeyValueTable(headers);
 
-const writeQueryParameters = (queryParameters) =>
+const _writeQueryParameters = (queryParameters) =>
   writeKeyValueTable(queryParameters);
 
 const emoji = ':egg:';
-const writeRequestDefinitions = (doc) =>
+exports.writeRequestDefinitions = (doc) =>
   [
     `**Request** ${emoji}\r\n`,
     `Path: \`${doc.request.path}\`\r\n`,
-    `Query parameters: ${writeQueryParameters(doc.request.queryParameters)}\r\n`,
-    `Headers: ${writeHeaders(doc.request.headers)}\r\n`,
+    `Query parameters: ${_writeQueryParameters(doc.request.queryParameters)}\r\n`,
+    `Headers: ${_writeHeaders(doc.request.headers)}\r\n`,
     `Body: ${writeBody(doc.request.body)}`,
   ].join('\r\n');
-
-export default writeRequestDefinitions;

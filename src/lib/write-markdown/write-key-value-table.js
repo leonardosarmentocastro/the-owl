@@ -1,6 +1,6 @@
-import { isEmpty } from 'lodash/lang';
+const { isEmpty } = require('lodash/lang');
 
-const writeKeyValueTable = (object) =>
+exports.writeKeyValueTable = (object) =>
   !isEmpty(object) ? (
     [
       '\r\n',
@@ -14,5 +14,3 @@ const writeKeyValueTable = (object) =>
         .join('\r\n')
     ].join('\r\n')
   ) : ('_empty_');
-
-export default writeKeyValueTable;

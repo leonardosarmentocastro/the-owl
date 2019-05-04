@@ -1,13 +1,10 @@
-import test from 'ava';
+const test = require('ava');
 
-import * as docsTypes from '../types';
-import reducer, { defaultState } from '../reducer';
-import {
-  collectRequestInformation,
-  collectResponseInformation,
-  createDoc
-} from '../actions';
-import { _doc, _req, _res } from '../__fixtures__';
+const docsTypes = require('../types');
+const { defaultState, reducer } = require('../reducer');
+const { collectRequestInformation, collectResponseInformation, createDoc } = require('../actions');
+const { _req, _res } = require('../__fixtures__');
+
 
 const createDocForTest = (state, payload) =>
   reducer(state, createDoc(payload.id, payload.testName));

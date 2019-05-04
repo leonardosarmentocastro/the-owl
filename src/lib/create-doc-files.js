@@ -1,12 +1,15 @@
-import chalk from 'chalk';
+const chalk = require('chalk');
 
-import { createFile, createDirectory, formatRequestPath } from './utils';
-import { writeMarkdown } from './write-markdown';
+const { createFile, createDirectory, formatRequestPath } = require('./utils');
+const { writeMarkdown } = require('./write-markdown');
 
-export const buildFileName = (folderPath, request) =>
+const _getSuccessMessage = (fileName) =>
+  `${chalk.white.bgHex('#046824')('\r\n SUCCESS ')} Doc created on "${chalk.gray(fileName)}" path.`;
+
+const buildFileName = (folderPath, request) =>
   `${folderPath}/[${request.method.toLowerCase()}]${formatRequestPath(request.originalPath)}.md`
 
-export const createDocFiles = (docs) => {
+const createDocFiles = (docs) => {
   let err = null;
 
   const folderPath = `${process.cwd()}/docs`;
@@ -19,12 +22,9 @@ export const createDocFiles = (docs) => {
   err = createFile(fileName, content);
   if (err) return err;
 
-  if (process.env.LOG_MESSAGES) console.info(getSuccessMessage(fileName));
+  if (process.env.LOG_MESSAGES) console.info(_getSuccessMessage(fileName));
 
   return null;
 };
 
-export const getSuccessMessage = (fileName) =>
-  `${chalk.white.bgHex('#046824')('\r\n SUCCESS ')} Doc created on "${chalk.gray(fileName)}" path.`;
-
-export default createDocFiles;
+module.exports = { buildFileName, createDocFiles };

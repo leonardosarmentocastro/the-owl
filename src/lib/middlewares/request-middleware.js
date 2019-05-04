@@ -1,10 +1,9 @@
-import chalk from 'chalk';
-import uuidv4 from 'uuid/v4';
+const chalk = require('chalk');
+const uuidv4 = require('uuid/v4');
 
-import { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } from './headers';
-import { mustCollectInformation } from './must-collect-information';
-import { store } from '../../redux';
-import { collectRequestInformation, createDoc } from '../../redux/ducks/docs';
+const { collectRequestInformation, createDoc, store } = require('../../redux');
+const { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('./headers');
+const { mustCollectInformation } = require('./must-collect-information');
 
 const WARN_TO_PROVIDE_HEADERS = [
   [
@@ -18,7 +17,7 @@ const WARN_TO_PROVIDE_HEADERS = [
   ].join('\r\n')
 ].join('\r\n');
 
-export const requestMiddleware = (req, res, next) => {
+exports.requestMiddleware = (req, res, next) => {
   if (!mustCollectInformation(req)) {
     if (process.env.LOG_MESSAGES) console.info(WARN_TO_PROVIDE_HEADERS);
     return next();

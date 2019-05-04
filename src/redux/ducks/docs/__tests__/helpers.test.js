@@ -1,7 +1,7 @@
-import test from 'ava';
+const test = require('ava');
 
-import { filterHeaders, getUrl, IGNORED_HEADERS } from '../helpers';
-import { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } from '../../../../lib/middlewares';
+const { filterHeaders, getUrl, IGNORED_HEADERS } = require('../helpers');
+const { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('../../../../lib/middlewares/headers');
 
 test('(filterHeaders) must not include any entry from "ignored headers" list', t => {
   // Build "headers" object like express's request.

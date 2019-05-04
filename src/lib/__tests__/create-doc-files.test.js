@@ -1,15 +1,12 @@
-import test from 'ava';
-import fs from 'fs';
-import rimraf from 'rimraf';
+const test = require('ava');
+const fs = require('fs');
+const rimraf = require('rimraf');
 
-import { store } from '../../redux';
-import { createDocForTests } from '../../redux/ducks/docs';
-import {
-  buildFileName,
-  createDirectory,
-  createDocFiles,
-  writeMarkdown
-} from '../';
+const { store } = require('../../redux');
+const { createDocForTests } = require('../../__helpers__');
+const { buildFileName, createDocFiles } = require('../create-doc-files');
+const { createDirectory} = require('../utils');
+const { writeMarkdown } = require('../write-markdown');
 
 test.before('creating a "doc" object on store', t => {
   createDocForTests();

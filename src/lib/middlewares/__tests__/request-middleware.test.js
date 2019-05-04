@@ -1,11 +1,10 @@
-import test from 'ava';
-import { isEmpty } from 'lodash/lang';
+const test = require('ava');
+const { isEmpty } = require('lodash/lang');
 
-import { TEST_ID_HEADER } from '../headers';
-import { requestMiddleware } from '../request-middleware';
-import { setupRequestMiddleware } from './_helper';
-import { store } from '../../../redux';
-import { _req, _res } from '../../../redux/ducks/docs/__fixtures__';
+const { _req, _res, store } = require('../../../redux');
+const { TEST_ID_HEADER } = require('../headers');
+const { requestMiddleware } = require('../request-middleware');
+const { setupRequestMiddleware } = require('../__helpers__');
 
 const simulateRequestMiddlewareUsage = t => {
   setupRequestMiddleware(t);

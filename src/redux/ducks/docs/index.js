@@ -1,6 +1,6 @@
-import reducer from "./reducer";
-export default reducer;
-
-// name export everything else needed.
-export * from './actions';
-export * from './_tests-helper';
+module.exports = {
+  // CONVENTION: reducer exports functions with same name as actions, so export reducer first.
+  ...require('./reducer'),
+  ...require('./actions'),
+  ...require('./__fixtures__'),
+};
