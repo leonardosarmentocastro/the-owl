@@ -92,7 +92,7 @@ This package was built with the mindset that **all changes should be made in cod
 
 ## Documentation
 
-Please see the [files in the `docs` directory](./docs):
+Please see the [files in the `/documentation` directory](./documentation):
 
 * [Process variables](./docs/process-variables.md)
 

@@ -5,6 +5,7 @@
   "main": "./src/the-owl.js",
   "scripts": {
     "test": "ava --verbose",
+    "test:coverage": "nyc npm test",
     "test:log-messages": "LOG_MESSAGES=true npm run test",
     "test:log-redux": "LOG_REDUX=true npm run test"
   },
@@ -15,7 +16,7 @@
   "author": {
     "name": "Leonardo Sarmento de Castro",
     "email": "leonardo.sarmentocastro@gmail.com",
-    "url": "leonardosarmentocastro.com"
+    "url": "http://leonardosarmentocastro.com"
   },
   "license": "ISC",
   "bugs": {
@@ -36,7 +37,8 @@
   ],
   "devDependencies": {
     "ava": "^1.4.1",
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "nyc": "^14.1.0"
   },
   "dependencies": {
     "chalk": "^2.4.2",
@@ -55,5 +57,12 @@
       "**/*.test.js",
       "!examples/**/*.js"
     ]
-  }
+  },
+	"nyc": {
+		"reporter": [
+			"html",
+			"lcov",
+			"text"
+		]
+	}
 }
