@@ -1,6 +1,6 @@
 {
   "name": "the-owl",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generate api docs based on functional tests",
   "main": "./src/the-owl.js",
   "scripts": {
@@ -58,11 +58,11 @@
       "!examples/**/*.js"
     ]
   },
-	"nyc": {
-		"reporter": [
-			"html",
-			"lcov",
-			"text"
-		]
-	}
+  "nyc": {
+    "reporter": [
+      "html",
+      "lcov",
+      "text"
+    ]
+  }
 }
