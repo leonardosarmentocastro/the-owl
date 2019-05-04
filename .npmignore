@@ -1,0 +1,14 @@
+# Test files/folders
+**/__tests__
+**/__helpers__
+**/__fixtures__
+
+# Folders
+examples/
+documentation/
+
+# Files
+contributing.md
+package-lock.json
+.travis.yml
+.gitignore

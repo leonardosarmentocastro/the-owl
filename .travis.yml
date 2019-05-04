@@ -5,7 +5,6 @@ cache: npm
 install: npm ci
 script: npm run test:coverage
 after_success: npx codecov --file=./coverage/lcov.info
-before_deploy: rm -rf examples/ docs/ **/__tests__ **/__helpers__ **/__fixtures__ contributing.md
 deploy:
   provider: npm
   email: leonardo.sarmentocastro@gmail.com
