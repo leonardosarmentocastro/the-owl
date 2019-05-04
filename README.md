@@ -6,6 +6,9 @@ Create docs for your API using functional tests.
 
 ![the-owl-template](https://user-images.githubusercontent.com/11094572/57013840-ae877b80-6c0d-11e9-89b8-45a365d38971.png)
 
+[![Build Status](https://travis-ci.com/leonardosarmentocastro/the-owl.svg?branch=master)](https://travis-ci.com/leonardosarmentocastro/the-owl)
+
+[![codecov](https://codecov.io/gh/leonardosarmentocastro/the-owl/branch/master/graph/badge.svg)](https://codecov.io/gh/leonardosarmentocastro/the-owl)
 
 ## How does it works
 
