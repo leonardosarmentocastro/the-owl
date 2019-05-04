@@ -1,6 +1,7 @@
 const test = require('ava');
 const fs = require('fs');
 const rimraf = require('rimraf');
+const path = require('path');
 
 const { store } = require('../../redux');
 const { createDocForTests } = require('../../__helpers__');
@@ -19,7 +20,8 @@ test('(buildFileName) must be a combination of "folder path" + "request method" 
   const folderPath = process.cwd();
   const request = { _originalPath: '/users/sign-up', method: 'get' };
 
-  t.snapshot(buildFileName(folderPath, request));
+  const fileName = path.relative(process.cwd(), buildFileName(folderPath, request));
+  t.snapshot(fileName);
 });
 
 test('(createDocFiles) must create one file under "/docs" with the whole current data for "doc" state', t => {
