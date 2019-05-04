@@ -7,7 +7,7 @@ const _getSuccessMessage = (fileName) =>
   `${chalk.white.bgHex('#046824')('\r\n SUCCESS ')} Doc created on "${chalk.gray(fileName)}" path.`;
 
 const buildFileName = (folderPath, request) =>
-  `${folderPath}/[${request.method.toLowerCase()}]${formatRequestPath(request.originalPath)}.md`
+  `${folderPath}/[${request.method.toLowerCase()}]${formatRequestPath(request._originalPath)}.md`
 
 const createDocFiles = (docs) => {
   let err = null;

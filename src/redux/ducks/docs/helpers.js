@@ -1,7 +1,6 @@
-const { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('../../../lib/middlewares/headers');
+const { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('../../../lib/middlewares/headers');
 
 const IGNORED_HEADERS = [
-  TEST_ID_HEADER,
   TEST_NAME_HEADER,
   REQ_ORIGINAL_PATH_HEADER,
   'access-control-allow-origin',

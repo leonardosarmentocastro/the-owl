@@ -1,10 +1,10 @@
 // Fixture for Express.js "req" object.
 exports._req = {
+  _originalPath: '/users/:id', // Custom attribute from "theOwl" headers.
   get: (key) => (key === 'host' ? 'localhost' : ''),
   header(key) { return this.headers[key]; },
   headers: {},
   method: 'get',
-  originalPath: '/users/:id',
   originalUrl: '/users/1',
   path: '/users/1',
   protocol: 'http',

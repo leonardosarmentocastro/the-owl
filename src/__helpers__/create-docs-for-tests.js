@@ -1,16 +1,13 @@
 const {
   _doc,
-  createDoc, collectResponseInformation, collectRequestInformation,
+  collectResponseInformation, collectRequestInformation,
   store,
 } = require('../redux');
 
-const DEFAULT = {
-  doc: { ..._doc },
-};
-exports.createDocForTests = (doc = DEFAULT.doc) => {
-  const { id, testName, req, res } = doc;
+exports.createDocForTests = (doc = { ..._doc }) => {
+  const { testName, req, res } = doc;
+  const { _originalPath } = req;
 
-  store.dispatch(createDoc(id, testName));
-  store.dispatch(collectRequestInformation(id, req));
-  store.dispatch(collectResponseInformation(id, res));
+  store.dispatch(collectRequestInformation(testName, req, { _originalPath }));
+  store.dispatch(collectResponseInformation(testName, res));
 };

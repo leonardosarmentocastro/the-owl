@@ -1,6 +1,6 @@
 exports.writeHeading = (docs) => {
   const [ doc ] = docs;
-  const { method, originalPath } = doc.request;
+  const { method, _originalPath } = doc.request;
 
-  return `# [${method.toLowerCase()}] ${originalPath}`;
+  return `# [${method.toLowerCase()}] ${_originalPath}`;
 }

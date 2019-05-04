@@ -1,11 +1,10 @@
+const { store } = require('./redux');
 const {
   createDocFiles,
   requestMiddleware,
   responseMiddleware,
-  TEST_NAME_HEADER,
-  REQ_ORIGINAL_PATH_HEADER,
+  TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER,
 } = require('./lib');
-const store = require('./redux');
 
 const theOwl = {
   connect(app) {
@@ -14,7 +13,8 @@ const theOwl = {
   },
 
   createDocs() {
-    if (!process.env.CREATE_DOCS) return; // Flag to optionally disable doc creation when running tests on "watch" mode.
+    // Flag to optionally disable doc creation when running tests on "watch" mode.
+    if (!process.env.CREATE_DOCS) return;
 
     const state = store.getState();
     const docs = Object.values(state.docs.byId);

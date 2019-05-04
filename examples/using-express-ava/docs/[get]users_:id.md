@@ -1,11 +1,11 @@
 # [get] /users/:id
 
-* [(200) returns the given user if it exists](#5aa0200f-45b6-4ee4-9635-4d734cdf736f)
-* [(500) returns an error if the given user doesnt exist](#3b60d89f-d1ac-4c3f-8b52-f20f1c9818dd)
+* [(200) returns the given user if it exists](#36cf89b2ed)
+* [(500) returns an error if the given user doesnt exist](#31a5f75113)
 
 ---
 
-### :chicken: `(200) returns the given user if it exists` <a name="5aa0200f-45b6-4ee4-9635-4d734cdf736f"></a>
+### :chicken: `(200) returns the given user if it exists` <a name="36cf89b2ed"></a>
 
 ```sh
 curl -X GET \
@@ -42,7 +42,7 @@ Body:
 }
 ```
 
-### :chicken: `(500) returns an error if the given user doesnt exist` <a name="3b60d89f-d1ac-4c3f-8b52-f20f1c9818dd"></a>
+### :chicken: `(500) returns an error if the given user doesnt exist` <a name="31a5f75113"></a>
 
 ```sh
 curl -X GET \

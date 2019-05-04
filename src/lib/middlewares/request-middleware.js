@@ -1,8 +1,7 @@
 const chalk = require('chalk');
-const uuidv4 = require('uuid/v4');
 
-const { collectRequestInformation, createDoc, store } = require('../../redux');
-const { TEST_ID_HEADER, TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('./headers');
+const { collectRequestInformation, store } = require('../../redux');
+const { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('./headers');
 const { mustCollectInformation } = require('./must-collect-information');
 
 const WARN_TO_PROVIDE_HEADERS = [
@@ -23,14 +22,12 @@ exports.requestMiddleware = (req, res, next) => {
     return next();
   }
 
-  const id = uuidv4();
   const testName = req.header(TEST_NAME_HEADER);
-  req.originalPath = req.header(REQ_ORIGINAL_PATH_HEADER);
-  store.dispatch(createDoc(id, testName));
-  store.dispatch(collectRequestInformation(id, req));
+  const _originalPath = req.header(REQ_ORIGINAL_PATH_HEADER);
+  store.dispatch(collectRequestInformation(testName, req, { _originalPath }));
 
-  // Store id on header so we can properly collect response information for this doc.
-  res.setHeader(TEST_ID_HEADER, id);
+  // Store "testName" on header so we can properly collect response information for this doc.
+  res.setHeader(TEST_NAME_HEADER, testName);
 
   return next();
 };

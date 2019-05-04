@@ -7,5 +7,5 @@ exports.setupRequestMiddleware = t => {
 
   // Request must have those headers in order to pass the "mustCollectInformation" verification.
   t.context.req.setHeader(TEST_NAME_HEADER, t.title);
-  t.context.req.setHeader(REQ_ORIGINAL_PATH_HEADER, t.context.req.originalPath);
+  t.context.req.setHeader(REQ_ORIGINAL_PATH_HEADER, t.context.req._originalPath);
 };

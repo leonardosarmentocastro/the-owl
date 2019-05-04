@@ -23,5 +23,6 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.18.11",
     "the-owl": "../../"
-  }
+  },
+  "dependencies": {}
 }

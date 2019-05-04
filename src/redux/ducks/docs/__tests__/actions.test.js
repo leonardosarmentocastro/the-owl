@@ -1,24 +1,26 @@
 const test = require('ava');
-const uuidv4 = require('uuid/v4');
+const revisionHash = require('rev-hash');
 
 const docsTypes = require('../types');
-const { collectRequestInformation, collectResponseInformation, createDoc } = require('../actions');
+const { collectRequestInformation, collectResponseInformation } = require('../actions');
 const { filterHeaders, getUrl } = require('../helpers');
 const { _doc, _req, _res } = require('../__fixtures__');
 
 test('(collectRequestInformation) must create an action', t => {
-  const id = uuidv4();
+  const { testName } = _doc;
+  const { _originalPath } = _req;
   const req = { ..._req };
-  const action = collectRequestInformation(id, req);
+  const action = collectRequestInformation(testName, req, { _originalPath });
 
   t.deepEqual(action, {
     type: docsTypes.COLLECT_REQUEST_INFORMATION,
     payload: {
-      id,
+      id: revisionHash(testName),
+      testName,
       request: {
+        _originalPath,
         body: req.body,
         headers: filterHeaders(req.headers),
-        originalPath: req.originalPath,
         method: req.method,
         path: req.path,
         queryParameters: req.query,
@@ -29,33 +31,19 @@ test('(collectRequestInformation) must create an action', t => {
 });
 
 test('(collectResponseInformation) must create an action', t => {
-  const id = uuidv4();
-  const response = { ..._res };
-  const action = collectResponseInformation(id, response);
+  const { testName } = _doc;
+  const normalizedRes = { ..._res };
+  const action = collectResponseInformation(testName, normalizedRes);
 
   t.deepEqual(action, {
     type: docsTypes.COLLECT_RESPONSE_INFORMATION,
     payload: {
-      id,
+      id: revisionHash(testName),
       response: {
-        body: response.body,
-        headers: filterHeaders(response.headers),
-        statusCode: response.statusCode,
+        body: normalizedRes.body,
+        headers: filterHeaders(normalizedRes.headers),
+        statusCode: normalizedRes.statusCode,
       },
-    },
-  });
-});
-
-test('(createDoc) must create an action', t => {
-  const id = uuidv4();
-  const { testName } = _doc;
-  const action = createDoc(id, testName);
-
-  t.deepEqual(action, {
-    type: docsTypes.CREATE_DOC,
-    payload: {
-      id,
-      testName,
     },
   });
 });

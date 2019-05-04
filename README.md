@@ -43,7 +43,7 @@ const ORIGINAL_PATH = `/users/:id`;
 const URL = `http://localhost:8080${ORIGINAL_PATH}`;
 const getEndpoint = (userId) => URL.replace(':id', userId);
 
-test.serial('(200) returns the given user if it exists', async t => {
+test('(200) returns the given user if it exists', async t => {
   const userId = 1;
   const response = await axios.get(getEndpoint(userId), {
     headers: {
@@ -65,7 +65,7 @@ test.serial('(200) returns the given user if it exists', async t => {
 At the very end of your test suit, invoke:
 
 ```js
-test.serial.after('create api docs', t => {
+test.after('create api docs', t => {
   theOwl.createDocs();
 });
 ```
@@ -81,45 +81,11 @@ The `docs/` folder will be created (if doesn't exists) with the results:
 <img width="289" alt="Screenshot 2019-04-28 at 20 23 51" src="https://user-images.githubusercontent.com/11094572/56868513-90463380-69f3-11e9-96b8-3c9f3d99b1b8.png">
 
 
-### Process variables (aka `process.env`)
+## Documentation
 
-Use the following in your test script, as follows:
+Please see the [files in the `docs` directory](./docs):
 
-```sh
-CREATE_DOCS=true npm run test
-```
-
-**`CREATE_DOCS=true`**
-
-Doc creation is disabled unless you specify this variable.
-
-This is to avoid having docs being created everytime you save a file while running your tests on `watch mode`.
-
-Run your test with this variable set to have your docs created.
-
-
-**`LOG_MESSAGES=true`**
-
-Enable this variable to receive stdout messages.
-
-By default, warn/error messages are disabled.
-
-If you, for example, forget to set the custom headers without having this variable set, it will silently not create the docs neither give you a tip about the reason.
-
-
-**`LOG_REDUX=true`**
-
-Redux is used internally to manage the object tree that holds all request and response information.
-
-Use this variable if you are (for any reason...) interested on seeing the output of each state update.
-
-### Recipes
-
-A full example project can be found [here](./examples/using-express-ava/README.md).
-
-### Caveats
-
-For instance, doc creation will _only_ work for **functional tests executed serially**.
+* [Process variables](./docs/process-variables.md)
 
 
 ## Motivation
@@ -133,20 +99,4 @@ This package was built with the mindset that **all changes should be made in cod
 
 ## Contributing
 
-To work on the project by yourself, I suggest to clone it and do the following:
-
-1. Open one terminal for `the-owl` itself:
-
-```sh
-cd the-owl
-npm run start # Watches for changes and build files to dist
-```
-
-2. Open another terminal for `examples/` project:
-
-```sh
-cd the-owl/examples/using-express-ava
-npm run start # Uses nodemon to reboot the server on file changes
-```
-
-The examples are symlinking `the-owl` dependency on `package.json`, so whatever changes to `dist/` folder will be automatically working on the example on each run.
+Please refer to [this](./contributing.md) document.

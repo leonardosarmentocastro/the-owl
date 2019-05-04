@@ -4,6 +4,7 @@ const { store } = require('../../../redux');
 const { createDocForTests } = require('../../../__helpers__');
 const { writeMarkdown } = require('../write-markdown');
 
+// TODO: maybe remove this and use the fixture object
 test.before('creating a "doc" object on store', t => {
   // Specify our own "doc" object instead of using the DEFAULT provided by
   // the helper function, in order to make snapshot testing deterministic.
@@ -17,7 +18,7 @@ test.before('creating a "doc" object on store', t => {
       headers: {
         'x-request-header': 'not important value',
       },
-      originalPath: '/users/:id',
+      _originalPath: '/users/:id',
       originalUrl: '/users/999',
       protocol: 'http',
       query: {

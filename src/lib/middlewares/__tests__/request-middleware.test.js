@@ -2,7 +2,7 @@ const test = require('ava');
 const { isEmpty } = require('lodash/lang');
 
 const { _req, _res, store } = require('../../../redux');
-const { TEST_ID_HEADER } = require('../headers');
+const { TEST_NAME_HEADER } = require('../headers');
 const { requestMiddleware } = require('../request-middleware');
 const { setupRequestMiddleware } = require('../__helpers__');
 
@@ -35,10 +35,10 @@ test.serial('must fill the store with request data when information must be coll
   t.falsy(isEmpty(doc.request));
 });
 
-test.serial('must set "test id header" on response, so we can collect the response information later on', t => {
+test.serial(`must set "${TEST_NAME_HEADER}" on response, so we can collect the response information later on`, t => {
   simulateRequestMiddlewareUsage(t);
   const [ , doc ] = getDocs();
   const { res } = t.context; // Passed through and modified by "requestMiddleware".
 
-  t.assert(res.headers[TEST_ID_HEADER] === doc.id);
+  t.assert(res.headers[TEST_NAME_HEADER] === doc.testName);
 });

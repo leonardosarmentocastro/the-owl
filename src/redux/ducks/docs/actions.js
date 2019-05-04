@@ -1,14 +1,17 @@
+const revisionHash = require('rev-hash');
+
 const docsTypes = require('./types');
 const { filterHeaders, getUrl } = require('./helpers');
 
-exports.collectRequestInformation = (id, req) => ({
+exports.collectRequestInformation = (testName, req, { _originalPath }) => ({
   type: docsTypes.COLLECT_REQUEST_INFORMATION,
   payload: {
-    id,
+    id: revisionHash(testName),
+    testName,
     request: {
+      _originalPath,
       body: req.body,
       headers: filterHeaders(req.headers),
-      originalPath: req.originalPath, // Value is set by us.
       method: req.method,
       path: req.path,
       queryParameters: req.query,
@@ -17,22 +20,14 @@ exports.collectRequestInformation = (id, req) => ({
   },
 });
 
-exports.collectResponseInformation = (id, response) => ({
+exports.collectResponseInformation = (testName, normalizedRes) => ({
   type: docsTypes.COLLECT_RESPONSE_INFORMATION,
   payload: {
-    id,
+    id: revisionHash(testName),
     response: {
-      body: response.body,
-      headers: filterHeaders(response.headers),
-      statusCode: response.statusCode,
+      body: normalizedRes.body,
+      headers: filterHeaders(normalizedRes.headers),
+      statusCode: normalizedRes.statusCode,
     },
   }
-});
-
-exports.createDoc = (id, testName) => ({
-  type: docsTypes.CREATE_DOC,
-  payload: {
-    id,
-    testName, // Value is collected from our custom headers.
-  },
 });

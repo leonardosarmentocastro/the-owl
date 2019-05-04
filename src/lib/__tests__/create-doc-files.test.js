@@ -17,7 +17,7 @@ test.before('creating a "doc" object on store', t => {
 
 test('(buildFileName) must be a combination of "folder path" + "request method" + "formatted request path" + ".md extension"', t => {
   const folderPath = process.cwd();
-  const request = { originalPath: '/users/sign-up', method: 'get' };
+  const request = { _originalPath: '/users/sign-up', method: 'get' };
 
   t.snapshot(buildFileName(folderPath, request));
 });
