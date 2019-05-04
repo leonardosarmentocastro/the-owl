@@ -81,13 +81,6 @@ The `docs/` folder will be created (if doesn't exists) with the results:
 <img width="289" alt="Screenshot 2019-04-28 at 20 23 51" src="https://user-images.githubusercontent.com/11094572/56868513-90463380-69f3-11e9-96b8-3c9f3d99b1b8.png">
 
 
-## Documentation
-
-Please see the [files in the `docs` directory](./docs):
-
-* [Process variables](./docs/process-variables.md)
-
-
 ## Motivation
 
 **Enforce functional tests development by earning something tangible from it.**
@@ -95,6 +88,13 @@ Please see the [files in the `docs` directory](./docs):
 Usually, API contract changes are done on code and documentations gets obsolete, as it's usually a `.yml` or `@jsdoc` that developers forget to update or it uses boring specific markup rules.
 
 This package was built with the mindset that **all changes should be made in code**.
+
+
+## Documentation
+
+Please see the [files in the `docs` directory](./docs):
+
+* [Process variables](./docs/process-variables.md)
 
 
 ## Contributing
