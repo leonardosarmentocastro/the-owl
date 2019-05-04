@@ -8,6 +8,7 @@ Create docs for your API using functional tests.
 
 [![Build Status](https://travis-ci.com/leonardosarmentocastro/the-owl.svg?branch=master)](https://travis-ci.com/leonardosarmentocastro/the-owl)
 [![codecov](https://codecov.io/gh/leonardosarmentocastro/the-owl/branch/master/graph/badge.svg)](https://codecov.io/gh/leonardosarmentocastro/the-owl)
+[![install size](https://packagephobia.now.sh/badge?p=the-owl)](https://packagephobia.now.sh/result?p=the-owl)
 
 ## How does it works
 
