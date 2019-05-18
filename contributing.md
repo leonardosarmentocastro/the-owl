@@ -6,6 +6,15 @@ Here you can find a list of possible topic to contribute to the project.
 
 ## How can I contribute?
 
+### Semantic improvements
+
+* Changed the `testName` attribute to `testTitle`;
+* Changed the `REQ_ORIGINAL_PATH` header to `ENDPOINT_ORIGINAL_PATH`, and `reqOriginalPath` attribute to `endpointOriginalPath`;
+* Add `endpointOriginalPath` to generated markdown file, right above `Path:` text:
+<img width="1146" alt="Screenshot 2019-05-18 at 20 03 11" src="https://user-images.githubusercontent.com/11094572/57973480-8c318400-79a9-11e9-9266-dcc75d925464.png">
+
+
+
 ### Configure `chalk`
 
 The library `chalk` is used to output colored information on terminal. For now, the codebase is repeating hexcolors a lot in different places.
@@ -32,9 +41,11 @@ We could give [xo](https://github.com/xojs/xo) a try.
 
 ### Improve docs
 
-Honestly, I feel it can be more attractive.
+Honestly, I feel it can be more attractive. My impressions suggests that:
 
-But how? I have no idea.
+* Examples on `README.md` should be more succinct and show the end minimal setup for an Express API (e.g. the route `[get]users/:id`);
+* The ["Documentation"](https://github.com/leonardosarmentocastro/the-owl#documentation) section should include examples regarding the exposed API methods: `buildHeaders`, `connect` and `createDocs`.
+
 
 ## How to start developing on the codebase?
 
