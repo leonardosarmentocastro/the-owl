@@ -45,7 +45,7 @@ Honestly, I feel it can be more attractive. My impressions suggests that:
 
 * Examples on `README.md` should be more succinct and show the end minimal setup for an Express API (e.g. the route `[get]users/:id`);
 * The ["Documentation"](https://github.com/leonardosarmentocastro/the-owl#documentation) section should include examples regarding the exposed API methods: `buildHeaders`, `connect` and `createDocs`.
-
+* Highlight the most important parts of the code as React docs does.
 
 ## How to start developing on the codebase?
 
