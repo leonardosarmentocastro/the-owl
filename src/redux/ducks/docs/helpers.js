@@ -3,15 +3,16 @@ const { TEST_NAME_HEADER, REQ_ORIGINAL_PATH_HEADER } = require('../../../lib/mid
 const IGNORED_HEADERS = [
   TEST_NAME_HEADER,
   REQ_ORIGINAL_PATH_HEADER,
+  'accept',
   'access-control-allow-origin',
+  'accept-encoding',
   'cache-control',
+  'connection',
+  'content-length',
+  'etag',
+  'host',
   'postman-token',
   'user-agent',
-  'accept',
-  'host',
-  'accept-encoding',
-  'content-length',
-  'connection',
   'x-powered-by',
 ];
 

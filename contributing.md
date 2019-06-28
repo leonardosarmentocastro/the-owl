@@ -2,9 +2,17 @@
 
 Thank you for consider contributing to **`the-owl`**!
 
-Here you can find a list of possible topic to contribute to the project.
+Here you can find how to start developing on the codebase, as well the list of possible topics to contribute on the project.
 
-## How can I contribute?
+## How to start developing on the codebase?
+
+The library is written in pure Javascript, so no transpilation is required.
+
+Install dependencies with `npm install` and use `npm test` to develop changes/features/fixes securely.
+
+The examples folder has a project which `the-owl` is symlinked as dependency on `package.json`, so whatever changes to `src/` will be automatically working on the example on each run.
+
+## Topics to contribute
 
 ### Semantic improvements
 
@@ -46,11 +54,3 @@ Honestly, I feel it can be more attractive. My impressions suggests that:
 * Examples on `README.md` should be more succinct and show the end minimal setup for an Express API (e.g. the route `[get]users/:id`);
 * The ["Documentation"](https://github.com/leonardosarmentocastro/the-owl#documentation) section should include examples regarding the exposed API methods: `buildHeaders`, `connect` and `createDocs`.
 * Highlight the most important parts of the code as React docs does.
-
-## How to start developing on the codebase?
-
-The library is written in pure Javascript, so no transpilation is required.
-
-Install dependencies with `npm install` and use `npm test` to develop changes/features/fixes securely.
-
-The examples folder has a project which `the-owl` is symlinked as dependency on `package.json`, so whatever changes to `src/` will be automatically working on the example on each run.

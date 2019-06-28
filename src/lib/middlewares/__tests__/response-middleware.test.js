@@ -3,7 +3,7 @@ const test = require('ava');
 const { isEmpty } = require('../../utils');
 const { _req, _res, store } = require('../../../redux');
 const { requestMiddleware } = require('../request-middleware');
-const { fn: responseMiddleware } = require('../response-middleware');
+const { collectInformation: responseMiddleware } = require('../response-middleware');
 const { setupRequestMiddleware } = require('../__helpers__');
 
 const simulateResponseMiddlewareUsage = (t) => {

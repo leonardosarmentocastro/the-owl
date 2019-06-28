@@ -36,7 +36,7 @@ test(`must handle "${docsTypes.COLLECT_REQUEST_INFORMATION}" action`, t => {
   t.snapshot(state2);
 });
 
-test(`must handle "${docsTypes.COLLECT_RESPONSE_INFORMATION}" action`, t => {
+test(`must handle "${docsTypes.COLLECT_RESPONSE_INFORMATION}" action, creating a new entry for each different "testName"`, t => {
   const state1 = collectResponseInformationForTest(undefined, {
     testName: 'test name 1',
     normalizedRes: { ..._res },
@@ -48,6 +48,28 @@ test(`must handle "${docsTypes.COLLECT_RESPONSE_INFORMATION}" action`, t => {
     normalizedRes: { ..._res },
   });
   t.snapshot(state2);
+
+  t.assert(Object.keys(state2.byId).length === 2);
+  t.notDeepEqual(state1.byId, state2.byId);
+});
+
+test(`action "${docsTypes.COLLECT_RESPONSE_INFORMATION}" must not collect information twice for the same "testName"`, t => {
+  const testName = 'same test name';
+
+  const state1 = collectResponseInformationForTest(undefined, {
+    testName,
+    normalizedRes: { ..._res },
+  });
+  t.snapshot(state1);
+
+  const state2 = collectResponseInformationForTest(state1, {
+    testName,
+    normalizedRes: { ..._res, statusCode: 9999 },
+  });
+  t.snapshot(state2);
+
+  t.assert(Object.keys(state2.byId).length === 1);
+  t.deepEqual(state1.byId, state2.byId);
 });
 
 test(`must handle a real world scenario of interaction:

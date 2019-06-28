@@ -8,4 +8,6 @@ the-owl**.tgz
 
 # Folders
 node_modules/
+.cache/
 ./docs/
+./dist/

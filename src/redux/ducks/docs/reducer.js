@@ -20,6 +20,12 @@ const collectRequestInformation = (state, action) => {
 const collectResponseInformation = (state, action) => {
   const { id, response } = action.payload;
 
+  // Both Express "json" and "end" methods are patched to collect response information.
+  // We need to conditionally collect information, since calling ".json()" also triggers ".end()" but
+  // the other way around is not true.
+  const hasAlreadyCollectedResponseInformation = (state.byId[id] && state.byId[id].response);
+  if (hasAlreadyCollectedResponseInformation) return state;
+
   return {
     ...state,
     byId: {

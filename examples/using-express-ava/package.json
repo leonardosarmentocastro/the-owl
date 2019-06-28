@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "PORT=8080 NODE_ENV=development nodemon index.js",
-    "test": "PORT=8081 NODE_ENV=test ava",
+    "test": "PORT=8081 NODE_ENV=test ava --serial",
     "test:create-docs": "PORT=8081 NODE_ENV=test CREATE_DOCS=true ava",
     "test:log-messages": "PORT=8081 NODE_ENV=test LOG_MESSAGES=true ava",
     "test:log-redux": "PORT=8081 NODE_ENV=test LOG_REDUX=true ava"
