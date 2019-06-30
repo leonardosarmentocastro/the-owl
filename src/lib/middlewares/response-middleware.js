@@ -33,6 +33,8 @@ const responseMiddleware = function (req, res, next) {
   };
   res.end = patchedEnd;
 
+  // TODO: patch "send".
+
   next();
 };
 

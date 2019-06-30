@@ -1,0 +1,25 @@
+{
+  "name": "minimal",
+  "version": "1.0.0",
+  "description": "Minimal functional test setup with API doc creation.",
+  "main": "index.js",
+  "scripts": {
+    "start": "PORT=3000 NODE_ENV=development node index.js",
+    "test": "PORT=8080 NODE_ENV=test ava ---verbose --serial",
+    "test:create-docs": "CREATE_DOCS=true npm test",
+    "test:log-messages": "LOG_MESSAGES=true npm test",
+    "test:log-redux": "LOG_REDUX=true npm test"
+  },
+  "keywords": [],
+  "author": "Leonardo Sarmento de Castro",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^2.1.0",
+    "body-parser": "^1.19.0",
+    "detect-port": "^1.3.0",
+    "express": "^4.17.1",
+    "got": "^9.6.0",
+    "the-owl": "../../"
+  }
+}
