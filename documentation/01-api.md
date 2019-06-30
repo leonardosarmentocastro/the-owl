@@ -14,7 +14,7 @@ const theOwl = require('the-owl');
 * [connect(app)](#connect)
 * [createDocs()](#create-docs)
 
-#### buildHeaders(testName, reqOriginalPath) <a name="build-headers"></a>
+#### `buildHeaders(testName, reqOriginalPath)` <a name="build-headers"></a>
 
 Returns an object containing necessary set of headers, relevants to a chunk of collected information from request/response of a test case.
 
@@ -67,7 +67,7 @@ Describes the request original path, e.g. `"/users/:id"`. Its used to write the 
 The Express.js request object only contains the path with each parameter interpolated ("/users/999"), unabling us from describing an endpoint as it is set on the application's router.
 
 
-#### connect(app) <a name="connect"></a>
+#### `connect(app)` <a name="connect"></a>
 
 Connects the request and response "information collection middlewares" to the given Express app.
 
@@ -92,7 +92,7 @@ Type `Object`
 [An Express.js application.](https://expressjs.com/en/4x/api.html#express)
 
 
-#### createDocs() <a name="create-docs"></a>
+#### `createDocs()` <a name="create-docs"></a>
 
 Creates api doc markdown file relevant to all meta data colleted from a test file.
 

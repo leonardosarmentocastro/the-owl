@@ -9,7 +9,7 @@
 
 ```sh
 curl -X GET \
-http://localhost:57471/users/1 \
+http://localhost:49869/users/1 \
 -H 'your-custom-header: Notice how he appears on the generated doc but "theOwl" headers doesn't!'
 ```
 
@@ -46,7 +46,7 @@ Body:
 
 ```sh
 curl -X GET \
-http://localhost:57471/users/999
+http://localhost:49869/users/999
 ```
 
 **Request** :egg:

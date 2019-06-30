@@ -8,7 +8,7 @@
 
 ```sh
 curl -X GET \
-http://localhost:55025/health \
+http://localhost:49855/health \
 -H 'your-custom-header: Notice how it appears on generated doc but "theOwl" headers doesn't!'
 ```
 
@@ -30,10 +30,10 @@ Body: _empty_
 
 Status: 200
 
-Headers: 
+Headers: _empty_
 
-| Key | Value |
-| :--- | :--- |
-| content-type | text/html; charset=utf-8 |
+Body: 
 
-Body: _empty_
+```
+OK
+```

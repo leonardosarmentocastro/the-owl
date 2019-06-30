@@ -8,7 +8,7 @@
 
 ```sh
 curl -X GET \
-http://localhost:55027/users \
+http://localhost:49858/users \
 -H 'your-custom-header: Notice how it appears on generated doc but "theOwl" headers doesn't!'
 ```
 
