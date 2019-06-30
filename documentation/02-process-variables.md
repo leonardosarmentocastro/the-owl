@@ -6,9 +6,9 @@ Use the process variables in your test script, as follows:
 CREATE_DOCS=true npm run test
 ```
 
-* [01. CREATE_DOCS](#create-docs)
-* [02. LOG_MESSAGES](#log-messages)
-* [03. LOG_REDUX](#log-redux)
+* [CREATE_DOCS](#create-docs)
+* [LOG_MESSAGES](#log-messages)
+* [LOG_REDUX](#log-redux)
 
 #### CREATE_DOCS=true <a name="create-docs"></a>
 
