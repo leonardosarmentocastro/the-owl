@@ -14,26 +14,37 @@ const collectInformation = (body, req, res) => {
   store.dispatch(collectResponseInformation(testName, normalizedRes));
 };
 
-const responseMiddleware = function (req, res, next) {
-  // Resource: https://github.com/richardschneider/express-mung/blob/master/index.js
-  const unpatchedJson = res.json;
-  const patchedJson = function(json) {
-    collectInformation(json, req, res);
-    return unpatchedJson.call(this, json);
-  };
-  res.json = patchedJson;
+// Resource: https://github.com/alykoshin/express-end/blob/master/index.js
+const monkeypatchMethodApply = (unpatchedMethod, { req, res }) => function () {
+  collectInformation(null, req, res);
+  return unpatchedMethod.apply(this, arguments);
+};
 
-  // Resource: https://github.com/alykoshin/express-end/blob/master/index.js
+// Resource: https://github.com/richardschneider/express-mung/blob/master/index.js
+const monkeypatchMethodCall = (unpatchedMethod, { req, res }) => function (body) {
+  collectInformation(body, req, res);
+  return unpatchedMethod.call(this, body);
+};
+
+const responseMiddleware = function (req, res, next) {
   // NOTE: Calling "res.json" always triggers "res.end".
   // The collect response reducer has the intelligence to avoid information overriding.
   const unpatchedEnd = res.end;
-  const patchedEnd = function() {
-    collectInformation(null, req, res);
-    return unpatchedEnd.apply(this, arguments);
-  };
-  res.end = patchedEnd;
+  res.end = monkeypatchMethodApply(unpatchedEnd, { req, res });
+
+  const unpatchedJson = res.json;
+  res.json = monkeypatchMethodCall(unpatchedJson, { req, res });
+
+  // Note: treating "body" type-blindly may raise errors when receiving "Buffers".
+  const unpatchedSend = res.send;
+  res.send = monkeypatchMethodCall(unpatchedSend, { req, res });
 
   next();
 };
 
-module.exports = { collectInformation, responseMiddleware };
+module.exports = {
+  collectInformation,
+  monkeypatchMethodApply,
+  monkeypatchMethodCall,
+  responseMiddleware,
+};

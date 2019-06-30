@@ -4,7 +4,7 @@
 exports.TEST_NAME_HEADER = 'x-test-name';
 
 // Describes the request original path, e.g. "/users/:id".
-// The Express.js request object only contains the path with each parameter interpolated ("/users/999"), unabling us
-// from describing an endpoint as it is set on the application's router.
 // Its used to write the file name and title.
+// NOTE: The Express.js request object only contains the path with each parameter interpolated ("/users/999"), unabling us
+// from describing an endpoint as it is set on the application's router.
 exports.REQ_ORIGINAL_PATH_HEADER = 'x-req-original-path';

@@ -7,6 +7,11 @@ const {
 } = require('./lib');
 
 const theOwl = {
+  buildHeaders: (testName, reqOriginalPath) => ({
+    [TEST_NAME_HEADER]: testName,
+    [REQ_ORIGINAL_PATH_HEADER]: reqOriginalPath,
+  }),
+
   connect(app) {
     app.use(requestMiddleware);
     app.use(responseMiddleware);
@@ -22,11 +27,6 @@ const theOwl = {
 
     createDocFiles(docs);
   },
-
-  buildHeaders: (testName, reqOriginalPath) => ({
-    [TEST_NAME_HEADER]: testName,
-    [REQ_ORIGINAL_PATH_HEADER]: reqOriginalPath,
-  }),
 };
 
 module.exports = theOwl;

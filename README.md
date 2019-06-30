@@ -28,50 +28,87 @@ Install the package:
 npm install --save-dev the-owl
 ```
 
-Connect the package middleware with your Express app:
+> On ["examples/01-minimal" server file](./examples/01-minimal/src/server.js):
+
+* Step 1: Connect the "information collection middleware" on your Express server.
 
 ```js
+const bodyParser = require('body-parser');
 const express = require('express');
+const theOwl = require('the-owl');
 
-const app = express();
-theOwl.connect(app);
+exports.server = {
+  close(api) { ... },
+  listen(app, port) { ... },
+
+  async start(port = process.env.PORT) {
+    const app = express();
+
+    //// STEP 1: Connect the Express middleware so request/response information can be collected.
+    theOwl.connect(app);
+
+    // middlewares
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+
+    // routes
+    app.get('/health', (req, res) => res.status(200).send('OK'));
+    app.get('/users', (req, res) => res.status(200)
+      .json(
+        [{ id: 1, name: 'John' }, { id: 2, name: 'Paul' }]
+      )
+    );
+
+    const api = await this.listen(app, port);
+    return api;
+  },
+};
 ```
 
-In your [functional tests](./examples/using-express-ava/src/modules/users/__tests__/functional/[get]users_:id.js), set custom headers on requests that you want to collect information:
+> On ["examples/01-minimal" functional test file](./examples/01-minimal/src/__tests__/[get]health.js):
+
+* Step 2: Set custom headers on requests that you want to collect information;
+* Step 3: Set test hook to "createDocs" after all tests have runned.
 
 ```js
-const axios = require('axios');
+const got = require('got');
+const test = require('ava');
+const theOwl = require('the-owl');
 
-const ORIGINAL_PATH = `/users/:id`;
-const URL = `http://localhost:8080${ORIGINAL_PATH}`;
-const getEndpoint = (userId) => URL.replace(':id', userId);
+const { closeApiOpenedOnRandomPort, startApiOnRandomPort } = require('../__helpers__');
 
-test('(200) returns the given user if it exists', async t => {
-  const userId = 1;
-  const response = await axios.get(getEndpoint(userId), {
+test.before('start server', async t => {
+  t.context.endpointOriginalPath = `/health`;
+  await startApiOnRandomPort(t);
+});
+//// STEP 3: Call "createDocs" method after all test cases have runned.
+//// STEP 4: Run the script "CREATE_DOCS=true npm test" on terminal.
+test.after('create api docs', t => theOwl.createDocs());
+test.after.always('close server', t => closeApiOpenedOnRandomPort(t));
+
+test('(200) returns the application status', async t => {
+  const response = await got(t.context.endpointBaseUrl , {
+    retry: { retries: 0 },
     headers: {
-      'content-type': 'application/json',
+      'your-custom-header': 'Notice how it appears on generated doc but "theOwl" headers doesn\'t!',
 
-      // Use our function construct the necessary headers:
-      ...theOwl.buildHeaders(t.title, ORIGINAL_PATH),
+      //// STEP 2: Send "theOwl" headers on requests which information must be collected to generate api docs.
+      //// NOTE: Information will not be collected if "theOwl" headers are not correctly sent.
+      // Option 1: use the utility function to build the headers.
+      ...theOwl.buildHeaders(t.title, t.context.endpointOriginalPath),
 
-      // Or optionally... do it yourself
-      'x-test-name': '(200) returns the given user if it exists',
-      'x-req-original-path': '/users/:id',
+      // Option 2: you set the headers manually.
+      // 'x-test-name': t.title,
+      // 'x-req-original-path': t.context.endpointOriginalPath,
     },
   });
 
-  t.deepEqual(response.data, { id: userId, name: 'Leonardo' });
+  t.assert(response.statusCode === 200);
+  t.assert(response.body === 'OK');
 });
 ```
 
-At the very end of your test suit, invoke:
-
-```js
-test.after('create api docs', t => {
-  theOwl.createDocs();
-});
-```
+> On terminal
 
 Run your test suit:
 
@@ -81,7 +118,7 @@ CREATE_DOCS=true npm run test
 
 The `docs/` folder will be created (if doesn't exists) with the results:
 
-<img width="289" alt="Screenshot 2019-04-28 at 20 23 51" src="https://user-images.githubusercontent.com/11094572/56868513-90463380-69f3-11e9-96b8-3c9f3d99b1b8.png">
+<img width="239" alt="Screenshot 2019-06-30 at 03 33 25" src="https://user-images.githubusercontent.com/11094572/60391131-f03a8280-9ae7-11e9-8951-41f92c6bdd65.png">
 
 
 ## Motivation
@@ -97,7 +134,8 @@ This package was built with the mindset that **all changes should be made in cod
 
 Please see the [files in the `/documentation` directory](./documentation):
 
-* [Process variables](./documentation/process-variables.md)
+* [01. API](./documentation/01-api.md)
+* [02. Process variables](./documentation/02-process-variables.md)
 
 
 ## Contributing
