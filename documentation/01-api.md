@@ -20,7 +20,7 @@ Returns an object containing necessary set of headers, relevants to a chunk of c
 
 These headers must be appended to each request that generates metadata for api docs.
 
-NOTE: In case you see yourself forgetting to set these headers, warn messages can be enabled by setting `LOG_MESSAGES` process variable when running your test script. [See "02-process-variables.md" for more details.](./02-process-variables#log-messages)
+NOTE: In case you see yourself forgetting to set these headers, warn messages can be enabled by setting `LOG_MESSAGES` process variable when running your test script. [See "02-process-variables.md" for more details.](./02-process-variables.md#log-messages)
 
 Example:
 
@@ -73,7 +73,7 @@ Connects the request and response "information collection middlewares" to the gi
 
 Both middlewares uses redux to store information of all test cases relavants to a single test file.
 
-NOTE: Redux state changes can be logged on STDOUT by running your test scripts with `LOG_REDUX` process variable set. [See "02-process-variables.md" for more details.](./02-process-variables#log-redux)
+NOTE: Redux state changes can be logged on STDOUT by running your test scripts with `LOG_REDUX` process variable set. [See "02-process-variables.md" for more details.](./02-process-variables.md#log-redux)
 
 Example:
 
@@ -98,7 +98,7 @@ Creates api doc markdown file relevant to all meta data colleted from a test fil
 
 Should be invoked after all functional tests have runned.
 
-NOTE: Markdown files will only be generated if `CREATE_DOCS` process variable in set when running your project test script. [See "02-process-variables.md" for more details.](./02-process-variables#create-docs)
+NOTE: Markdown files will only be generated if `CREATE_DOCS` process variable in set when running your project test script. [See "02-process-variables.md" for more details.](./02-process-variables.md#create-docs)
 
 Example:
 
