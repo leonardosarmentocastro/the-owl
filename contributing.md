@@ -14,6 +14,12 @@ The examples folder has a project which `the-owl` is symlinked as dependency on 
 
 ## Topics to contribute
 
+### Fix "cURL" generation
+
+Each functional testcase generates a cURL which you can use to mimic the request done by the test. These cURLs are not adding line break slashes (`\`) at the end of some lines (e.g. `-H` lines).
+
+Apart from the existing snapshots tests, it would awesome to add some functional tests against the generated cURL using node `exec`.
+
 ### Semantic improvements
 
 * Changed the `testName` attribute to `testTitle`;
