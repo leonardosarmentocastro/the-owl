@@ -20,6 +20,14 @@ Each functional testcase generates a cURL which you can use to mimic the request
 
 Apart from the existing snapshots tests, it would awesome to add some functional tests against the generated cURL using node `exec`.
 
+### Delete docs folder before creating new .md doc files
+
+Imagine you had 2 routes: `/health` and `/hello-world`. You generated docs for both of them, but 2 days later you decided that you don't need the `/hello-world` route anymore, so you remove it from your code and adapt the tests.
+
+Even though docs for `/hello-world` are not created anymore, they still reside inside the `/docs` folder.
+
+As a proposal to this problem, I propose to atomicly generate docs (for each time you want to generate docs, you remove the folder completely before generating any files).
+
 ### Semantic improvements
 
 * Changed the `testName` attribute to `testTitle`;
