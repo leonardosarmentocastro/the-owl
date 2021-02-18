@@ -58,7 +58,7 @@ test('(snapshot) must not render "-d" option when receiving empty body', t => {
   }));
 });
 
-test('(snapshot) must render "-H" option for each header entry', t => {
+test('(snapshot) must render "-H" option for each header entry, adding a "\" while its not the last header entry', t => {
   const doc = {
     request: {
       ...t.context.doc.request,

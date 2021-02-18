@@ -14,11 +14,16 @@ The examples folder has a project which `the-owl` is symlinked as dependency on 
 
 ## Topics to contribute
 
+
 ### Fix "cURL" generation
 
-Each functional testcase generates a cURL which you can use to mimic the request done by the test. These cURLs are not adding line break slashes (`\`) at the end of some lines (e.g. `-H` lines).
-
 Apart from the existing snapshots tests, it would awesome to add some functional tests against the generated cURL using node `exec`.
+
+### Create docs under `docs/api` instead of `docs/`
+
+Documentation is being generated under `docs/` folder, which can be already in use by documentation related to the codebase using `the-owl` itself.
+
+To not conflict with it, we must address file generation to `docs/api` instead of `docs/` folder.
 
 ### Delete docs folder before creating new .md doc files
 

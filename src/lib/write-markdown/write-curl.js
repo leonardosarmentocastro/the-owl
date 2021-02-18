@@ -14,9 +14,11 @@ const _writeBodyOptions = (body) => {
 const _writeHeaderOptions = (headers) =>
   !isEmpty(headers) ? (
     Object.entries(headers)
-      .map((header) => {
+      .map((header, index, array) => {
         const [ key, value ] = header;
-        return `-H '${key}: ${value}'`;
+        const isLastInstruction = (index === array.length - 1);
+
+        return `-H '${key}: ${value}' ${ isLastInstruction ? '' : '\\' }`.trim();
       })
       .join('\r\n')
   ) : ('');
