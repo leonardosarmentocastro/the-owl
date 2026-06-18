@@ -10,4 +10,5 @@ the-owl**.tgz
 node_modules/
 .cache/
 ./docs/
-./dist/
+dist/
+.owl/

@@ -30,7 +30,7 @@
   "scripts": {
     "build:web": "vite build web",
     "build:lib": "tsup",
-    "build": "npm run build:web && npm run build:lib",
+    "build": "npm run build:lib && npm run build:web",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
