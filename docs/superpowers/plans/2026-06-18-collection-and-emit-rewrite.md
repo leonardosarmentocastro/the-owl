@@ -17,6 +17,12 @@
 - *No response-header correlation (was candidate 6):* request and response are captured in one closure over the same `req`/`res`, so there is no `res.setHeader(x-test-name)` leaking onto the wire.
 - *One header only:* `x-test-name` — both the opt-in signal and the Example name. In Vitest, `owlHeaders()` fills it automatically.
 
+**Production edge cases folded in (from the `ecolheita/backend_2` review):**
+- *Per-request opt-in + composite Example key (EC1):* a single test can hit many endpoints under one title (setup sign-up + the request under test). `owlHeaders()` is therefore attached only to the request(s) you want documented — never baked into a universal request-options helper — and the Collector keys Examples by **`testName + method + route`**. A test may document several distinct endpoints; repeats of the same endpoint dedupe; unmarked setup requests are ignored (this also restores intentional opt-out).
+- *Sensitive-data redaction (EC2):* `authorization`/`cookie`/`set-cookie` header values and configurable body/query keys (`password`, `token`, `secret`, …) are masked by default — key kept, value replaced — so docs can say "an Authorization header is required" without shipping live tokens to the staging HTML app.
+- *Body safety (EC3):* multipart/binary bodies become a placeholder; oversized bodies are truncated; only JSON/text is inlined.
+- *Merge + race safety (EC7):* AVA/Vitest run files concurrently in separate processes; drain files are uniquely named per process and `readCatalog` **merges Examples by endpoint key** across all files.
+
 ---
 
 ## File Structure
@@ -26,12 +32,13 @@ the-owl/
   src/
     model.ts                  # The seam: Example, Endpoint, Catalog
     headers.ts                # x-test-name constant + header filtering
-    collector.ts              # Collector (record/drain) — replaces redux store + duck
+    collector.ts              # Collector (record/drain), keyed by testName+method+route
+    sanitize.ts               # redaction + body-safety (EC2/EC3)
     capture.ts                # single Express capture middleware (response-time capture)
     persist/
       slug.ts                 # endpoint → filename slug
-      drain-to-disk.ts        # drain Collector → .owl/<slug>.json
-      read-catalog.ts         # merge .owl/*.json → Catalog
+      drain-to-disk.ts        # drain Collector → .owl/<slug>.<pid>.json (unique per process)
+      read-catalog.ts         # merge .owl/*.json → Catalog (merge Examples by endpoint key)
     renderers/
       html.ts                 # write catalog.json + copy the React bundle
     build.ts                  # readCatalog → emit catalog.json + bundle
@@ -48,6 +55,7 @@ the-owl/
     src/components/EndpointCard.tsx
   test/
     collector.test.ts
+    sanitize.test.ts
     capture.test.ts
     persist.test.ts
     build.test.ts
@@ -56,7 +64,7 @@ the-owl/
   tsconfig.json  tsup.config.ts  vitest.config.ts
 ```
 
-**Legacy deleted in Task 13:** `src/redux/**`, `src/lib/**` (incl. all `write-markdown`), `src/the-owl.js`, `src/__helpers__/**`.
+**Legacy deleted in Task 14:** `src/redux/**`, `src/lib/**` (incl. all `write-markdown`), `src/the-owl.js`, `src/__helpers__/**`.
 
 ---
 
@@ -297,13 +305,28 @@ describe("collector", () => {
     expect(endpoints[0].examples.map((e) => e.name)).toEqual(["(200) ok", "(500) missing"]);
   });
 
-  it("keeps the first record per test name (res.json then res.end fires twice)", () => {
+  it("dedupes by testName+method+route (res.json then res.end fires twice)", () => {
     const c = createCollector();
     c.record({ testName: "(200) ok", method: "GET", route: "/h", request: request("/h"), response: response(200, "OK") });
     c.record({ testName: "(200) ok", method: "GET", route: "/h", request: request("/h"), response: response(200, null) });
     const [endpoint] = c.drain();
     expect(endpoint.examples).toHaveLength(1);
     expect(endpoint.examples[0].response.body).toBe("OK");
+  });
+
+  it("lets ONE test document several endpoints (EC1: setup + request under test)", () => {
+    const c = createCollector();
+    // same title, two different endpoints hit during one test
+    c.record({ testName: "(200) by-customer", method: "POST", route: "/customers/sign-up", request: request("/customers/sign-up"), response: response(200) });
+    c.record({ testName: "(200) by-customer", method: "GET", route: "/orders/by-customer", request: request("/orders/by-customer"), response: response(200) });
+
+    const endpoints = c.drain();
+    expect(endpoints.map((e) => `${e.method} ${e.route}`).sort()).toEqual([
+      "GET /orders/by-customer",
+      "POST /customers/sign-up",
+    ]);
+    // each endpoint carries the test's title as its Example name
+    expect(endpoints.every((e) => e.examples[0].name === "(200) by-customer")).toBe(true);
   });
 
   it("separates distinct endpoints", () => {
@@ -336,17 +359,21 @@ export interface Collector {
 }
 
 export const createCollector = (): Collector => {
-  const byTest = new Map<string, RecordInput>();
+  // EC1: keyed by testName+method+route, so one test can document several endpoints
+  // while res.json→res.end double-fires and repeated calls to the same endpoint dedupe.
+  const byExample = new Map<string, RecordInput>();
+  const exampleKey = (r: RecordInput) => `${r.testName}\u0000${endpointKey(r.method, r.route)}`;
 
   return {
     record(input) {
-      if (byTest.has(input.testName)) return; // first write wins (dedups res.json → res.end)
-      byTest.set(input.testName, input);
+      const key = exampleKey(input);
+      if (byExample.has(key)) return; // first write wins
+      byExample.set(key, input);
     },
 
     drain() {
       const byEndpoint = new Map<string, Endpoint>();
-      for (const r of byTest.values()) {
+      for (const r of byExample.values()) {
         const key = endpointKey(r.method, r.route);
         let endpoint = byEndpoint.get(key);
         if (!endpoint) {
@@ -361,17 +388,138 @@ export const createCollector = (): Collector => {
 };
 ```
 
-- [ ] **Step 4: Run test to verify it passes** — Run: `npx vitest run test/collector.test.ts` — Expected: PASS (3 tests).
+- [ ] **Step 4: Run test to verify it passes** — Run: `npx vitest run test/collector.test.ts` — Expected: PASS (4 tests).
 - [ ] **Step 5: Commit**
 
 ```bash
 git add src/collector.ts test/collector.test.ts
-git commit -m "feat: Collector deep module (record/drain) replacing redux"
+git commit -m "feat: Collector keyed by testName+method+route (multi-endpoint per test)"
 ```
 
 ---
 
-## Task 5: Capture middleware (single, response-time, auto-route)
+## Task 5: Sanitize — redaction + body safety (EC2/EC3)
+
+**Files:** Create `src/sanitize.ts`; Test `test/sanitize.test.ts`
+
+- [ ] **Step 1: Write the failing test**
+
+```ts
+import { describe, it, expect } from "vitest";
+import { DEFAULT_SANITIZE, sanitizeHeaders, sanitizeBody, REDACTED } from "../src/sanitize";
+
+describe("sanitize", () => {
+  it("masks sensitive header values but keeps the key (EC2)", () => {
+    const out = sanitizeHeaders({ authorization: "Bearer secret", "accept-language": "pt-br" }, DEFAULT_SANITIZE);
+    expect(out).toEqual({ authorization: REDACTED, "accept-language": "pt-br" });
+  });
+
+  it("deep-masks sensitive body keys (EC2)", () => {
+    const out = sanitizeBody({ email: "a@b.c", password: "hunter2", nested: { token: "abc" } }, "application/json", DEFAULT_SANITIZE);
+    expect(out).toEqual({ email: "a@b.c", password: REDACTED, nested: { token: REDACTED } });
+  });
+
+  it("replaces multipart/binary bodies with a placeholder (EC3)", () => {
+    expect(sanitizeBody("……", "multipart/form-data; boundary=x", DEFAULT_SANITIZE)).toBe("[multipart/form-data]");
+    expect(sanitizeBody(Buffer.from([0, 1, 2]) as unknown, "image/png", DEFAULT_SANITIZE)).toBe("[image/png]");
+  });
+
+  it("truncates oversized bodies (EC3)", () => {
+    const big = { blob: "x".repeat(DEFAULT_SANITIZE.maxBodyBytes + 10) };
+    const out = sanitizeBody(big, "application/json", DEFAULT_SANITIZE) as string;
+    expect(typeof out).toBe("string");
+    expect(out).toContain("[truncated");
+  });
+
+  it("passes through small JSON untouched", () => {
+    expect(sanitizeBody({ id: 1 }, "application/json", DEFAULT_SANITIZE)).toEqual({ id: 1 });
+    expect(sanitizeBody(null, undefined, DEFAULT_SANITIZE)).toBeNull();
+  });
+});
+```
+
+- [ ] **Step 2: Run test to verify it fails** — Run: `npx vitest run test/sanitize.test.ts` — Expected: FAIL "Cannot find module '../src/sanitize'".
+- [ ] **Step 3: Implement `src/sanitize.ts`**
+
+```ts
+export const REDACTED = "«redacted»";
+
+export interface SanitizeOptions {
+  /** Header names (lowercased) whose values are masked but kept. */
+  redactHeaders: Set<string>;
+  /** Object keys (lowercased) whose values are masked anywhere in a body/query. */
+  redactKeys: Set<string>;
+  /** Max serialized body size before truncation. */
+  maxBodyBytes: number;
+}
+
+export const DEFAULT_SANITIZE: SanitizeOptions = {
+  redactHeaders: new Set(["authorization", "cookie", "set-cookie", "proxy-authorization"]),
+  redactKeys: new Set(["password", "token", "secret", "authenticationtoken", "accesstoken", "refreshtoken", "apikey"]),
+  maxBodyBytes: 64 * 1024,
+};
+
+export const sanitizeHeaders = (
+  headers: Record<string, string>,
+  opts: SanitizeOptions
+): Record<string, string> =>
+  Object.fromEntries(
+    Object.entries(headers).map(([key, value]) =>
+      opts.redactHeaders.has(key.toLowerCase()) ? [key, REDACTED] : [key, value]
+    )
+  );
+
+const deepRedact = (value: unknown, keys: Set<string>): unknown => {
+  if (Array.isArray(value)) return value.map((v) => deepRedact(v, keys));
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) =>
+        keys.has(k.toLowerCase()) ? [k, REDACTED] : [k, deepRedact(v, keys)]
+      )
+    );
+  }
+  return value;
+};
+
+const isInlineable = (contentType?: string): boolean => {
+  if (!contentType) return true; // already-parsed objects have no content-type here
+  const ct = contentType.toLowerCase();
+  return ct.includes("application/json") || ct.startsWith("text/");
+};
+
+export const sanitizeBody = (
+  body: unknown,
+  contentType: string | undefined,
+  opts: SanitizeOptions
+): unknown => {
+  if (body == null) return null;
+  if (Buffer.isBuffer(body)) return `[${contentType ?? "binary"}]`;
+  if (contentType && !isInlineable(contentType)) {
+    return contentType.toLowerCase().includes("multipart/form-data")
+      ? "[multipart/form-data]"
+      : `[${contentType}]`;
+  }
+
+  const redacted = typeof body === "object" ? deepRedact(body, opts.redactKeys) : body;
+  const serialized = typeof redacted === "string" ? redacted : JSON.stringify(redacted);
+  if (serialized.length > opts.maxBodyBytes) {
+    return `${serialized.slice(0, opts.maxBodyBytes)}… [truncated ${serialized.length - opts.maxBodyBytes} chars]`;
+  }
+  return redacted;
+};
+```
+
+- [ ] **Step 4: Run test to verify it passes** — Run: `npx vitest run test/sanitize.test.ts` — Expected: PASS (5 tests).
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/sanitize.ts test/sanitize.test.ts
+git commit -m "feat: sanitize module — redact secrets, guard multipart/binary/large bodies"
+```
+
+---
+
+## Task 6: Capture middleware (single, response-time, auto-route, sanitized)
 
 **Files:** Create `src/capture.ts`; Test `test/capture.test.ts`
 
@@ -430,6 +578,16 @@ describe("capture middleware", () => {
     server.close();
     expect(res.headers.get(TEST_NAME_HEADER)).toBeNull();
   });
+
+  it("redacts sensitive request headers in the captured Example (EC2)", async () => {
+    const { collector, server, base } = await start();
+    await fetch(`${base}/health`, {
+      headers: { [TEST_NAME_HEADER]: "(200) ok", authorization: "Bearer super-secret" },
+    });
+    server.close();
+    const [endpoint] = collector.drain();
+    expect(endpoint.examples[0].request.headers.authorization).toBe("«redacted»");
+  });
 });
 ```
 
@@ -440,9 +598,10 @@ describe("capture middleware", () => {
 import type { Request, Response, NextFunction } from "express";
 import type { Collector } from "./collector";
 import { TEST_NAME_HEADER, filterHeaders } from "./headers";
+import { DEFAULT_SANITIZE, sanitizeHeaders, sanitizeBody, type SanitizeOptions } from "./sanitize";
 
 export const makeCaptureMiddleware =
-  (collector: Collector) =>
+  (collector: Collector, sanitize: SanitizeOptions = DEFAULT_SANITIZE) =>
   (req: Request, res: Response, next: NextFunction): void => {
     const testName = req.header(TEST_NAME_HEADER);
     if (!testName) return next();
@@ -451,6 +610,8 @@ export const makeCaptureMiddleware =
     // and req.body is parsed. Request and response are captured together (no header round-trip).
     const capture = (body: unknown): void => {
       const route = `${req.baseUrl ?? ""}${req.route?.path ?? req.path}`;
+      const reqHeaders = filterHeaders(req.headers as Record<string, unknown>);
+      const resHeaders = filterHeaders(res.getHeaders() as Record<string, unknown>);
       collector.record({
         testName,
         method: req.method,
@@ -459,14 +620,14 @@ export const makeCaptureMiddleware =
           url: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
           method: req.method,
           path: req.path,
-          query: req.query as Record<string, unknown>,
-          headers: filterHeaders(req.headers as Record<string, unknown>),
-          body: req.body ?? null,
+          query: sanitizeBody(req.query, undefined, sanitize) as Record<string, unknown>,
+          headers: sanitizeHeaders(reqHeaders, sanitize),
+          body: sanitizeBody(req.body ?? null, req.get("content-type"), sanitize),
         },
         response: {
           status: res.statusCode,
-          headers: filterHeaders(res.getHeaders() as Record<string, unknown>),
-          body: body ?? null,
+          headers: sanitizeHeaders(resHeaders, sanitize),
+          body: sanitizeBody(body ?? null, res.getHeader("content-type") as string | undefined, sanitize),
         },
       });
     };
@@ -493,17 +654,17 @@ export const makeCaptureMiddleware =
   };
 ```
 
-- [ ] **Step 4: Run test to verify it passes** — Run: `npx vitest run test/capture.test.ts` — Expected: PASS (3 tests).
+- [ ] **Step 4: Run test to verify it passes** — Run: `npx vitest run test/capture.test.ts` — Expected: PASS (4 tests).
 - [ ] **Step 5: Commit**
 
 ```bash
 git add src/capture.ts test/capture.test.ts
-git commit -m "feat: single capture middleware with auto-resolved routes, no header round-trip"
+git commit -m "feat: capture middleware with auto-routes, no header round-trip, sanitized payloads"
 ```
 
 ---
 
-## Task 6: Persist — slug, drain-to-disk, read-catalog
+## Task 7: Persist — slug, drain-to-disk, read-catalog
 
 **Files:** Create `src/persist/slug.ts`, `src/persist/drain-to-disk.ts`, `src/persist/read-catalog.ts`; Test `test/persist.test.ts`
 
@@ -518,17 +679,17 @@ import { createCollector } from "../src/collector";
 import { drainToDisk } from "../src/persist/drain-to-disk";
 import { readCatalog } from "../src/persist/read-catalog";
 import { endpointSlug } from "../src/persist/slug";
+import type { CapturedRequest, CapturedResponse } from "../src/model";
 
 let dir: string;
 afterEach(() => dir && rmSync(dir, { recursive: true, force: true }));
 
-const seed = () => {
+const req: CapturedRequest = { url: "u", method: "GET", path: "/users/1", query: {}, headers: {}, body: null };
+const res = (body: unknown): CapturedResponse => ({ status: 200, headers: {}, body });
+
+const seed = (name: string, body: unknown) => {
   const c = createCollector();
-  c.record({
-    testName: "(200) ok", method: "GET", route: "/users/:id",
-    request: { url: "u", method: "GET", path: "/users/1", query: {}, headers: {}, body: null },
-    response: { status: 200, headers: {}, body: { id: 1 } },
-  });
+  c.record({ testName: name, method: "GET", route: "/users/:id", request: req, response: res(body) });
   return c;
 };
 
@@ -537,14 +698,23 @@ describe("persist", () => {
     expect(endpointSlug("GET", "/users/:id")).toBe("get-users-id");
   });
 
-  it("drains one json file per endpoint and merges them into a catalog", () => {
+  it("drains uniquely-named files (EC7: no clobber across processes)", () => {
     dir = mkdtempSync(join(tmpdir(), "owl-"));
-    drainToDisk(seed(), dir);
-    expect(readdirSync(dir)).toEqual(["get-users-id.json"]);
+    const files = drainToDisk(seed("(200) ok", { id: 1 }), dir);
+    expect(files).toHaveLength(1);
+    const [name] = readdirSync(dir);
+    expect(name).toMatch(/^get-users-id\..+\.json$/); // <slug>.<unique>.json
+  });
+
+  it("merges Examples by endpoint key across multiple drain files (EC7)", () => {
+    dir = mkdtempSync(join(tmpdir(), "owl-"));
+    // simulate two separate test processes documenting the SAME endpoint
+    drainToDisk(seed("(200) ok", { id: 1 }), dir);
+    drainToDisk(seed("(404) missing", { error: "nope" }), dir);
 
     const catalog = readCatalog(dir);
-    expect(catalog.endpoints).toHaveLength(1);
-    expect(catalog.endpoints[0].examples[0].response.body).toEqual({ id: 1 });
+    expect(catalog.endpoints).toHaveLength(1); // merged, not duplicated
+    expect(catalog.endpoints[0].examples.map((e) => e.name).sort()).toEqual(["(200) ok", "(404) missing"]);
   });
 });
 ```
@@ -562,16 +732,20 @@ export const endpointSlug = (method: string, route: string): string =>
 - [ ] **Step 4: Implement `src/persist/drain-to-disk.ts`**
 
 ```ts
+import { randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Collector } from "../collector";
 import { endpointSlug } from "./slug";
 
+// EC7: test runners fork a process per file and run them concurrently. Each drain writes a
+// UNIQUE file (<slug>.<uuid>.json) so concurrent processes never clobber each other; the merge
+// happens later in readCatalog().
 export const drainToDisk = (collector: Collector, dir: string): string[] => {
   mkdirSync(dir, { recursive: true });
   const written: string[] = [];
   for (const endpoint of collector.drain()) {
-    const file = join(dir, `${endpointSlug(endpoint.method, endpoint.route)}.json`);
+    const file = join(dir, `${endpointSlug(endpoint.method, endpoint.route)}.${randomUUID()}.json`);
     writeFileSync(file, JSON.stringify(endpoint, null, 2));
     written.push(file);
   }
@@ -585,29 +759,42 @@ export const drainToDisk = (collector: Collector, dir: string): string[] => {
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Catalog, Endpoint } from "../model";
+import { endpointKey } from "../model";
 
+// EC7: merge Examples from every drain file by endpoint key, so the same endpoint documented
+// across multiple test files becomes one Endpoint (Examples deduped by name).
 export const readCatalog = (dir: string): Catalog => {
-  const endpoints: Endpoint[] = [];
+  const byKey = new Map<string, Endpoint>();
   if (existsSync(dir)) {
     for (const file of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
-      endpoints.push(JSON.parse(readFileSync(join(dir, file), "utf8")) as Endpoint);
+      const endpoint = JSON.parse(readFileSync(join(dir, file), "utf8")) as Endpoint;
+      const key = endpointKey(endpoint.method, endpoint.route);
+      const existing = byKey.get(key);
+      if (!existing) {
+        byKey.set(key, endpoint);
+        continue;
+      }
+      const seen = new Set(existing.examples.map((e) => e.name));
+      for (const example of endpoint.examples) {
+        if (!seen.has(example.name)) existing.examples.push(example);
+      }
     }
   }
-  return { generatedAt: new Date().toISOString(), endpoints };
+  return { generatedAt: new Date().toISOString(), endpoints: [...byKey.values()] };
 };
 ```
 
-- [ ] **Step 6: Run test to verify it passes** — Run: `npx vitest run test/persist.test.ts` — Expected: PASS (2 tests).
+- [ ] **Step 6: Run test to verify it passes** — Run: `npx vitest run test/persist.test.ts` — Expected: PASS (3 tests).
 - [ ] **Step 7: Commit**
 
 ```bash
 git add src/persist test/persist.test.ts
-git commit -m "feat: persist drained endpoints to .owl/*.json and merge into a Catalog"
+git commit -m "feat: unique drain filenames + readCatalog merges Examples by endpoint (EC7)"
 ```
 
 ---
 
-## Task 7: HTML Renderer + build step + CLI
+## Task 8: HTML Renderer + build step + CLI
 
 **Files:** Create `src/renderers/html.ts`, `src/build.ts`, `src/bin/cli.ts`; Test `test/build.test.ts`
 
@@ -720,7 +907,7 @@ git commit -m "feat: build step emits catalog.json + web bundle; the-owl build C
 
 ---
 
-## Task 8: Public API
+## Task 9: Public API
 
 **Files:** Create `src/the-owl.ts`
 
@@ -733,6 +920,7 @@ import { createCollector } from "./collector";
 import { makeCaptureMiddleware } from "./capture";
 import { drainToDisk } from "./persist/drain-to-disk";
 import { TEST_NAME_HEADER } from "./headers";
+import { DEFAULT_SANITIZE, type SanitizeOptions } from "./sanitize";
 
 const collector = createCollector();
 
@@ -740,8 +928,20 @@ export const buildHeaders = (testName: string): Record<string, string> => ({
   [TEST_NAME_HEADER]: testName,
 });
 
-export const connect = (app: Express): void => {
-  app.use(makeCaptureMiddleware(collector));
+export interface ConnectOptions {
+  /** Override redaction / body-safety defaults (EC2/EC3). */
+  redactHeaders?: Iterable<string>;
+  redactKeys?: Iterable<string>;
+  maxBodyBytes?: number;
+}
+
+export const connect = (app: Express, options: ConnectOptions = {}): void => {
+  const sanitize: SanitizeOptions = {
+    redactHeaders: options.redactHeaders ? new Set([...options.redactHeaders].map((h) => h.toLowerCase())) : DEFAULT_SANITIZE.redactHeaders,
+    redactKeys: options.redactKeys ? new Set([...options.redactKeys].map((k) => k.toLowerCase())) : DEFAULT_SANITIZE.redactKeys,
+    maxBodyBytes: options.maxBodyBytes ?? DEFAULT_SANITIZE.maxBodyBytes,
+  };
+  app.use(makeCaptureMiddleware(collector, sanitize));
 };
 
 /** Drain this process's captured Examples to `.owl/*.json`. Render later with `the-owl build`. */
@@ -758,17 +958,17 @@ export { docs } from "./serve";
 export default { buildHeaders, connect, save, createDocs };
 ```
 
-- [ ] **Step 2: Note** — typecheck deferred until Task 9 creates `./serve`. Implement Task 9 next, then run `npx tsc --noEmit` (Expected: PASS).
+- [ ] **Step 2: Note** — typecheck deferred until Task 10 creates `./serve`. Implement Task 10 next, then run `npx tsc --noEmit` (Expected: PASS).
 - [ ] **Step 3: Commit**
 
 ```bash
 git add src/the-owl.ts
-git commit -m "feat: public API (connect/buildHeaders/save, createDocs alias)"
+git commit -m "feat: public API (connect/buildHeaders/save, createDocs alias) with redaction config"
 ```
 
 ---
 
-## Task 9: Serve adapter — `theOwl.docs()`
+## Task 10: Serve adapter — `theOwl.docs()`
 
 **Files:** Create `src/serve.ts`
 
@@ -805,7 +1005,7 @@ export const docs = (options: DocsOptions = {}): RequestHandler => {
 };
 ```
 
-Consumer usage (documented in Task 13):
+Consumer usage (documented in Task 14):
 
 ```ts
 if (process.env.NODE_ENV === "staging") app.use("/docs", theOwl.docs());
@@ -821,7 +1021,7 @@ git commit -m "feat: theOwl.docs() Express handler serving the bundle + catalog.
 
 ---
 
-## Task 10: `the-owl/vitest` — zero-boilerplate headers
+## Task 11: `the-owl/vitest` — zero-boilerplate headers
 
 **Files:** Create `src/vitest.ts`
 
@@ -853,7 +1053,7 @@ git commit -m "feat: the-owl/vitest owlHeaders() auto-fills the test name"
 
 ---
 
-## Task 11: The React docs app (Vite + React 19)
+## Task 12: The React docs app (Vite + React 19)
 
 **Styling decision:** start with the simplest readable plain-CSS/inline layout, but structure it as small presentational components (`EndpointCard`) loading from `api.ts`, so adopting **Tailwind + shadcn/ui** later is purely additive — `npm i -D tailwindcss && npx shadcn init`, then swap the inline styles inside the components without touching data flow. No data-layer coupling to styling.
 
@@ -982,9 +1182,11 @@ git commit -m "feat: Vite + React 19 docs app (static browse) reading catalog.js
 
 ---
 
-## Task 12: Migrate examples to v2 and verify end-to-end
+## Task 13: Migrate examples to v2 and verify end-to-end
 
 Both examples must run on the rewritten library. They are migrated to Vitest + native `fetch`, drop `endpointOriginalPath`/`buildHeaders(t.title, …)`, and use `owlHeaders()`.
+
+> **EC1 usage rule (learned from `ecolheita/backend_2`):** attach `owlHeaders()` **only to the request you want documented**, never to a shared/universal request-options helper. In the production app, the shared `getRequestOptions(t)` injected owl headers into every call (sign-up, seeding, then the request under test); with per-request opt-in those setup calls are simply not marked, so only the endpoint under test is documented. A test *may* mark several requests on purpose — each distinct `method+route` becomes its own Endpoint, all sharing the test's title as the Example name. The elaborate example (Step 6) demonstrates this by marking only the `GET /users/:id` call while leaving a seeding call unmarked.
 
 **Files (per example `01-minimal` and `02-elaborate`):** rewrite `package.json`, server, test helpers, and the functional tests; add `vitest.config.ts`.
 
@@ -1105,7 +1307,11 @@ afterAll(async () => { theOwl.save(); await stopServer(server); });
 
 describe("[get] /users/:id", () => {
   it("(200) returns the given user if it exists", async () => {
-    const res = await fetch(`${base}/users/1`, { headers: owlHeaders() });
+    // EC1 demo: an UNMARKED warm-up call to a different endpoint (mimics setup/seeding in
+    // ecolheita). It must NOT appear in the docs because it carries no owlHeaders().
+    await fetch(`${base}/users`); // no owlHeaders → ignored
+
+    const res = await fetch(`${base}/users/1`, { headers: owlHeaders() }); // marked → documented
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ id: 1, name: "John" });
   });
@@ -1126,7 +1332,7 @@ cd examples/01-minimal && npm install && npm run test:create-docs
 ```
 
 Expected:
-- `examples/01-minimal/.owl/get-health.json` and `get-users.json` exist after the run.
+- `examples/01-minimal/.owl/` contains uniquely-named files matching `get-health.*.json` and `get-users.*.json`.
 - `examples/01-minimal/docs/site/catalog.json` exists with both endpoints and their captured Examples.
 - `examples/01-minimal/docs/site/index.html` exists (the React bundle).
 
@@ -1136,7 +1342,7 @@ Then repeat for `02-elaborate`:
 cd ../02-elaborate && npm install && npm run test:create-docs
 ```
 
-Expected: `docs/site/catalog.json` contains `GET /users/:id` with the `(200)` and `(404)` Examples.
+Expected: `docs/site/catalog.json` contains `GET /users/:id` with the `(200)` and `(404)` Examples — and **no `GET /users` entry** (the unmarked warm-up call was correctly ignored, proving EC1 per-request opt-in).
 
 - [ ] **Step 8: Smoke-test the live docs route (02-elaborate)**
 
@@ -1152,11 +1358,11 @@ git commit -m "test: migrate both examples to v2 (Vitest, owlHeaders, auto-route
 
 ---
 
-## Task 13: Documentation + delete legacy
+## Task 14: Documentation + delete legacy
 
 **Files:** Modify `documentation/01-api.md`, `documentation/02-process-variables.md`, `README.md`; Delete legacy `src`.
 
-- [ ] **Step 1: Rewrite `documentation/01-api.md`** — document `connect(app)`, `buildHeaders(testName)`, `the-owl/vitest`'s `owlHeaders()`, `save()` (with `createDocs()` as deprecated alias), the `the-owl build` command, and `docs(options)`. Remove all `x-req-original-path`, redux, and "single test file" language. Explain the flow: capture → `.owl/*.json` → `the-owl build` → `docs/site/`.
+- [ ] **Step 1: Rewrite `documentation/01-api.md`** — document `connect(app, options?)` (incl. redaction options), `buildHeaders(testName)`, `the-owl/vitest`'s `owlHeaders()` and the **per-request opt-in rule (EC1)**, `save()` (with `createDocs()` as deprecated alias), the `the-owl build` command, `docs(options)`, and the default secret redaction (EC2). Remove all `x-req-original-path`, redux, and "single test file" language. Explain the flow: capture → `.owl/*.json` → `the-owl build` → `docs/site/`.
 - [ ] **Step 2: Rewrite `documentation/02-process-variables.md`** — keep `CREATE_DOCS` (now gates `save()`); remove `LOG_REDUX` and `LOG_MESSAGES` (no longer used).
 - [ ] **Step 3: Update root `README.md`** — new pitch (interactive HTML), quickstart with Vitest + `owlHeaders()`, and the two delivery modes.
 - [ ] **Step 4: Delete legacy source**
@@ -1187,15 +1393,22 @@ git commit -m "docs: rewrite docs for v2; remove redux/markdown/legacy pipeline"
 **Spec coverage:**
 - Feature branch + per-step commits → Branch created; every task ends in a commit on `feat/v2-collection-and-emit`.
 - Latest stable versions → Task 1 (Node 24, install `@latest`, Express 5, React 19, Vitest 4, Vite 7).
-- Drop markdown renderer → removed entirely; Task 7 emits only `catalog.json` + bundle; legacy `write-markdown` deleted in Task 13.
-- Vitest test-name access → Task 10 (`expect.getState().currentTestName`), used in examples (Task 12).
-- Styling room for Tailwind/shadcn → Task 11 styling decision + component split.
-- Remove preparation steps → Tasks 5 (auto-route), 10 (`owlHeaders()`), 12 (examples drop `endpointOriginalPath`/`buildHeaders(t.title, …)`).
-- Examples use the new library → Task 12 (both, with an end-to-end acceptance run).
-- Candidate 1 (deep Collector) → Task 4. Candidate 2 (model + render adapters) → Tasks 2, 7, 9, 11. Candidate 4 (no single-endpoint assumption, merged Catalog) → Tasks 4, 6, 7.
+- Drop markdown renderer → removed entirely; Task 8 emits only `catalog.json` + bundle; legacy `write-markdown` deleted in Task 14.
+- Vitest test-name access → Task 11 (`expect.getState().currentTestName`), used in examples (Task 13).
+- Styling room for Tailwind/shadcn → Task 12 styling decision + component split.
+- Remove preparation steps → Tasks 6 (auto-route), 11 (`owlHeaders()`), 13 (examples drop `endpointOriginalPath`/`buildHeaders(t.title, …)`).
+- Examples use the new library → Task 13 (both, with an end-to-end acceptance run).
+- Candidate 1 (deep Collector) → Task 4. Candidate 2 (model + render adapters) → Tasks 2, 8, 10, 12. Candidate 4 (no single-endpoint assumption, merged Catalog) → Tasks 4, 7, 8.
 
-**Placeholder scan:** every code step ships complete code; Task 12 Step 6 references the elaborate controller (exists in repo) and repeats the full test. No TBD/TODO.
+**Production edge-case coverage (ecolheita review):**
+- EC1 (one test, many endpoints, shared title) → Task 4 (key by `testName+method+route`) + Task 13 per-request opt-in rule and the unmarked-warm-up acceptance assertion.
+- EC2 (Authorization tokens / passwords leaking to the staging app) → Task 5 (`sanitize`), wired in Task 6, configurable in Task 9.
+- EC3 (multipart/binary/large bodies) → Task 5 body guards.
+- EC7 (concurrent `.owl/` writes + same endpoint across files) → Task 7 (unique drain filenames + `readCatalog` merge-by-endpoint).
+- Noted strengths needing no change: auto-resolution recovers exact param routes (`/orders/:id`, `/orders/status/:statuses`), and server-side capture survives `got` throwing on 5xx.
 
-**Type consistency:** `createCollector`/`Collector.record`/`drain`, `RecordInput`, `Example`/`Endpoint`/`Catalog` (`response` required), `makeCaptureMiddleware`, `drainToDisk`/`readCatalog`/`endpointSlug`, `runBuild`/`BuildOptions`, `emitHtml`, `docs`/`DocsOptions`, `owlHeaders`, `buildHeaders`/`save`/`createDocs` are used identically across tasks.
+**Placeholder scan:** every code step ships complete code; Task 13 references the elaborate controller (exists in repo) and repeats the full test. No TBD/TODO.
+
+**Type consistency:** `createCollector`/`Collector.record`/`drain`, `RecordInput`, `Example`/`Endpoint`/`Catalog` (`response` required), `endpointKey`, `makeCaptureMiddleware(collector, sanitize?)`, `DEFAULT_SANITIZE`/`sanitizeHeaders`/`sanitizeBody`/`REDACTED`/`SanitizeOptions`, `drainToDisk`/`readCatalog`/`endpointSlug`, `runBuild`/`BuildOptions`, `emitHtml`, `docs`/`DocsOptions`, `owlHeaders`, `buildHeaders`/`connect`/`ConnectOptions`/`save`/`createDocs` are used identically across tasks.
 
 **Deliberately deferred:** live "try it out" in the HTML app (the model already carries real request Examples + the docs route is same-origin, so it's additive later); OpenAPI Renderer (a second adapter over the same Catalog when wanted).
