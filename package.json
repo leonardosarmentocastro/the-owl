@@ -6,22 +6,32 @@
   "engines": {
     "node": ">=24"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
     "the-owl": "./dist/bin/cli.js"
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./vitest": {
-      "types": "./dist/vitest.d.ts",
-      "import": "./dist/vitest.mjs",
-      "require": "./dist/vitest.js"
+      "import": {
+        "types": "./dist/vitest.d.ts",
+        "default": "./dist/vitest.js"
+      },
+      "require": {
+        "types": "./dist/vitest.d.cts",
+        "default": "./dist/vitest.cjs"
+      }
     }
   },
   "files": [

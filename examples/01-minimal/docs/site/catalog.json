@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-06-18T21:53:43.037Z",
+  "endpoints": [
+    {
+      "method": "GET",
+      "route": "/health",
+      "examples": [
+        {
+          "name": "[get] /health > (200) returns the application status",
+          "request": {
+            "url": "http://localhost:50100/health",
+            "method": "GET",
+            "path": "/health",
+            "query": {},
+            "headers": {
+              "your-custom-header": "appears in the docs; the-owl's header is filtered out",
+              "accept-language": "*",
+              "sec-fetch-mode": "cors"
+            },
+            "body": null
+          },
+          "response": {
+            "status": 200,
+            "headers": {},
+            "body": "OK"
+          }
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "route": "/users",
+      "examples": [
+        {
+          "name": "[get] /users > (200) returns the list of users",
+          "request": {
+            "url": "http://localhost:50102/users",
+            "method": "GET",
+            "path": "/users",
+            "query": {},
+            "headers": {
+              "accept-language": "*",
+              "sec-fetch-mode": "cors"
+            },
+            "body": null
+          },
+          "response": {
+            "status": 200,
+            "headers": {},
+            "body": [
+              {
+                "id": 1,
+                "name": "John"
+              },
+              {
+                "id": 2,
+                "name": "Paul"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -37,6 +37,8 @@ export const save = (): void => {
 /** @deprecated renamed to save(); kept for v1 compatibility. */
 export const createDocs = save;
 
-export { docs } from "./serve";
+import { docs } from "./serve";
 
-export default { buildHeaders, connect, save, createDocs };
+export { docs };
+
+export default { buildHeaders, connect, save, createDocs, docs };
