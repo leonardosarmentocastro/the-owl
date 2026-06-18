@@ -12,6 +12,21 @@ describe("sanitize", () => {
     expect(out).toEqual({ email: "a@b.c", password: REDACTED, nested: { token: REDACTED } });
   });
 
+  it("redacts separator/snake_case/camelCase secret variants (EC2)", () => {
+    const out = sanitizeBody(
+      { access_token: "L", "api-key": "L", client_secret: "L", refreshToken: "L", id: 1 },
+      "application/json",
+      DEFAULT_SANITIZE
+    );
+    expect(out).toEqual({
+      access_token: REDACTED,
+      "api-key": REDACTED,
+      client_secret: REDACTED,
+      refreshToken: REDACTED,
+      id: 1,
+    });
+  });
+
   it("replaces multipart/binary bodies with a placeholder (EC3)", () => {
     expect(sanitizeBody("……", "multipart/form-data; boundary=x", DEFAULT_SANITIZE)).toBe("[multipart/form-data]");
     expect(sanitizeBody(Buffer.from([0, 1, 2]) as unknown, "image/png", DEFAULT_SANITIZE)).toBe("[image/png]");

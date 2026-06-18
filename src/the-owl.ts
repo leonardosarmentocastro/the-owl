@@ -4,7 +4,7 @@ import { createCollector } from "./collector";
 import { makeCaptureMiddleware } from "./capture";
 import { drainToDisk } from "./persist/drain-to-disk";
 import { TEST_NAME_HEADER } from "./headers";
-import { DEFAULT_SANITIZE, type SanitizeOptions } from "./sanitize";
+import { DEFAULT_SANITIZE, normalizeKey, type SanitizeOptions } from "./sanitize";
 
 const collector = createCollector();
 
@@ -22,7 +22,7 @@ export interface ConnectOptions {
 export const connect = (app: Express, options: ConnectOptions = {}): void => {
   const sanitize: SanitizeOptions = {
     redactHeaders: options.redactHeaders ? new Set([...options.redactHeaders].map((h) => h.toLowerCase())) : DEFAULT_SANITIZE.redactHeaders,
-    redactKeys: options.redactKeys ? new Set([...options.redactKeys].map((k) => k.toLowerCase())) : DEFAULT_SANITIZE.redactKeys,
+    redactKeys: options.redactKeys ? new Set([...options.redactKeys].map(normalizeKey)) : DEFAULT_SANITIZE.redactKeys,
     maxBodyBytes: options.maxBodyBytes ?? DEFAULT_SANITIZE.maxBodyBytes,
   };
   app.use(makeCaptureMiddleware(collector, sanitize));

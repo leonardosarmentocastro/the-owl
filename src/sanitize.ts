@@ -9,9 +9,17 @@ export interface SanitizeOptions {
   maxBodyBytes: number;
 }
 
+/** Normalize an object key for redaction matching: lowercased, separators stripped,
+ * so `access_token`, `api-key`, `accessToken` all collapse to one comparable form. */
+export const normalizeKey = (key: string): string => key.toLowerCase().replace(/[-_]/g, "");
+
 export const DEFAULT_SANITIZE: SanitizeOptions = {
   redactHeaders: new Set(["authorization", "cookie", "set-cookie", "proxy-authorization"]),
-  redactKeys: new Set(["password", "token", "secret", "authenticationtoken", "accesstoken", "refreshtoken", "apikey"]),
+  redactKeys: new Set(
+    ["password", "token", "secret", "authenticationtoken", "accesstoken", "refreshtoken", "apikey", "clientsecret", "privatekey"].map(
+      normalizeKey
+    )
+  ),
   maxBodyBytes: 64 * 1024,
 };
 
@@ -30,7 +38,7 @@ const deepRedact = (value: unknown, keys: Set<string>): unknown => {
   if (value && typeof value === "object") {
     return Object.fromEntries(
       Object.entries(value as Record<string, unknown>).map(([k, v]) =>
-        keys.has(k.toLowerCase()) ? [k, REDACTED] : [k, deepRedact(v, keys)]
+        keys.has(normalizeKey(k)) ? [k, REDACTED] : [k, deepRedact(v, keys)]
       )
     );
   }
