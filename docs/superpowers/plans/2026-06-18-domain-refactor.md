@@ -1236,6 +1236,21 @@ root. Do not let a domain import a sibling outside this list.
 
 Out of scope for the domain layout: `web/` (the React app), `examples/`, and
 `documentation/`.
+
+## Workflow conventions
+
+- **Never commit directly to `master`.** Before starting any unit of work, create a
+  branch named with a conventional-commit-style prefix:
+  `feat/<slug>`, `fix/<slug>`, `chore/<slug>`, `docs/<slug>`, `refactor/<slug>`,
+  `test/<slug>`. This applies to spec/plan docs too — branch first, then commit.
+- **Brainstorming hand-off.** When a `/brainstorming` (or design → plan) session
+  finishes, always end by giving the user a ready-to-paste prompt for a *fresh
+  session* that executes the implementation plan. The prompt must name the plan
+  file, the branch to work on, and the execution skill. Template:
+
+  > Execute the implementation plan at `docs/superpowers/plans/<file>.md` on branch
+  > `<branch>` using superpowers:executing-plans (or subagent-driven-development).
+  > Implement it task-by-task, keep the test suite green, and commit after each task.
 ````
 
 - [ ] **Step 2: Create `CLAUDE.md`** (pointer)
@@ -1246,8 +1261,10 @@ Out of scope for the domain layout: `web/` (the React app), `examples/`, and
 This project's agent guide is **[AGENTS.md](./AGENTS.md)** — read it first.
 
 It documents the four-domain architecture (`capture → drain → catalog → render`),
-the allowed dependency direction between domains, and the file/naming conventions.
-For the domain vocabulary, see **[CONTEXT.md](./CONTEXT.md)**.
+the allowed dependency direction between domains, the file/naming conventions, and
+the **workflow conventions** (always branch before working — never commit to
+`master`; provide an execution hand-off prompt at the end of a brainstorming
+session). For the domain vocabulary, see **[CONTEXT.md](./CONTEXT.md)**.
 ```
 
 - [ ] **Step 3: Commit**
