@@ -6,7 +6,7 @@ import { createCollector } from "../src/collector";
 import { drainToDisk } from "../src/persist/drain-to-disk";
 import { readCatalog } from "../src/persist/read-catalog";
 import { endpointSlug } from "../src/persist/slug";
-import type { CapturedRequest, CapturedResponse } from "../src/model";
+import type { CapturedRequest, CapturedResponse } from "../src/types";
 
 let dir: string;
 afterEach(() => dir && rmSync(dir, { recursive: true, force: true }));

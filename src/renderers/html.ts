@@ -1,6 +1,6 @@
 import { cpSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Catalog } from "../model";
+import type { Catalog } from "../types";
 
 export const emitHtml = (catalog: Catalog, outDir: string, webBundleDir?: string): void => {
   const siteDir = join(outDir, "site");

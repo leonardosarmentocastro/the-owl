@@ -1,5 +1,5 @@
-import type { CapturedRequest, CapturedResponse, Endpoint } from "./model";
-import { endpointKey } from "./model";
+import type { CapturedRequest, CapturedResponse, Endpoint } from "./types";
+import { endpointKey } from "./keys";
 
 export interface RecordInput {
   testName: string;

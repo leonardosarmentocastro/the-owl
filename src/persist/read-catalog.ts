@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Catalog, Endpoint } from "../model";
-import { endpointKey } from "../model";
+import type { Catalog, Endpoint } from "../types";
+import { endpointKey } from "../keys";
 
 // EC7: merge Examples from every drain file by endpoint key, so the same endpoint documented
 // across multiple test files becomes one Endpoint (Examples deduped by name).
