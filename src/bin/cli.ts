@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runBuild } from "../build";
+import { runBuild } from "../render/build";
 
 const [, , command] = process.argv;
 if (command !== "build") {

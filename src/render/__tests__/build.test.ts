@@ -2,9 +2,9 @@ import { describe, it, expect, afterEach } from "vitest";
 import { mkdtempSync, rmSync, mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createCollector } from "../src/capture/collector";
-import { drainToDisk } from "../src/drain/to-disk";
-import { runBuild } from "../src/build";
+import { createCollector } from "../../capture/collector";
+import { drainToDisk } from "../../drain/to-disk";
+import { runBuild } from "../build";
 
 let root: string;
 afterEach(() => root && rmSync(root, { recursive: true, force: true }));

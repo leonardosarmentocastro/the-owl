@@ -32,7 +32,7 @@ export const save = (): void => {
 /** @deprecated renamed to save(); kept for v1 compatibility. */
 export const createDocs = save;
 
-import { docs } from "./serve";
+import { docs } from "./render/serve";
 
 export { docs };
 
