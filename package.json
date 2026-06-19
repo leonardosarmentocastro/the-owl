@@ -1,65 +1,74 @@
 {
   "name": "the-owl",
-  "version": "1.1.2",
-  "description": "Generate api docs based on functional tests",
-  "main": "./src/the-owl.js",
-  "scripts": {
-    "test": "ava --verbose",
-    "test:coverage": "nyc npm test",
-    "test:log-messages": "LOG_MESSAGES=true npm run test",
-    "test:log-redux": "LOG_REDUX=true npm run test"
+  "version": "2.0.0",
+  "description": "Generate interactive API docs from your functional tests",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/leonardosarmentocastro/the-owl.git"
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "the-owl": "./dist/bin/cli.js"
   },
-  "author": {
-    "name": "Leonardo Sarmento de Castro",
-    "email": "leonardo.sarmentocastro@gmail.com",
-    "url": "http://leonardosarmentocastro.com"
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./vitest": {
+      "import": {
+        "types": "./dist/vitest.d.ts",
+        "default": "./dist/vitest.js"
+      },
+      "require": {
+        "types": "./dist/vitest.d.cts",
+        "default": "./dist/vitest.cjs"
+      }
+    }
   },
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/leonardosarmentocastro/the-owl/issues"
-  },
-  "homepage": "https://github.com/leonardosarmentocastro/the-owl#readme",
-  "keywords": [
-    "create",
-    "docs",
-    "doc",
-    "documentation",
-    "functional",
-    "tests",
-    "test",
-    "ava",
-    "api",
-    "express"
+  "files": [
+    "dist"
   ],
-  "devDependencies": {
-    "ava": "^1.4.1",
-    "nyc": "^14.1.0"
+  "scripts": {
+    "build:web": "vite build web",
+    "build:lib": "tsup",
+    "build": "npm run build:lib && npm run build:web",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "express": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
   },
   "dependencies": {
-    "chalk": "^2.4.2",
-    "redux": "^4.0.1",
-    "rev-hash": "^3.0.0",
-    "rimraf": "^2.6.3"
+    "slugify": "^1.6.9"
   },
-  "ava": {
-    "files": [
-      "test.js ",
-      "test-*.js ",
-      "test/**/*.js ",
-      "**/__tests__/**/*.js ",
-      "**/*.test.js",
-      "!examples/**/*.js"
-    ]
-  },
-  "nyc": {
-    "reporter": [
-      "html",
-      "lcov",
-      "text"
-    ]
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "express": "^5.2.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.9"
   }
 }

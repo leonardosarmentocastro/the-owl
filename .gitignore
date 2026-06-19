@@ -9,5 +9,8 @@ the-owl**.tgz
 # Folders
 node_modules/
 .cache/
-./docs/
-./dist/
+dist/
+.owl/
+
+# Generated docs output from the examples (build artifacts)
+examples/*/docs/
