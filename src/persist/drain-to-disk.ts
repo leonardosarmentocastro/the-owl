@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Collector } from "../collector";
+import type { Collector } from "../capture/types";
 import { endpointSlug } from "./slug";
 
 // EC7: test runners fork a process per file and run them concurrently. Each drain writes a

@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest";
 import { mkdtempSync, rmSync, mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createCollector } from "../src/collector";
+import { createCollector } from "../src/capture/collector";
 import { drainToDisk } from "../src/persist/drain-to-disk";
 import { runBuild } from "../src/build";
 

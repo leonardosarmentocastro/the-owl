@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { DEFAULT_SANITIZE, sanitizeHeaders, sanitizeBody, REDACTED } from "../src/sanitize";
+import { sanitizeHeaders, sanitizeBody } from "../sanitize";
+import { DEFAULT_SANITIZE, REDACTED } from "../constants";
 
 describe("sanitize", () => {
   it("masks sensitive header values but keeps the key (EC2)", () => {

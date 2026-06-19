@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { createCollector } from "../src/collector";
-import type { CapturedRequest, CapturedResponse } from "../src/types";
+import { createCollector } from "../collector";
+import type { CapturedRequest, CapturedResponse } from "../../types";
 
 const request = (path: string): CapturedRequest => ({
   url: `http://localhost${path}`, method: "GET", path, query: {}, headers: {}, body: null,

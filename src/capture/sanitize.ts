@@ -1,27 +1,9 @@
-export const REDACTED = "«redacted»";
-
-export interface SanitizeOptions {
-  /** Header names (lowercased) whose values are masked but kept. */
-  redactHeaders: Set<string>;
-  /** Object keys (lowercased) whose values are masked anywhere in a body/query. */
-  redactKeys: Set<string>;
-  /** Max serialized body size before truncation. */
-  maxBodyBytes: number;
-}
+import { REDACTED } from "./constants";
+import type { SanitizeOptions } from "./types";
 
 /** Normalize an object key for redaction matching: lowercased, separators stripped,
  * so `access_token`, `api-key`, `accessToken` all collapse to one comparable form. */
 export const normalizeKey = (key: string): string => key.toLowerCase().replace(/[-_]/g, "");
-
-export const DEFAULT_SANITIZE: SanitizeOptions = {
-  redactHeaders: new Set(["authorization", "cookie", "set-cookie", "proxy-authorization"]),
-  redactKeys: new Set(
-    ["password", "token", "secret", "authenticationtoken", "accesstoken", "refreshtoken", "apikey", "clientsecret", "privatekey"].map(
-      normalizeKey
-    )
-  ),
-  maxBodyBytes: 64 * 1024,
-};
 
 export const sanitizeHeaders = (
   headers: Record<string, string>,

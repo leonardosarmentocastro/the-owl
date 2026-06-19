@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest";
 import { mkdtempSync, rmSync, readdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createCollector } from "../src/collector";
+import { createCollector } from "../src/capture/collector";
 import { drainToDisk } from "../src/persist/drain-to-disk";
 import { readCatalog } from "../src/persist/read-catalog";
 import { endpointSlug } from "../src/persist/slug";
