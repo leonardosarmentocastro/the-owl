@@ -2,7 +2,7 @@ import { join } from "node:path";
 import type { Express } from "express";
 import { createCollector } from "./capture/collector";
 import { createCaptureMiddleware } from "./capture/middleware";
-import { drainToDisk } from "./persist/drain-to-disk";
+import { drainToDisk } from "./drain/to-disk";
 import { TEST_NAME_HEADER } from "./capture/constants";
 import { DEFAULT_SANITIZE } from "./capture/constants";
 import { normalizeKey } from "./capture/sanitize";

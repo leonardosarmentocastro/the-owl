@@ -4,9 +4,12 @@ import { join } from "node:path";
 import type { Collector } from "../capture/types";
 import { endpointSlug } from "./slug";
 
-// EC7: test runners fork a process per file and run them concurrently. Each drain writes a
-// UNIQUE file (<slug>.<uuid>.json) so concurrent processes never clobber each other; the merge
-// happens later in readCatalog().
+/**
+ * Drain step (pipeline phase 2): empty a Collector to `.owl/*.json`. Each Endpoint
+ * is written to its own `<slug>.<uuid>.json` file. The uuid makes every write
+ * unique so the concurrently-forked test processes never clobber one another; the
+ * merge into a single Catalog happens later in the catalog domain (`readCatalog`).
+ */
 export const drainToDisk = (collector: Collector, dir: string): string[] => {
   mkdirSync(dir, { recursive: true });
   const written: string[] = [];

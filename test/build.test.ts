@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync, mkdirSync, writeFileSync, existsSync, readFileSync
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createCollector } from "../src/capture/collector";
-import { drainToDisk } from "../src/persist/drain-to-disk";
+import { drainToDisk } from "../src/drain/to-disk";
 import { runBuild } from "../src/build";
 
 let root: string;
