@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { TEST_NAME_HEADER } from "./headers";
+import { TEST_NAME_HEADER } from "./constants";
 
 /** Returns the-owl's correlation header, filled from the current Vitest test name. */
 export const owlHeaders = (): Record<string, string> => {

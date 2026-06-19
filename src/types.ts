@@ -29,6 +29,3 @@ export interface Catalog {
   generatedAt: string;
   endpoints: Endpoint[];
 }
-
-export const endpointKey = (method: string, route: string): string =>
-  `${method.toUpperCase()} ${route}`;

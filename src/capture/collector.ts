@@ -1,19 +1,13 @@
-import type { CapturedRequest, CapturedResponse, Endpoint } from "./model";
-import { endpointKey } from "./model";
+import type { Endpoint } from "../types";
+import { endpointKey } from "../keys";
+import type { Collector, RecordInput } from "./types";
 
-export interface RecordInput {
-  testName: string;
-  method: string;
-  route: string;
-  request: CapturedRequest;
-  response: CapturedResponse;
-}
-
-export interface Collector {
-  record(input: RecordInput): void;
-  drain(): Endpoint[];
-}
-
+/**
+ * Create a Collector: the in-memory accumulator the capture middleware writes to
+ * during one test process. `record` dedupes by testName+method+route (first write
+ * wins) so a res.json→res.end double-fire keeps the real body; `drain` groups the
+ * Examples into serialized Endpoints for the drain domain to persist.
+ */
 export const createCollector = (): Collector => {
   // EC1: keyed by testName+method+route, so one test can document several endpoints
   // while res.json→res.end double-fires and repeated calls to the same endpoint dedupe.

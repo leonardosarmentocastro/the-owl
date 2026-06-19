@@ -1,9 +1,16 @@
 import type { Request, Response, NextFunction } from "express";
-import type { Collector } from "./collector";
-import { TEST_NAME_HEADER, filterHeaders } from "./headers";
-import { DEFAULT_SANITIZE, sanitizeHeaders, sanitizeBody, type SanitizeOptions } from "./sanitize";
+import { TEST_NAME_HEADER, DEFAULT_SANITIZE } from "./constants";
+import { filterHeaders } from "./headers";
+import { sanitizeHeaders, sanitizeBody } from "./sanitize";
+import type { Collector, SanitizeOptions } from "./types";
 
-export const makeCaptureMiddleware =
+/**
+ * Create the Express middleware that captures the request/response of any request
+ * tagged with the `x-test-name` header. It patches res.json/res.send/res.end so it
+ * runs AFTER routing (route template + parsed body available), sanitizes the pair,
+ * and records it into the Collector. This is step 1 of the pipeline (capture).
+ */
+export const createCaptureMiddleware =
   (collector: Collector, sanitize: SanitizeOptions = DEFAULT_SANITIZE) =>
   (req: Request, res: Response, next: NextFunction): void => {
     const testName = req.header(TEST_NAME_HEADER);

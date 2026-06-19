@@ -2,14 +2,9 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import express, { type RequestHandler } from "express";
+import type { DocsOptions } from "./types";
 
-export interface DocsOptions {
-  /** Path to catalog.json from `the-owl build`. Default: ./docs/site/catalog.json */
-  catalog?: string;
-  /** Path to the pre-built React bundle. Default: the bundle shipped in the package. */
-  bundleDir?: string;
-}
-
+/** Live-route Renderer: serve the catalog + React bundle from a running app. */
 export const docs = (options: DocsOptions = {}): RequestHandler => {
   const here = dirname(fileURLToPath(import.meta.url));
   const bundleDir = options.bundleDir ?? join(here, "web");

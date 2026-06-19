@@ -1,4 +1,4 @@
-export const TEST_NAME_HEADER = "x-test-name";
+import { TEST_NAME_HEADER } from "./constants";
 
 const IGNORED_HEADERS = new Set<string>([
   TEST_NAME_HEADER,
@@ -15,6 +15,7 @@ const IGNORED_HEADERS = new Set<string>([
   "x-powered-by",
 ]);
 
+/** Drop transport/noise headers so a captured Example keeps only meaningful ones. */
 export const filterHeaders = (
   headers: Record<string, unknown> | undefined
 ): Record<string, string> => {

@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/the-owl-lockup-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="./assets/the-owl-lockup-light.svg" />
+    <img src="./assets/the-owl-lockup-light.svg" alt="the-owl" width="240" />
+  </picture>
+</p>
+
 # the-owl
 
 Generate **interactive HTML API docs** from your functional tests.

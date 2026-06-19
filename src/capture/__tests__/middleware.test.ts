@@ -1,15 +1,15 @@
 import { describe, it, expect } from "vitest";
 import express from "express";
 import type { AddressInfo } from "node:net";
-import { createCollector } from "../src/collector";
-import { makeCaptureMiddleware } from "../src/capture";
-import { TEST_NAME_HEADER } from "../src/headers";
+import { createCollector } from "../collector";
+import { createCaptureMiddleware } from "../middleware";
+import { TEST_NAME_HEADER } from "../constants";
 
 const start = async () => {
   const collector = createCollector();
   const app = express();
   app.use(express.json());
-  app.use(makeCaptureMiddleware(collector));
+  app.use(createCaptureMiddleware(collector));
   app.get("/health", (_req, res) => res.status(200).send("OK"));
   const users = express.Router();
   users.get("/:id", (req, res) => res.json({ id: req.params.id }));
