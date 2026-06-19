@@ -2,10 +2,10 @@ import { describe, it, expect, afterEach } from "vitest";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createCollector } from "../src/capture/collector";
-import { drainToDisk } from "../src/drain/to-disk";
-import { readCatalog } from "../src/persist/read-catalog";
-import type { CapturedRequest, CapturedResponse } from "../src/types";
+import { createCollector } from "../../capture/collector";
+import { drainToDisk } from "../../drain/to-disk";
+import { readCatalog } from "../read";
+import type { CapturedRequest, CapturedResponse } from "../../types";
 
 let dir: string;
 afterEach(() => dir && rmSync(dir, { recursive: true, force: true }));
@@ -19,7 +19,7 @@ const seed = (name: string, body: unknown) => {
   return c;
 };
 
-describe("catalog (merge)", () => {
+describe("catalog read", () => {
   it("merges Examples by endpoint key across multiple drain files (EC7)", () => {
     dir = mkdtempSync(join(tmpdir(), "owl-"));
     // simulate two separate test processes documenting the SAME endpoint

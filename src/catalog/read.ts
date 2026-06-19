@@ -3,8 +3,12 @@ import { join } from "node:path";
 import type { Catalog, Endpoint } from "../types";
 import { endpointKey } from "../keys";
 
-// EC7: merge Examples from every drain file by endpoint key, so the same endpoint documented
-// across multiple test files becomes one Endpoint (Examples deduped by name).
+/**
+ * Catalog step (pipeline phase 3): read every drain fragment in `dir` and merge
+ * them into one in-memory Catalog — the source of truth a Renderer consumes. This
+ * domain WRITES NOTHING; the same Endpoint documented across multiple test files
+ * becomes one Endpoint (Examples deduped by name). EC7.
+ */
 export const readCatalog = (dir: string): Catalog => {
   const byKey = new Map<string, Endpoint>();
   if (existsSync(dir)) {

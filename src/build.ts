@@ -1,4 +1,4 @@
-import { readCatalog } from "./persist/read-catalog";
+import { readCatalog } from "./catalog/read";
 import { emitHtml } from "./renderers/html";
 
 export interface BuildOptions {
