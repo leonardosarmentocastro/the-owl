@@ -50,3 +50,12 @@ pnpm test:create-docs
 This runs the tests with `CREATE_DOCS=true`, drains captured traffic into
 `.owl/`, and runs `the-owl build` to produce a static site in `docs/site/`
 (open `docs/site/index.html`).
+
+## Trying endpoints live
+
+When the docs are served via `theOwl.docs()` (set `OWL_DOCS=1`), each Example is
+interactive: expand it, edit the path params / query / headers / body, and click
+**Try it out** to fire a real same-origin request and see the live response. The
+captured owl test header is dropped automatically, and any redacted value is
+shown as an empty field you must fill before firing. The static `docs/site` build
+(opened from `file://`) stays read-only — there is no server to call.
