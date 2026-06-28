@@ -1,4 +1,5 @@
 import type { Endpoint } from "../api";
+import { ExampleAccordion } from "./ExampleAccordion";
 
 export const EndpointCard = ({ endpoint }: { endpoint: Endpoint }) => (
   <section style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16, marginTop: 16 }}>
@@ -6,15 +7,7 @@ export const EndpointCard = ({ endpoint }: { endpoint: Endpoint }) => (
       <span style={{ color: "#067" }}>{endpoint.method}</span> {endpoint.route}
     </h2>
     {endpoint.examples.map((example) => (
-      <details key={example.name} style={{ marginTop: 8 }}>
-        <summary>
-          {example.name} — <code>{example.response.status}</code>
-        </summary>
-        <h4>Request</h4>
-        <pre>{JSON.stringify(example.request.body ?? {}, null, 2)}</pre>
-        <h4>Response</h4>
-        <pre>{JSON.stringify(example.response.body ?? {}, null, 2)}</pre>
-      </details>
+      <ExampleAccordion key={example.name} method={endpoint.method} route={endpoint.route} example={example} />
     ))}
   </section>
 );
