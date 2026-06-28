@@ -30,6 +30,11 @@ export const buildRequest = (form: RequestFormState): { url: string; init: Reque
 /** Human-readable reasons the form cannot be fired yet; empty array means OK. */
 export const validateForm = (form: RequestFormState): string[] => {
   const errors: string[] = [];
+  for (const q of form.query) {
+    if (q.needsInput && q.value.trim() === "") {
+      errors.push(`Query param "${q.name}" was redacted — enter a value`);
+    }
+  }
   for (const h of form.headers) {
     if (h.needsInput && h.value.trim() === "") {
       errors.push(`Header "${h.name}" was redacted — enter a value`);

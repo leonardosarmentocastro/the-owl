@@ -35,10 +35,9 @@ export const prefillFromExample = (example: Example, route: string): RequestForm
     ([name, value]) => ({ name, value })
   );
 
-  const query: KeyValue[] = Object.entries(request.query ?? {}).map(([name, value]) => ({
-    name,
-    value: String(value),
-  }));
+  const query: KeyValue[] = Object.entries(request.query ?? {}).map(([name, value]) =>
+    value === REDACTED_SENTINEL ? { name, value: "", needsInput: true } : { name, value: String(value) }
+  );
 
   return { method: request.method, route, pathParams, query, headers, body: bodyToText(request.body) };
 };

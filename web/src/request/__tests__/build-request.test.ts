@@ -61,4 +61,9 @@ describe("validateForm", () => {
       "Request body still contains a redacted placeholder — replace it"
     );
   });
+
+  it("blocks an unfilled redacted query param", () => {
+    const errors = validateForm(base({ query: [{ name: "token", value: "", needsInput: true }] }));
+    expect(errors).toContain('Query param "token" was redacted — enter a value');
+  });
 });

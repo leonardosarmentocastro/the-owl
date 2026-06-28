@@ -43,6 +43,17 @@ describe("prefillFromExample", () => {
     expect(form.query).toEqual([{ name: "active", value: "true" }]);
   });
 
+  it("empties + flags redacted query param values", () => {
+    const form = prefillFromExample(example({ query: { token: "«redacted»" } }), "/users/:id");
+    const token = form.query.find((q) => q.name === "token");
+    expect(token).toEqual({ name: "token", value: "", needsInput: true });
+  });
+
+  it("keeps normal query param values unchanged", () => {
+    const form = prefillFromExample(example({ query: { active: "true" } }), "/users/:id");
+    expect(form.query.find((q) => q.name === "active")).toEqual({ name: "active", value: "true" });
+  });
+
   it("clears redacted values inside the body JSON and pretty-prints it", () => {
     const form = prefillFromExample(example(), "/users/:id");
     expect(form.body).toBe(JSON.stringify({ email: "a@b.io", password: "" }, null, 2));
