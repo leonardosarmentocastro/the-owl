@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "build:the-owl": "npm --prefix ../.. install && npm --prefix ../.. run build && pnpm install",
     "test": "vitest run",
+    "pretest:create-docs": "pnpm run build:the-owl",
     "test:create-docs": "rimraf .owl docs && CREATE_DOCS=true vitest run && the-owl build"
   },
   "devDependencies": {
