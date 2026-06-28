@@ -1,6 +1,6 @@
 export interface Example {
   name: string;
-  request: { url: string; method: string; path: string; headers: Record<string, string>; body: unknown };
+  request: { url: string; method: string; path: string; query: Record<string, unknown>; headers: Record<string, string>; body: unknown };
   response: { status: number; headers: Record<string, string>; body: unknown };
 }
 export interface Endpoint { method: string; route: string; examples: Example[] }
