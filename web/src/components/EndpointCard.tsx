@@ -1,20 +1,27 @@
 import type { Endpoint } from "../api";
-import { ExampleAccordion } from "./ExampleAccordion";
+import { ExampleAccordion } from "./ExampleAccordion/ExampleAccordion";
+import { cn } from "@/lib/shadcn/utils";
+import { methodColorClass } from "../theme/http-color-mapper";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const EndpointCard = ({ endpoint, baseUrl, activeHash }: { endpoint: Endpoint; baseUrl: string; activeHash?: string }) => (
-  <section style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16, marginTop: 16 }}>
-    <h2 style={{ fontFamily: "monospace" }}>
-      <span style={{ color: "#067" }}>{endpoint.method}</span> {endpoint.route}
-    </h2>
-    {endpoint.examples.map((example) => (
-      <ExampleAccordion
-        key={example.name}
-        method={endpoint.method}
-        route={endpoint.route}
-        example={example}
-        baseUrl={baseUrl}
-        activeHash={activeHash}
-      />
-    ))}
-  </section>
+  <Card className="mt-4 gap-3 py-4 sm:gap-6 sm:py-6">
+    <CardHeader className="px-3 sm:px-6">
+      <CardTitle className="font-mono text-lg">
+        <span className={cn("font-bold", methodColorClass(endpoint.method))}>{endpoint.method}</span> {endpoint.route}
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="px-3 sm:px-6">
+      {endpoint.examples.map((example) => (
+        <ExampleAccordion
+          key={example.name}
+          method={endpoint.method}
+          route={endpoint.route}
+          example={example}
+          baseUrl={baseUrl}
+          activeHash={activeHash}
+        />
+      ))}
+    </CardContent>
+  </Card>
 );

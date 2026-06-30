@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
-import { ResponsePanel } from "../ResponsePanel";
-import type { LiveResult } from "../../request/fire";
+import { render, screen, cleanup, within } from "@testing-library/react";
+import { ResponsePanel, type ResponseData } from "../ResponsePanel";
 
-const ok: LiveResult = {
-  ok: true, status: 200, statusText: "OK", timeMs: 12, sizeBytes: 8,
+const ok: ResponseData = {
+  status: 200, statusText: "OK", timeMs: 12, sizeBytes: 8,
   headers: { "content-type": "application/json" }, bodyText: '{"id":2}',
 };
 
@@ -19,7 +18,20 @@ describe("ResponsePanel", () => {
   });
 
   it("shows an error block when the fetch failed", () => {
-    render(<ResponsePanel result={{ ...ok, ok: false, status: 0, bodyText: "", error: "boom" }} />);
+    render(<ResponsePanel result={{ ...ok, status: 0, bodyText: "", error: "boom" }} />);
     expect(screen.getByText(/boom/)).toBeTruthy();
+  });
+
+  it("lists response headers in a read-only table", () => {
+    render(<ResponsePanel result={ok} />);
+    const table = screen.getByRole("table", { name: "Response headers" });
+    expect(within(table).getByText("content-type")).toBeTruthy();
+    expect(within(table).getByText("application/json")).toBeTruthy();
+    expect(within(table).queryByRole("textbox")).toBeNull();
+  });
+
+  it("offers a copy button for the body", () => {
+    render(<ResponsePanel result={ok} />);
+    expect(screen.getByRole("button", { name: /copy/i })).toBeTruthy();
   });
 });

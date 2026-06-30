@@ -2,7 +2,7 @@
 import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { ExampleAccordion } from "../ExampleAccordion";
-import type { Example } from "../../api";
+import type { Example } from "../../../api";
 
 const example: Example = {
   name: "returns the user",
@@ -93,6 +93,14 @@ describe("ExampleAccordion", () => {
       fireEvent.click(screen.getByText(/returns the user/));
       expect(screen.getByRole("button", { name: /try it out/i })).toBeTruthy();
       expect(screen.getByText(/curl -X GET/)).toBeTruthy();
+    });
+
+    it("shows the captured response by default before firing", () => {
+      render(<ExampleAccordion method="GET" route="/users/:id" example={example} baseUrl="http://localhost:3000" />);
+      fireEvent.click(screen.getByText(/returns the user/));
+      // the form is present (live) AND the captured response body is already shown
+      expect(screen.getByRole("button", { name: /try it out/i })).toBeTruthy();
+      expect(screen.getByText(/"name": "Paul"/)).toBeTruthy();
     });
   });
 });

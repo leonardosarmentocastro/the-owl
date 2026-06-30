@@ -1,0 +1,3 @@
+@import "tailwindcss";
+/* shadcn/ui theme tokens live in their own file to keep this entry minimal. */
+@import "./lib/shadcn/styles.css";
