@@ -4,7 +4,11 @@ export interface Example {
   response: { status: number; headers: Record<string, string>; body: unknown };
 }
 export interface Endpoint { method: string; route: string; examples: Example[] }
-export interface Catalog { generatedAt: string; endpoints: Endpoint[] }
+export interface Catalog { generatedAt: string; endpoints: Endpoint[]; baseUrl?: string }
+
+/** Fallback base URL for static-mode curl commands when THE_OWL_DOCS_HOST was
+ * not set at build time. */
+export const DEFAULT_DOCS_HOST = "http://localhost:3000";
 
 export const loadCatalog = async (): Promise<Catalog> => {
   const res = await fetch("./catalog.json");
