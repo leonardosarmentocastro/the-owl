@@ -1,5 +1,9 @@
+import { AlertCircle } from "lucide-react";
 import type { LiveResult } from "../request/fire";
 import { CodeBlock } from "./CodeBlock";
+import { StatusBadge } from "./StatusBadge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const prettify = (text: string): string => {
   try {
@@ -12,32 +16,30 @@ const prettify = (text: string): string => {
 export const ResponsePanel = ({ result }: { result: LiveResult }) => {
   if (result.error) {
     return (
-      <div style={{ marginTop: 10, border: "1px solid crimson", borderRadius: 6, padding: 10, color: "crimson" }}>
-        <strong>Request failed:</strong> {result.error}
-      </div>
+      <Alert variant="destructive" className="mt-2.5">
+        <AlertCircle className="size-4" />
+        <AlertTitle>Request failed</AlertTitle>
+        <AlertDescription>{result.error}</AlertDescription>
+      </Alert>
     );
   }
 
-  const ok2xx = result.status >= 200 && result.status < 300;
   return (
-    <div style={{ marginTop: 10, borderTop: "1px dashed #ccc", paddingTop: 10 }}>
-      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <span
-          style={{
-            fontFamily: "monospace", fontWeight: 700, padding: "1px 8px", borderRadius: 20,
-            background: ok2xx ? "#dcfce7" : "#fee2e2", color: ok2xx ? "#15803d" : "#b91c1c",
-          }}
-        >
-          {result.status} {result.statusText}
-        </span>
-        <small style={{ opacity: 0.7 }}>{result.timeMs} ms · {result.sizeBytes} B</small>
+    <div className="mt-2.5 border-t border-dashed pt-2.5">
+      <div className="flex items-center gap-2.5">
+        <StatusBadge status={result.status} statusText={result.statusText} />
+        <small className="text-muted-foreground">{result.timeMs} ms · {result.sizeBytes} B</small>
       </div>
       <h4>Body</h4>
       <CodeBlock>{prettify(result.bodyText)}</CodeBlock>
-      <details>
-        <summary>Response headers ({Object.keys(result.headers).length})</summary>
-        <CodeBlock>{Object.entries(result.headers).map(([k, v]) => `${k}: ${v}`).join("\n")}</CodeBlock>
-      </details>
+      <Collapsible>
+        <CollapsibleTrigger className="text-sm text-muted-foreground">
+          Response headers ({Object.keys(result.headers).length})
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <CodeBlock>{Object.entries(result.headers).map(([k, v]) => `${k}: ${v}`).join("\n")}</CodeBlock>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 };

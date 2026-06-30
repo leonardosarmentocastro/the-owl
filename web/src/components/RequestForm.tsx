@@ -1,5 +1,11 @@
+import { Play, Plus, X } from "lucide-react";
 import { validateForm } from "../request/build-request";
 import type { KeyValue, RequestFormState } from "../request/types";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
   form: RequestFormState;
@@ -8,33 +14,35 @@ interface Props {
   firing: boolean;
 }
 
-const label: React.CSSProperties = {
-  display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: ".04em", opacity: 0.7, marginTop: 8,
-};
-const input: React.CSSProperties = { fontFamily: "monospace", fontSize: 12, padding: "5px 8px" };
+const labelClass = "mt-2 block text-[11px] uppercase tracking-wide text-muted-foreground";
 
 const KeyValueRows = ({
   title, rows, onRows,
 }: { title: string; rows: KeyValue[]; onRows: (rows: KeyValue[]) => void }) => (
   <div>
-    <span style={label}>{title}</span>
+    <Label className={labelClass}>{title}</Label>
     {rows.map((row, i) => (
-      <div key={i} style={{ display: "flex", gap: 6, marginTop: 4 }}>
-        <input
-          style={input} placeholder="name" value={row.name}
+      <div key={i} className="mt-1 flex gap-1.5">
+        <Input
+          className="font-mono text-xs"
+          placeholder="name"
+          value={row.name}
           onChange={(e) => onRows(rows.map((r, j) => (j === i ? { ...r, name: e.target.value } : r)))}
         />
-        <input
-          style={{ ...input, flex: 1, border: row.needsInput && row.value.trim() === "" ? "1px solid #f59e0b" : undefined }}
-          placeholder={row.needsInput ? "was redacted — enter a value" : "value"} value={row.value}
+        <Input
+          className={cn("flex-1 font-mono text-xs", row.needsInput && row.value.trim() === "" && "border-amber-500")}
+          placeholder={row.needsInput ? "was redacted — enter a value" : "value"}
+          value={row.value}
           onChange={(e) => onRows(rows.map((r, j) => (j === i ? { ...r, value: e.target.value } : r)))}
         />
-        <button type="button" onClick={() => onRows(rows.filter((_, j) => j !== i))}>×</button>
+        <Button type="button" variant="ghost" size="icon" aria-label="Remove" onClick={() => onRows(rows.filter((_, j) => j !== i))}>
+          <X className="size-4" />
+        </Button>
       </div>
     ))}
-    <button type="button" style={{ marginTop: 4 }} onClick={() => onRows([...rows, { name: "", value: "" }])}>
-      + add
-    </button>
+    <Button type="button" variant="outline" size="sm" className="mt-1" onClick={() => onRows([...rows, { name: "", value: "" }])}>
+      <Plus className="size-3.5" /> add
+    </Button>
   </div>
 );
 
@@ -43,15 +51,16 @@ export const RequestForm = ({ form, onChange, onFire, firing }: Props) => {
   const bodyless = form.method === "GET" || form.method === "HEAD";
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+    <div className="flex flex-col gap-1">
       {form.pathParams.length > 0 && (
         <div>
-          <span style={label}>Path</span>
+          <Label className={labelClass}>Path</Label>
           {form.pathParams.map((p, i) => (
-            <div key={p.name} style={{ display: "flex", gap: 6, marginTop: 4, alignItems: "center" }}>
-              <code>{p.name}</code>
-              <input
-                style={{ ...input, flex: 1 }} value={p.value}
+            <div key={p.name} className="mt-1 flex items-center gap-1.5">
+              <code className="font-mono text-xs">{p.name}</code>
+              <Input
+                className="flex-1 font-mono text-xs"
+                value={p.value}
                 onChange={(e) =>
                   onChange({ ...form, pathParams: form.pathParams.map((q, j) => (j === i ? { ...q, value: e.target.value } : q)) })
                 }
@@ -66,24 +75,22 @@ export const RequestForm = ({ form, onChange, onFire, firing }: Props) => {
 
       {!bodyless && (
         <div>
-          <span style={label}>Body</span>
-          <textarea
-            style={{ ...input, width: "100%", minHeight: 80, boxSizing: "border-box" }}
-            value={form.body} onChange={(e) => onChange({ ...form, body: e.target.value })}
+          <Label className={labelClass}>Body</Label>
+          <Textarea
+            className="min-h-20 w-full font-mono text-xs"
+            value={form.body}
+            onChange={(e) => onChange({ ...form, body: e.target.value })}
           />
         </div>
       )}
 
       {errors.map((e) => (
-        <small key={e} style={{ color: "#b45309" }}>{e}</small>
+        <small key={e} className="text-amber-600">{e}</small>
       ))}
 
-      <button
-        type="button" style={{ alignSelf: "flex-start", marginTop: 8, padding: "7px 16px" }}
-        disabled={firing || errors.length > 0} onClick={onFire}
-      >
-        {firing ? "Firing…" : "Try it out ▶"}
-      </button>
+      <Button type="button" className="mt-2 self-start" disabled={firing || errors.length > 0} onClick={onFire}>
+        <Play className="size-3.5" /> {firing ? "Firing…" : "Try it out"}
+      </Button>
     </div>
   );
 };
