@@ -61,10 +61,10 @@ export const ExampleAccordion = ({
   return (
     <div id={slug} ref={ref} className="scroll-mt-4 border-t">
       <Collapsible open={open} onOpenChange={onOpenChange}>
-        <CollapsibleTrigger className="flex w-full items-center gap-2.5 px-1 py-2.5 text-left">
+        <CollapsibleTrigger className="flex w-full cursor-pointer select-text items-center gap-2.5 rounded-md px-1 py-2.5 text-left transition-colors hover:bg-muted hover:underline">
           {open
-            ? <ChevronDown className="size-3.5 text-muted-foreground" />
-            : <ChevronRight className="size-3.5 text-muted-foreground" />}
+            ? <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
+            : <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />}
           <StatusText status={example.response.status} />
           <span>{example.name}</span>
         </CollapsibleTrigger>
