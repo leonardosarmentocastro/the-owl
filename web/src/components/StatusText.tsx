@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { statusColorClass } from "../http-style";
 
 const REASON_PHRASES: Record<number, string> = {
   200: "OK",
@@ -43,11 +44,8 @@ export const statusLabel = (status: number, statusText?: string): string => {
 
 export const StatusText = ({
   status, statusText, className,
-}: { status: number; statusText?: string; className?: string }) => {
-  const ok2xx = status >= 200 && status < 300;
-  return (
-    <span className={cn("font-mono font-bold", ok2xx ? "text-green-700" : "text-red-700", className)}>
-      {statusLabel(status, statusText)}
-    </span>
-  );
-};
+}: { status: number; statusText?: string; className?: string }) => (
+  <span className={cn("font-mono font-bold", statusColorClass(status), className)}>
+    {statusLabel(status, statusText)}
+  </span>
+);
