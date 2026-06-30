@@ -1,20 +1,26 @@
 import type { Endpoint } from "../api";
 import { ExampleAccordion } from "./ExampleAccordion";
+import { MethodBadge } from "./MethodBadge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const EndpointCard = ({ endpoint, baseUrl, activeHash }: { endpoint: Endpoint; baseUrl: string; activeHash?: string }) => (
-  <section style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16, marginTop: 16 }}>
-    <h2 style={{ fontFamily: "monospace" }}>
-      <span style={{ color: "#067" }}>{endpoint.method}</span> {endpoint.route}
-    </h2>
-    {endpoint.examples.map((example) => (
-      <ExampleAccordion
-        key={example.name}
-        method={endpoint.method}
-        route={endpoint.route}
-        example={example}
-        baseUrl={baseUrl}
-        activeHash={activeHash}
-      />
-    ))}
-  </section>
+  <Card className="mt-4">
+    <CardHeader>
+      <CardTitle className="font-mono text-lg">
+        <MethodBadge method={endpoint.method} /> {endpoint.route}
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      {endpoint.examples.map((example) => (
+        <ExampleAccordion
+          key={example.name}
+          method={endpoint.method}
+          route={endpoint.route}
+          example={example}
+          baseUrl={baseUrl}
+          activeHash={activeHash}
+        />
+      ))}
+    </CardContent>
+  </Card>
 );
