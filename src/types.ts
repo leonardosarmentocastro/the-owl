@@ -28,4 +28,7 @@ export interface Endpoint {
 export interface Catalog {
   generatedAt: string;
   endpoints: Endpoint[];
+  /** Base URL baked at build time from THE_OWL_DOCS_HOST; used by the static
+   * docs to render runnable curl commands. Absent when the env var is unset. */
+  baseUrl?: string;
 }

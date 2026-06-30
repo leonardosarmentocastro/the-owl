@@ -32,4 +32,42 @@ describe("build", () => {
     const catalog = JSON.parse(readFileSync(join(site, "catalog.json"), "utf8"));
     expect(catalog.endpoints[0].route).toBe("/users/:id");
   });
+
+  const seedRoot = () => {
+    const r = mkdtempSync(join(tmpdir(), "owl-root-"));
+    const owlDir = join(r, ".owl");
+    const bundle = join(r, "bundle");
+    mkdirSync(bundle, { recursive: true });
+    writeFileSync(join(bundle, "index.html"), "<html></html>");
+    const c = createCollector();
+    c.record({
+      testName: "(200) ok", method: "GET", route: "/users/:id",
+      request: { url: "u", method: "GET", path: "/users/1", query: {}, headers: {}, body: null },
+      response: { status: 200, headers: {}, body: { id: 1 } },
+    });
+    drainToDisk(c, owlDir);
+    return { r, owlDir, bundle };
+  };
+
+  it("bakes THE_OWL_DOCS_HOST into catalog.baseUrl when set", () => {
+    const seeded = seedRoot();
+    root = seeded.r;
+    process.env.THE_OWL_DOCS_HOST = "https://api.example.com";
+    try {
+      runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+    } finally {
+      delete process.env.THE_OWL_DOCS_HOST;
+    }
+    const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
+    expect(catalog.baseUrl).toBe("https://api.example.com");
+  });
+
+  it("omits catalog.baseUrl when THE_OWL_DOCS_HOST is unset", () => {
+    delete process.env.THE_OWL_DOCS_HOST;
+    const seeded = seedRoot();
+    root = seeded.r;
+    runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+    const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
+    expect(catalog.baseUrl).toBeUndefined();
+  });
 });

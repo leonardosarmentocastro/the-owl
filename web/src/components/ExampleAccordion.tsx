@@ -7,10 +7,11 @@ import type { RequestFormState } from "../request/types";
 import { RequestForm } from "./RequestForm";
 import { ResponsePanel } from "./ResponsePanel";
 import { CodeBlock } from "./CodeBlock";
+import { CurlBlock } from "./CurlBlock";
 
 export const ExampleAccordion = ({
-  method, route, example,
-}: { method: string; route: string; example: Example }) => {
+  method, route, example, baseUrl,
+}: { method: string; route: string; example: Example; baseUrl: string }) => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<RequestFormState | null>(null);
   const [result, setResult] = useState<LiveResult | null>(null);
@@ -51,6 +52,7 @@ export const ExampleAccordion = ({
             <>
               <RequestForm form={form} onChange={setForm} onFire={fire} firing={firing} />
               {result && <ResponsePanel result={result} />}
+              <CurlBlock form={form} baseUrl={baseUrl} />
             </>
           ) : (
             <>
@@ -58,6 +60,7 @@ export const ExampleAccordion = ({
               <CodeBlock>{JSON.stringify(example.request.body ?? {}, null, 2)}</CodeBlock>
               <h4>Response</h4>
               <CodeBlock>{JSON.stringify(example.response.body ?? {}, null, 2)}</CodeBlock>
+              <CurlBlock form={prefillFromExample(example, route)} baseUrl={baseUrl} />
             </>
           )}
         </div>

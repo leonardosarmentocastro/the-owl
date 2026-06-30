@@ -118,7 +118,11 @@ describe("[get] /health", () => {
 Both modes read the same `the-owl build` output:
 
 - **Static** — open or host the generated `docs/site/` directory directly
-  (`docs/site/index.html` + assets). Read-only.
+  (`docs/site/index.html` + assets). Read-only, but every Example offers a
+  **Copy as cURL** command you can run against your own API. Set the base URL
+  baked into those commands with the `THE_OWL_DOCS_HOST` env var at build time
+  (e.g. `THE_OWL_DOCS_HOST=https://api.example.com the-owl build`); it defaults
+  to `http://localhost:3000`.
 - **Live route** — mount `theOwl.docs()` to serve the docs from your running app,
   e.g. only in staging:
 
@@ -136,6 +140,12 @@ if (process.env.NODE_ENV === "staging") {
   header is dropped automatically, and any redacted value is shown as an empty
   field you must fill before firing. The static build has no server to call, so
   it stays read-only.
+
+  Both modes also expose a **Copy as cURL** button on each Example. In live mode
+  the command reflects your current edits and targets the page's own origin; in
+  static mode it uses the `THE_OWL_DOCS_HOST` base URL. Redacted or missing
+  values appear as `<CHANGE_ME:name>` so it's obvious what to fill in before
+  running the command.
 
 ## Secret redaction
 
