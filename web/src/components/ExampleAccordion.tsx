@@ -10,7 +10,7 @@ import { RequestForm } from "./RequestForm";
 import { ResponsePanel, type ResponseData } from "./ResponsePanel";
 import { CodeBlock } from "./CodeBlock";
 import { CurlBlock } from "./CurlBlock";
-import { StatusBadge } from "./StatusBadge";
+import { StatusText } from "./StatusText";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const SectionTitle = ({ children }: { children: ReactNode }) => (
@@ -65,7 +65,7 @@ export const ExampleAccordion = ({
           {open
             ? <ChevronDown className="size-3.5 text-muted-foreground" />
             : <ChevronRight className="size-3.5 text-muted-foreground" />}
-          <StatusBadge status={example.response.status} />
+          <StatusText status={example.response.status} />
           <span>{example.name}</span>
         </CollapsibleTrigger>
         <CollapsibleContent className="px-1 pb-3.5 pl-9">

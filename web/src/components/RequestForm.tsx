@@ -31,12 +31,12 @@ const stripTrailingEmpty = (rows: KeyValue[]): KeyValue[] => {
   return out;
 };
 
-const TableHead = () => (
+const TableHead = ({ actions = true }: { actions?: boolean }) => (
   <thead>
     <tr className="bg-muted/50 text-[11px] uppercase tracking-wide text-muted-foreground">
       <th className="w-2/5 border-b border-r px-2 py-1 text-left font-normal">Name</th>
       <th className="border-b px-2 py-1 text-left font-normal">Value</th>
-      <th className="w-8 border-b border-l" aria-hidden="true" />
+      {actions && <th className="w-8 border-b border-l" aria-hidden="true" />}
     </tr>
   </thead>
 );
@@ -110,7 +110,7 @@ const PathTable = ({
   <div>
     <Label className={labelClass}>Path</Label>
     <table aria-label="Path" className="mt-1 w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
-      <TableHead />
+      <TableHead actions={false} />
       <tbody>
         {rows.map((row, i) => (
           <tr key={row.name} className="border-b last:border-b-0">
@@ -125,7 +125,6 @@ const PathTable = ({
                 onChange={(e) => onRows(rows.map((r, j) => (j === i ? { ...r, value: e.target.value } : r)))}
               />
             </td>
-            <td className="border-l align-middle" aria-hidden="true" />
           </tr>
         ))}
       </tbody>
@@ -163,7 +162,7 @@ export const RequestForm = ({ form, onChange, onFire, firing, children }: Props)
 
       {children}
 
-      <Button type="button" className="mt-2 self-start" disabled={firing || errors.length > 0} onClick={onFire}>
+      <Button type="button" className="mt-2 w-full" disabled={firing || errors.length > 0} onClick={onFire}>
         <Play className="size-3.5" /> {firing ? "Firing…" : "Try it out"}
       </Button>
     </div>

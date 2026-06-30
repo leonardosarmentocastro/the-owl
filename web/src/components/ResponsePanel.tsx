@@ -1,7 +1,7 @@
 import { AlertCircle } from "lucide-react";
 import { CodeBlock } from "./CodeBlock";
 import { CopyButton } from "./CopyButton";
-import { StatusBadge } from "./StatusBadge";
+import { StatusText } from "./StatusText";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 /** A response to render — either a captured Example response or a live fetch
@@ -43,7 +43,7 @@ export const ResponsePanel = ({ result }: { result: ResponseData }) => {
       <div>
         <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Metadata</span>
         <div className="mt-1 flex items-center gap-2.5">
-          <StatusBadge status={result.status} statusText={result.statusText} />
+          <StatusText status={result.status} statusText={result.statusText} />
           {result.timeMs != null && (
             <small className="text-muted-foreground">{result.timeMs} ms · {result.sizeBytes} B</small>
           )}
