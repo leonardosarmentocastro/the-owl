@@ -1,3 +1,3 @@
 interface Window {
-  __OWL_LIVE__?: boolean;
+  __THE_OWL_LIVE__?: boolean;
 }

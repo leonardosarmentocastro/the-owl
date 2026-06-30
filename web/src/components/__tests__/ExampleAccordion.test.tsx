@@ -10,7 +10,7 @@ const example: Example = {
   response: { status: 200, headers: {}, body: { id: 2, name: "Paul" } },
 };
 
-afterEach(() => { cleanup(); delete window.__OWL_LIVE__; });
+afterEach(() => { cleanup(); delete window.__THE_OWL_LIVE__; });
 
 describe("ExampleAccordion", () => {
   it("is collapsed by default and shows status + name", () => {
@@ -27,7 +27,7 @@ describe("ExampleAccordion", () => {
   });
 
   describe("live mode", () => {
-    beforeEach(() => { window.__OWL_LIVE__ = true; });
+    beforeEach(() => { window.__THE_OWL_LIVE__ = true; });
     it("shows the Try it out form when expanded", () => {
       render(<ExampleAccordion method="GET" route="/users/:id" example={example} />);
       fireEvent.click(screen.getByText(/returns the user/));

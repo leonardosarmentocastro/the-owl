@@ -10,13 +10,13 @@ import { injectLiveFlag, docs } from "../serve";
 describe("injectLiveFlag", () => {
   it("inserts the live marker before </head>", () => {
     const out = injectLiveFlag("<html><head><title>x</title></head><body></body></html>");
-    expect(out).toContain("window.__OWL_LIVE__ = true");
-    expect(out.indexOf("window.__OWL_LIVE__")).toBeLessThan(out.indexOf("</head>"));
+    expect(out).toContain("window.__THE_OWL_LIVE__ = true");
+    expect(out.indexOf("window.__THE_OWL_LIVE__")).toBeLessThan(out.indexOf("</head>"));
   });
 
   it("still injects when there is no head", () => {
     const out = injectLiveFlag("<body>hi</body>");
-    expect(out).toContain("window.__OWL_LIVE__ = true");
+    expect(out).toContain("window.__THE_OWL_LIVE__ = true");
   });
 });
 
@@ -46,6 +46,6 @@ describe("docs() router", () => {
   it("serves the live-flagged index at the trailing-slash path", async () => {
     const res = await fetch(`${base}/docs/`);
     expect(res.status).toBe(200);
-    expect(await res.text()).toContain("window.__OWL_LIVE__ = true");
+    expect(await res.text()).toContain("window.__THE_OWL_LIVE__ = true");
   });
 });

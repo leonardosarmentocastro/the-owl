@@ -21,6 +21,6 @@ export const createApp = (): Express => {
     res.status(200).json(user);
   });
 
-  if (process.env.OWL_DOCS) app.use("/docs", theOwl.docs());
+  if (process.env.THE_OWL_DOCS) app.use("/docs", theOwl.docs());
   return app;
 };

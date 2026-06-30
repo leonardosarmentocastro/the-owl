@@ -1,6 +1,6 @@
 import type { Example } from "../api";
 import { parsePathParams } from "./path-params";
-import { OWL_TEST_HEADER, REDACTED_SENTINEL } from "./constants";
+import { THE_OWL_TEST_HEADER, REDACTED_SENTINEL } from "./constants";
 import type { KeyValue, RequestFormState } from "./types";
 
 const clearRedacted = (value: unknown): unknown => {
@@ -26,7 +26,7 @@ export const prefillFromExample = (example: Example, route: string): RequestForm
   const { request } = example;
 
   const headers: KeyValue[] = Object.entries(request.headers)
-    .filter(([name]) => name.toLowerCase() !== OWL_TEST_HEADER)
+    .filter(([name]) => name.toLowerCase() !== THE_OWL_TEST_HEADER)
     .map(([name, value]) =>
       value === REDACTED_SENTINEL ? { name, value: "", needsInput: true } : { name, value }
     );

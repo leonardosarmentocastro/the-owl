@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import express, { type RequestHandler } from "express";
 import type { DocsOptions } from "./types";
 
-const LIVE_FLAG = "<script>window.__OWL_LIVE__ = true</script>";
+const LIVE_FLAG = "<script>window.__THE_OWL_LIVE__ = true</script>";
 
 /** Inject the live-mode marker so the docs UI enables "Try it out". */
 export const injectLiveFlag = (html: string): string =>
