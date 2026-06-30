@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Example } from "../api";
 import { isLive } from "../live";
@@ -7,11 +7,24 @@ import { prefillFromExample } from "../request/prefill";
 import { fireRequest, type LiveResult } from "../request/fire";
 import type { RequestFormState } from "../request/types";
 import { RequestForm } from "./RequestForm";
-import { ResponsePanel } from "./ResponsePanel";
+import { ResponsePanel, type ResponseData } from "./ResponsePanel";
 import { CodeBlock } from "./CodeBlock";
 import { CurlBlock } from "./CurlBlock";
 import { StatusBadge } from "./StatusBadge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
+const SectionTitle = ({ children }: { children: ReactNode }) => (
+  <h4 className="mb-2 border-b pb-1 text-sm font-semibold">{children}</h4>
+);
+
+/** Normalize a captured Example response into the shape ResponsePanel renders, so
+ * the response is shown on first render (no "Try it out" interaction required). */
+const capturedResponse = (example: Example): ResponseData => {
+  const { body } = example.response;
+  const bodyText =
+    body == null ? "" : typeof body === "string" ? body : JSON.stringify(body, null, 2);
+  return { status: example.response.status, headers: example.response.headers, bodyText };
+};
 
 export const ExampleAccordion = ({
   method, route, example, baseUrl, activeHash,
@@ -45,6 +58,8 @@ export const ExampleAccordion = ({
     setFiring(false);
   };
 
+  const curlForm = live && form ? form : prefillFromExample(example, route);
+
   return (
     <div id={slug} ref={ref} className="scroll-mt-4 border-t">
       <Collapsible open={open} onOpenChange={onOpenChange}>
@@ -56,21 +71,22 @@ export const ExampleAccordion = ({
           <span>{example.name}</span>
         </CollapsibleTrigger>
         <CollapsibleContent className="px-1 pb-3.5 pl-9">
-          {live && form ? (
-            <>
-              <RequestForm form={form} onChange={setForm} onFire={fire} firing={firing} />
-              {result && <ResponsePanel result={result} />}
-              <CurlBlock form={form} baseUrl={baseUrl} />
-            </>
-          ) : (
-            <>
-              <h4>Request</h4>
-              <CodeBlock>{JSON.stringify(example.request.body ?? {}, null, 2)}</CodeBlock>
-              <h4>Response</h4>
-              <CodeBlock>{JSON.stringify(example.response.body ?? {}, null, 2)}</CodeBlock>
-              <CurlBlock form={prefillFromExample(example, route)} baseUrl={baseUrl} />
-            </>
-          )}
+          <div className="grid items-start gap-x-6 gap-y-4 lg:grid-cols-2">
+            <section>
+              <SectionTitle>Request</SectionTitle>
+              {live && form ? (
+                <RequestForm form={form} onChange={setForm} onFire={fire} firing={firing} />
+              ) : (
+                <CodeBlock>{JSON.stringify(example.request.body ?? {}, null, 2)}</CodeBlock>
+              )}
+              <CurlBlock form={curlForm} baseUrl={baseUrl} />
+            </section>
+
+            <section>
+              <SectionTitle>Response</SectionTitle>
+              <ResponsePanel result={result ?? capturedResponse(example)} />
+            </section>
+          </div>
         </CollapsibleContent>
       </Collapsible>
     </div>

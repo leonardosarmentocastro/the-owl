@@ -1,9 +1,20 @@
 import { AlertCircle } from "lucide-react";
-import type { LiveResult } from "../request/fire";
 import { CodeBlock } from "./CodeBlock";
+import { CopyButton } from "./CopyButton";
 import { StatusBadge } from "./StatusBadge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
+/** A response to render — either a captured Example response or a live fetch
+ * result. `timeMs`/`sizeBytes` are present only for live results. */
+export interface ResponseData {
+  status: number;
+  statusText?: string;
+  headers: Record<string, string>;
+  bodyText: string;
+  timeMs?: number;
+  sizeBytes?: number;
+  error?: string;
+}
 
 const prettify = (text: string): string => {
   try {
@@ -13,10 +24,10 @@ const prettify = (text: string): string => {
   }
 };
 
-export const ResponsePanel = ({ result }: { result: LiveResult }) => {
+export const ResponsePanel = ({ result }: { result: ResponseData }) => {
   if (result.error) {
     return (
-      <Alert variant="destructive" className="mt-2.5">
+      <Alert variant="destructive">
         <AlertCircle className="size-4" />
         <AlertTitle>Request failed</AlertTitle>
         <AlertDescription>{result.error}</AlertDescription>
@@ -24,22 +35,47 @@ export const ResponsePanel = ({ result }: { result: LiveResult }) => {
     );
   }
 
+  const body = prettify(result.bodyText);
+  const headers = Object.entries(result.headers);
+
   return (
-    <div className="mt-2.5 border-t border-dashed pt-2.5">
+    <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2.5">
         <StatusBadge status={result.status} statusText={result.statusText} />
-        <small className="text-muted-foreground">{result.timeMs} ms · {result.sizeBytes} B</small>
+        {result.timeMs != null && (
+          <small className="text-muted-foreground">{result.timeMs} ms · {result.sizeBytes} B</small>
+        )}
       </div>
-      <h4>Body</h4>
-      <CodeBlock>{prettify(result.bodyText)}</CodeBlock>
-      <Collapsible>
-        <CollapsibleTrigger className="text-sm text-muted-foreground">
-          Response headers ({Object.keys(result.headers).length})
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <CodeBlock>{Object.entries(result.headers).map(([k, v]) => `${k}: ${v}`).join("\n")}</CodeBlock>
-        </CollapsibleContent>
-      </Collapsible>
+
+      <div>
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Body</span>
+          <CopyButton text={body} />
+        </div>
+        <CodeBlock>{body}</CodeBlock>
+      </div>
+
+      {headers.length > 0 && (
+        <div>
+          <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Headers</span>
+          <table aria-label="Response headers" className="mt-1 w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
+            <thead>
+              <tr className="bg-muted/50 text-[11px] uppercase tracking-wide text-muted-foreground">
+                <th className="w-2/5 border-b px-2 py-1 text-left font-normal">Name</th>
+                <th className="border-b px-2 py-1 text-left font-normal">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {headers.map(([name, value], i) => (
+                <tr key={name} className={i % 2 === 1 ? "bg-muted/40" : "bg-background"}>
+                  <td className="border-r px-2 py-1 align-top font-mono text-muted-foreground">{name}</td>
+                  <td className="break-all px-2 py-1 align-top font-mono">{value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
