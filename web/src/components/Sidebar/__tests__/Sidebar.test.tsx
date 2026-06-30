@@ -50,5 +50,6 @@ describe("Sidebar", () => {
     const link = screen.getByRole("link", { name: /the-owl/i });
     expect(link.getAttribute("href")).toBe("https://github.com/leonardosarmentocastro/the-owl");
     expect(link.getAttribute("target")).toBe("_blank");
+    expect(link.getAttribute("rel")).toBe("noopener noreferrer");
   });
 });

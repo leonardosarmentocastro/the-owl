@@ -10,6 +10,10 @@ const ep = (method: string, route: string): Endpoint => ({
 const names = (eps: Endpoint[]) => groupEndpoints(eps).map((g) => g.name);
 
 describe("groupEndpoints", () => {
+  it("returns an empty array for an empty catalog", () => {
+    expect(groupEndpoints([])).toEqual([]);
+  });
+
   it("groups by first segment when routes share no prefix", () => {
     const groups = groupEndpoints([ep("GET", "/users/:id"), ep("GET", "/users/:id/addresses"), ep("GET", "/health")]);
     expect(groups.map((g) => g.name)).toEqual(["Users", "Health"]);

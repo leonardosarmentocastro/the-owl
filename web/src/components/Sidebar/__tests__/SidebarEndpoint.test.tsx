@@ -28,4 +28,18 @@ describe("SidebarEndpoint", () => {
     fireEvent.click(link);
     expect(onNavigate).toHaveBeenCalled();
   });
+
+  it("sets aria-current on the example link when activeHash matches the slug", () => {
+    render(<SidebarEndpoint endpoint={endpoint} activeHash="get-users-returns-the-list-of-users" />);
+    fireEvent.click(screen.getByRole("button", { name: /GET \/users/i }));
+    const link = screen.getByRole("link", { name: /returns the list of users/ });
+    expect(link.getAttribute("aria-current")).toBe("page");
+  });
+
+  it("sets aria-current to null when activeHash does not match the slug", () => {
+    render(<SidebarEndpoint endpoint={endpoint} activeHash="" />);
+    fireEvent.click(screen.getByRole("button", { name: /GET \/users/i }));
+    const link = screen.getByRole("link", { name: /returns the list of users/ });
+    expect(link.getAttribute("aria-current")).toBeNull();
+  });
 });
