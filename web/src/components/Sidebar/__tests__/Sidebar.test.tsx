@@ -45,7 +45,7 @@ describe("Sidebar", () => {
     expect(onNavigate).toHaveBeenCalled();
   });
 
-  it.skip("links the logo to the GitHub repository", () => {
+  it("links the logo to the GitHub repository", () => {
     render(<Sidebar endpoints={endpoints} activeHash="" />);
     const link = screen.getByRole("link", { name: /the-owl/i });
     expect(link.getAttribute("href")).toBe("https://github.com/leonardosarmentocastro/the-owl");
