@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import { loadCatalog, type Catalog, DEFAULT_DOCS_HOST } from "./api";
 import { isLive } from "./live";
 import { EndpointCard } from "./components/EndpointCard";
-import { Sidebar } from "./components/Sidebar";
+import { Sidebar } from "./components/Sidebar/Sidebar";
 import { useHash } from "./nav/use-hash";
 import { useMediaQuery } from "./nav/use-media-query";
 import { Button } from "@/components/ui/button";

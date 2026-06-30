@@ -1,21 +1,18 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import type { Example } from "../api";
-import { isLive } from "../live";
-import { exampleSlug } from "../nav/slug";
-import { prefillFromExample } from "../request/prefill";
-import { fireRequest, type LiveResult } from "../request/fire";
-import type { RequestFormState } from "../request/types";
-import { RequestForm } from "./RequestForm";
-import { ResponsePanel, type ResponseData } from "./ResponsePanel";
-import { CodeBlock } from "./CodeBlock";
-import { CurlBlock } from "./CurlBlock";
-import { StatusText } from "./StatusText";
+import type { Example } from "../../api";
+import { isLive } from "../../live";
+import { exampleSlug } from "../../nav/slug";
+import { prefillFromExample } from "../../request/prefill";
+import { fireRequest, type LiveResult } from "../../request/fire";
+import type { RequestFormState } from "../../request/types";
+import { RequestForm } from "../RequestForm/RequestForm";
+import { ResponsePanel, type ResponseData } from "../ResponsePanel";
+import { CodeBlock } from "../CodeBlock";
+import { CurlBlock } from "../CurlBlock";
+import { StatusText } from "../StatusText";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
-const SectionTitle = ({ children }: { children: ReactNode }) => (
-  <h4 className="mb-2 border-b pb-1 text-sm font-semibold">{children}</h4>
-);
+import { SectionTitle } from "./SectionTitle";
 
 /** Normalize a captured Example response into the shape ResponsePanel renders, so
  * the response is shown on first render (no "Try it out" interaction required). */

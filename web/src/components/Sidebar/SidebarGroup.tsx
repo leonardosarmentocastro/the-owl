@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import type { Endpoint } from "../api";
-import { exampleSlug } from "../nav/slug";
+import type { Endpoint } from "../../api";
+import { exampleSlug } from "../../nav/slug";
 import { cn } from "@/lib/shadcn/utils";
-import { methodColorClass, statusColorClass } from "../theme/http-color-mapper";
+import { methodColorClass, statusColorClass } from "../../theme/http-color-mapper";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-const SidebarGroup = ({ endpoint, activeHash, onNavigate }: {
+/** One collapsible endpoint group in the sidebar: a method+route toggle over the
+ * endpoint's example links. */
+export const SidebarGroup = ({ endpoint, activeHash, onNavigate }: {
   endpoint: Endpoint; activeHash: string; onNavigate?: () => void;
 }) => {
   const [expanded, setExpanded] = useState(false);
@@ -47,20 +49,3 @@ const SidebarGroup = ({ endpoint, activeHash, onNavigate }: {
     </li>
   );
 };
-
-export const Sidebar = ({ endpoints, activeHash, onNavigate }: {
-  endpoints: Endpoint[]; activeHash: string; onNavigate?: () => void;
-}) => (
-  <nav aria-label="API endpoints">
-    <ul className="m-0 p-0">
-      {endpoints.map((endpoint) => (
-        <SidebarGroup
-          key={`${endpoint.method} ${endpoint.route}`}
-          endpoint={endpoint}
-          activeHash={activeHash}
-          onNavigate={onNavigate}
-        />
-      ))}
-    </ul>
-  </nav>
-);

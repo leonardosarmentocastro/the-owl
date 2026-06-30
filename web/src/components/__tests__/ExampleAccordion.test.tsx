@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { ExampleAccordion } from "../ExampleAccordion";
+import { ExampleAccordion } from "../ExampleAccordion/ExampleAccordion";
 import type { Example } from "../../api";
 
 const example: Example = {

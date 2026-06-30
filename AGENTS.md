@@ -68,7 +68,15 @@ root. Do not let a domain import a sibling outside this list.
   `src/bin/cli.ts`) + the Vite web bundle.
 
 Out of scope for the domain layout: `web/` (the React app), `examples/`, and
-`documentation/`.
+`documentation/`. The `web/` app still follows one component-organisation rule:
+
+- **One component per file.** A `web/src/components/*.tsx` file exports a single
+  React component. When a component needs subcomponents or shared
+  helpers/constants, give it a folder named after the component with the entry
+  file inside: `components/<Name>/<Name>.tsx` plus siblings
+  (`<Subcomponent>.tsx`, `constants.ts`). Import the entry explicitly
+  (`./components/<Name>/<Name>`), not via a barrel. Tests stay in
+  `components/__tests__/`.
 
 ## Workflow conventions
 

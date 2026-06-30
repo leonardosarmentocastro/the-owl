@@ -1,5 +1,5 @@
 import type { Endpoint } from "../api";
-import { ExampleAccordion } from "./ExampleAccordion";
+import { ExampleAccordion } from "./ExampleAccordion/ExampleAccordion";
 import { cn } from "@/lib/shadcn/utils";
 import { methodColorClass } from "../theme/http-color-mapper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
