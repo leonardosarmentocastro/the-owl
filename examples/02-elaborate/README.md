@@ -59,3 +59,15 @@ interactive: expand it, edit the path params / query / headers / body, and click
 captured owl test header is dropped automatically, and any redacted value is
 shown as an empty field you must fill before firing. The static `docs/site` build
 (opened from `file://`) stays read-only — there is no server to call.
+
+To browse the live docs yourself, first generate the catalog (once), then start
+the app:
+
+```sh
+pnpm test:create-docs   # generates docs/site/catalog.json (and builds the-owl)
+pnpm start              # serves the app with OWL_DOCS=1
+```
+
+Then open <http://localhost:3000/docs> (set `PORT` to use a different port).
+`pnpm start` runs `src/start.ts` directly — Node ≥ 22.6 strips the TypeScript
+types, so no extra tooling is needed.
