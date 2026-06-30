@@ -30,7 +30,7 @@ export const App = () => {
   );
 
   const content = (
-    <main className="box-border max-w-[1400px] flex-1 p-6">
+    <main className="box-border min-w-0 max-w-[1400px] flex-1 p-3 sm:p-6">
       <h1 className="text-2xl font-bold">API docs</h1>
       <small className="text-muted-foreground">Generated {new Date(catalog.generatedAt).toLocaleString()}</small>
       {catalog.endpoints.map((endpoint) => (

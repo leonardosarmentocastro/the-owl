@@ -61,7 +61,8 @@ export const ResponsePanel = ({ result }: { result: ResponseData }) => {
       {headers.length > 0 && (
         <div>
           <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Headers</span>
-          <table aria-label="Response headers" className="mt-1 w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
+          <div className="mt-1 overflow-x-auto">
+          <table aria-label="Response headers" className="w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
             <thead>
               <tr className="bg-muted/50 text-[11px] uppercase tracking-wide text-muted-foreground">
                 <th className="w-2/5 border-b border-r px-2 py-1 text-left font-normal">Name</th>
@@ -77,6 +78,7 @@ export const ResponsePanel = ({ result }: { result: ResponseData }) => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

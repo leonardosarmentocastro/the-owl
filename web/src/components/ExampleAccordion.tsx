@@ -68,9 +68,9 @@ export const ExampleAccordion = ({
           <StatusText status={example.response.status} />
           <span>{example.name}</span>
         </CollapsibleTrigger>
-        <CollapsibleContent className="px-1 pb-3.5 pl-9">
+        <CollapsibleContent className="px-1 pb-3.5 pl-2 sm:pl-9">
           <div className="grid items-start gap-x-6 gap-y-4 lg:grid-cols-2">
-            <section>
+            <section className="min-w-0">
               <SectionTitle>Request</SectionTitle>
               {live && form ? (
                 <RequestForm form={form} onChange={setForm} onFire={fire} firing={firing}>
@@ -84,7 +84,7 @@ export const ExampleAccordion = ({
               )}
             </section>
 
-            <section>
+            <section className="min-w-0">
               <SectionTitle>Response</SectionTitle>
               <ResponsePanel result={result ?? capturedResponse(example)} />
             </section>

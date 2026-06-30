@@ -18,7 +18,7 @@ interface Props {
 
 const labelClass = "mt-2 block text-[11px] uppercase tracking-wide text-muted-foreground";
 const cellInputClass =
-  "h-8 w-full bg-transparent px-2 font-mono text-xs outline-none placeholder:text-muted-foreground/50 focus:bg-muted/60";
+  "h-8 w-full min-w-0 bg-transparent px-2 font-mono text-xs outline-none placeholder:text-muted-foreground/50 focus:bg-muted/60";
 
 const blankRow = (): KeyValue => ({ name: "", value: "" });
 const isEmptyRow = (r: KeyValue): boolean => r.name === "" && r.value === "";
@@ -56,7 +56,8 @@ const KeyValueTable = ({
   return (
     <div>
       <Label className={labelClass}>{title}</Label>
-      <table aria-label={title} className="mt-1 w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
+      <div className="mt-1 overflow-x-auto">
+      <table aria-label={title} className="w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
         <TableHead />
         <tbody>
           {display.map((row, i) => {
@@ -98,6 +99,7 @@ const KeyValueTable = ({
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
@@ -109,7 +111,8 @@ const PathTable = ({
 }: { rows: KeyValue[]; onRows: (rows: KeyValue[]) => void }) => (
   <div>
     <Label className={labelClass}>Path</Label>
-    <table aria-label="Path" className="mt-1 w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
+    <div className="mt-1 overflow-x-auto">
+    <table aria-label="Path" className="w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
       <TableHead actions={false} />
       <tbody>
         {rows.map((row, i) => (
@@ -129,6 +132,7 @@ const PathTable = ({
         ))}
       </tbody>
     </table>
+    </div>
   </div>
 );
 
