@@ -14,3 +14,6 @@ dist/
 
 # Generated docs output from the examples (build artifacts)
 examples/*/docs/
+
+# Brainstorming visual companion (mockups, server state)
+.superpowers/

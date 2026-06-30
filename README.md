@@ -8,7 +8,9 @@
 
 # the-owl
 
-Generate **interactive HTML API docs** from your functional tests.
+Generate **interactive HTML API docs** from your functional tests — a browsable
+site where, when served live, each captured request is editable and fireable
+right from the page.
 
 `the-owl` watches the request/response traffic of your Express app while its
 functional tests run, then turns that traffic into a browsable docs site — no
@@ -116,7 +118,7 @@ describe("[get] /health", () => {
 Both modes read the same `the-owl build` output:
 
 - **Static** — open or host the generated `docs/site/` directory directly
-  (`docs/site/index.html` + assets).
+  (`docs/site/index.html` + assets). Read-only.
 - **Live route** — mount `theOwl.docs()` to serve the docs from your running app,
   e.g. only in staging:
 
@@ -127,6 +129,13 @@ if (process.env.NODE_ENV === "staging") {
   app.use("/docs", theOwl.docs());
 }
 ```
+
+  In this mode the docs are **interactive**: expand any Example, edit its path
+  params / query / headers / body, and click **Try it out** to fire a real
+  same-origin request and see the live response. The captured `x-test-name`
+  header is dropped automatically, and any redacted value is shown as an empty
+  field you must fill before firing. The static build has no server to call, so
+  it stays read-only.
 
 ## Secret redaction
 

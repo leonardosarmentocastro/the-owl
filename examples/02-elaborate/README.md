@@ -31,7 +31,7 @@ In `src/server.ts`:
 - `theOwl.connect(app)` adds the capture middleware (**Step 1**).
 - Two routes are defined: `/users` and `/users/:id` (the latter returns `404`
   for unknown ids).
-- When `OWL_DOCS` is set, `app.use("/docs", theOwl.docs())` serves the docs live.
+- When `THE_OWL_DOCS` is set, `app.use("/docs", theOwl.docs())` serves the docs live.
 
 In `test/users.test.ts`:
 
@@ -50,3 +50,24 @@ pnpm test:create-docs
 This runs the tests with `CREATE_DOCS=true`, drains captured traffic into
 `.owl/`, and runs `the-owl build` to produce a static site in `docs/site/`
 (open `docs/site/index.html`).
+
+## Trying endpoints live
+
+When the docs are served via `theOwl.docs()` (set `THE_OWL_DOCS=1`), each Example is
+interactive: expand it, edit the path params / query / headers / body, and click
+**Try it out** to fire a real same-origin request and see the live response. The
+captured owl test header is dropped automatically, and any redacted value is
+shown as an empty field you must fill before firing. The static `docs/site` build
+(opened from `file://`) stays read-only — there is no server to call.
+
+To browse the live docs yourself, first generate the catalog (once), then start
+the app:
+
+```sh
+pnpm test:create-docs   # generates docs/site/catalog.json (and builds the-owl)
+pnpm start              # serves the app with THE_OWL_DOCS=1
+```
+
+Then open <http://localhost:3000/docs> (set `PORT` to use a different port).
+`pnpm start` runs `src/start.ts` directly — Node ≥ 22.6 strips the TypeScript
+types, so no extra tooling is needed.
