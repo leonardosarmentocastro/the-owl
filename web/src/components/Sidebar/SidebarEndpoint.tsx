@@ -6,9 +6,9 @@ import { cn } from "@/lib/shadcn/utils";
 import { methodColorClass, statusColorClass } from "../../theme/http-color-mapper";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-/** One collapsible endpoint group in the sidebar: a method+route toggle over the
+/** One collapsible endpoint in the sidebar: a method+route toggle over the
  * endpoint's example links. */
-export const SidebarGroup = ({ endpoint, activeHash, onNavigate }: {
+export const SidebarEndpoint = ({ endpoint, activeHash, onNavigate }: {
   endpoint: Endpoint; activeHash: string; onNavigate?: () => void;
 }) => {
   const [expanded, setExpanded] = useState(false);
