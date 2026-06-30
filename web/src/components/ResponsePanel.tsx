@@ -1,4 +1,5 @@
 import type { LiveResult } from "../request/fire";
+import { CodeBlock } from "./CodeBlock";
 
 const prettify = (text: string): string => {
   try {
@@ -32,10 +33,10 @@ export const ResponsePanel = ({ result }: { result: LiveResult }) => {
         <small style={{ opacity: 0.7 }}>{result.timeMs} ms · {result.sizeBytes} B</small>
       </div>
       <h4>Body</h4>
-      <pre>{prettify(result.bodyText)}</pre>
+      <CodeBlock>{prettify(result.bodyText)}</CodeBlock>
       <details>
         <summary>Response headers ({Object.keys(result.headers).length})</summary>
-        <pre>{Object.entries(result.headers).map(([k, v]) => `${k}: ${v}`).join("\n")}</pre>
+        <CodeBlock>{Object.entries(result.headers).map(([k, v]) => `${k}: ${v}`).join("\n")}</CodeBlock>
       </details>
     </div>
   );

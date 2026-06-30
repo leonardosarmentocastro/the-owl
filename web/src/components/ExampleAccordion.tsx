@@ -6,6 +6,7 @@ import { fireRequest, type LiveResult } from "../request/fire";
 import type { RequestFormState } from "../request/types";
 import { RequestForm } from "./RequestForm";
 import { ResponsePanel } from "./ResponsePanel";
+import { CodeBlock } from "./CodeBlock";
 
 export const ExampleAccordion = ({
   method, route, example,
@@ -54,9 +55,9 @@ export const ExampleAccordion = ({
           ) : (
             <>
               <h4>Request</h4>
-              <pre>{JSON.stringify(example.request.body ?? {}, null, 2)}</pre>
+              <CodeBlock>{JSON.stringify(example.request.body ?? {}, null, 2)}</CodeBlock>
               <h4>Response</h4>
-              <pre>{JSON.stringify(example.response.body ?? {}, null, 2)}</pre>
+              <CodeBlock>{JSON.stringify(example.response.body ?? {}, null, 2)}</CodeBlock>
             </>
           )}
         </div>
