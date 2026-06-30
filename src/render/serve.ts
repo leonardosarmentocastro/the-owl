@@ -26,8 +26,17 @@ export const docs = (options: DocsOptions = {}): RequestHandler => {
     }
     res.type("application/json").send(readFileSync(catalogPath, "utf8"));
   });
-  router.get(["/", "/index.html"], (_req, res, next) => {
+  router.get(["/", "/index.html"], (req, res, next) => {
     if (!existsSync(indexPath)) return next();
+    // The bundle uses relative asset URLs (./assets/*), which only resolve when
+    // the index is served from a trailing-slash path. Redirect the bare mount
+    // path (e.g. /docs) to its slashed form (/docs/) so assets aren't requested
+    // against the parent app.
+    if (req.path === "/" && !req.originalUrl.split("?")[0].endsWith("/")) {
+      const query = req.originalUrl.slice(req.originalUrl.indexOf("?") + 1);
+      res.redirect(`${req.baseUrl}/${req.originalUrl.includes("?") ? `?${query}` : ""}`);
+      return;
+    }
     res.type("html").send(injectLiveFlag(readFileSync(indexPath, "utf8")));
   });
   router.use(express.static(bundleDir));
