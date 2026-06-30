@@ -75,7 +75,10 @@ Out of scope for the domain layout: `web/` (the React app), `examples/`, and
   helpers/constants, give it a folder named after the component with the entry
   file inside: `components/<Name>/<Name>.tsx` plus siblings
   (`<Subcomponent>.tsx`, `constants.ts`). Import the entry explicitly
-  (`./components/<Name>/<Name>`), not via a barrel. Tests stay in
+  (`./components/<Name>/<Name>`), not via a barrel.
+- **Co-locate folder-component tests.** A foldered component keeps its test
+  beside it in its own `__tests__`:
+  `components/<Name>/__tests__/<Name>.test.tsx`. Single-file components share
   `components/__tests__/`.
 
 ## Workflow conventions

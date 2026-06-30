@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
-import { RequestForm } from "../RequestForm/RequestForm";
-import type { RequestFormState } from "../../request/types";
+import { RequestForm } from "../RequestForm";
+import type { RequestFormState } from "../../../request/types";
 
 const form = (over: Partial<RequestFormState> = {}): RequestFormState => ({
   method: "GET", route: "/users/:id",
