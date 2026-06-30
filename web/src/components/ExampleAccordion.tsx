@@ -32,6 +32,7 @@ export const ExampleAccordion = ({
     const next = !open;
     if (next && live && !form) setForm(prefillFromExample(example, route));
     if (next) window.location.hash = slug;
+    else if (window.location.hash === `#${slug}`) window.location.hash = "";
     setOpen(next);
   };
 
