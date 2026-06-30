@@ -71,3 +71,9 @@ pnpm start              # serves the app with THE_OWL_DOCS=1
 Then open <http://localhost:3000/docs> (set `PORT` to use a different port).
 `pnpm start` runs `src/start.ts` directly — Node ≥ 22.6 strips the TypeScript
 types, so no extra tooling is needed.
+
+Every Example also has a **Copy as cURL** button — including in the static
+`docs/site` build, which has no server to fire against. The command's base URL
+comes from `THE_OWL_DOCS_HOST` (set it when generating: `THE_OWL_DOCS_HOST=https://api.example.com pnpm test:create-docs`),
+defaulting to `http://localhost:3000`. Any redacted or empty value shows as
+`<CHANGE_ME:name>` to flag what you must replace before running it.
