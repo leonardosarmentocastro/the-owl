@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Play, Trash2 } from "lucide-react";
 import { validateForm } from "../request/build-request";
 import type { KeyValue, RequestFormState } from "../request/types";
@@ -11,6 +12,8 @@ interface Props {
   onChange: (next: RequestFormState) => void;
   onFire: () => void;
   firing: boolean;
+  /** Rendered between the fields and the "Try it out" button (e.g. the cURL block). */
+  children?: ReactNode;
 }
 
 const labelClass = "mt-2 block text-[11px] uppercase tracking-wide text-muted-foreground";
@@ -130,7 +133,7 @@ const PathTable = ({
   </div>
 );
 
-export const RequestForm = ({ form, onChange, onFire, firing }: Props) => {
+export const RequestForm = ({ form, onChange, onFire, firing, children }: Props) => {
   const errors = validateForm(form);
   const bodyless = form.method === "GET" || form.method === "HEAD";
 
@@ -157,6 +160,8 @@ export const RequestForm = ({ form, onChange, onFire, firing }: Props) => {
       {errors.map((e) => (
         <small key={e} className="text-amber-600">{e}</small>
       ))}
+
+      {children}
 
       <Button type="button" className="mt-2 self-start" disabled={firing || errors.length > 0} onClick={onFire}>
         <Play className="size-3.5" /> {firing ? "Firing…" : "Try it out"}

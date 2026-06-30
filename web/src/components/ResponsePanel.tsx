@@ -40,11 +40,14 @@ export const ResponsePanel = ({ result }: { result: ResponseData }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2.5">
-        <StatusBadge status={result.status} statusText={result.statusText} />
-        {result.timeMs != null && (
-          <small className="text-muted-foreground">{result.timeMs} ms · {result.sizeBytes} B</small>
-        )}
+      <div>
+        <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Metadata</span>
+        <div className="mt-1 flex items-center gap-2.5">
+          <StatusBadge status={result.status} statusText={result.statusText} />
+          {result.timeMs != null && (
+            <small className="text-muted-foreground">{result.timeMs} ms · {result.sizeBytes} B</small>
+          )}
+        </div>
       </div>
 
       <div>
@@ -61,13 +64,13 @@ export const ResponsePanel = ({ result }: { result: ResponseData }) => {
           <table aria-label="Response headers" className="mt-1 w-full table-fixed border-collapse overflow-hidden rounded-md border text-xs">
             <thead>
               <tr className="bg-muted/50 text-[11px] uppercase tracking-wide text-muted-foreground">
-                <th className="w-2/5 border-b px-2 py-1 text-left font-normal">Name</th>
+                <th className="w-2/5 border-b border-r px-2 py-1 text-left font-normal">Name</th>
                 <th className="border-b px-2 py-1 text-left font-normal">Value</th>
               </tr>
             </thead>
             <tbody>
               {headers.map(([name, value], i) => (
-                <tr key={name} className={i % 2 === 1 ? "bg-muted/40" : "bg-background"}>
+                <tr key={name} className={i % 2 === 1 ? "bg-muted" : "bg-background"}>
                   <td className="border-r px-2 py-1 align-top font-mono text-muted-foreground">{name}</td>
                   <td className="break-all px-2 py-1 align-top font-mono">{value}</td>
                 </tr>

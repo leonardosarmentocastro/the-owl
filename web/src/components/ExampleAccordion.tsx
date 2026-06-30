@@ -58,8 +58,6 @@ export const ExampleAccordion = ({
     setFiring(false);
   };
 
-  const curlForm = live && form ? form : prefillFromExample(example, route);
-
   return (
     <div id={slug} ref={ref} className="scroll-mt-4 border-t">
       <Collapsible open={open} onOpenChange={onOpenChange}>
@@ -75,11 +73,15 @@ export const ExampleAccordion = ({
             <section>
               <SectionTitle>Request</SectionTitle>
               {live && form ? (
-                <RequestForm form={form} onChange={setForm} onFire={fire} firing={firing} />
+                <RequestForm form={form} onChange={setForm} onFire={fire} firing={firing}>
+                  <CurlBlock form={form} baseUrl={baseUrl} />
+                </RequestForm>
               ) : (
-                <CodeBlock>{JSON.stringify(example.request.body ?? {}, null, 2)}</CodeBlock>
+                <>
+                  <CodeBlock>{JSON.stringify(example.request.body ?? {}, null, 2)}</CodeBlock>
+                  <CurlBlock form={prefillFromExample(example, route)} baseUrl={baseUrl} />
+                </>
               )}
-              <CurlBlock form={curlForm} baseUrl={baseUrl} />
             </section>
 
             <section>
