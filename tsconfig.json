@@ -11,7 +11,9 @@
     "ignoreDeprecations": "6.0",
     "declaration": true,
     "outDir": "dist",
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": { "@/*": ["web/src/*"] }
   },
   "include": ["src", "web/src"]
 }
