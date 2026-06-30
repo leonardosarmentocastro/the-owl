@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Example } from "../api";
 import { isLive } from "../live";
+import { exampleSlug } from "../nav/slug";
 import { prefillFromExample } from "../request/prefill";
 import { fireRequest, type LiveResult } from "../request/fire";
 import type { RequestFormState } from "../request/types";
@@ -10,17 +11,29 @@ import { CodeBlock } from "./CodeBlock";
 import { CurlBlock } from "./CurlBlock";
 
 export const ExampleAccordion = ({
-  method, route, example, baseUrl,
-}: { method: string; route: string; example: Example; baseUrl: string }) => {
+  method, route, example, baseUrl, activeHash,
+}: { method: string; route: string; example: Example; baseUrl: string; activeHash?: string }) => {
+  const slug = exampleSlug(method, route, example.name);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<RequestFormState | null>(null);
   const [result, setResult] = useState<LiveResult | null>(null);
   const [firing, setFiring] = useState(false);
   const live = isLive();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (activeHash && activeHash === slug) {
+      setOpen(true);
+      ref.current?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+    }
+  }, [activeHash, slug]);
 
   const toggle = () => {
-    if (!open && live && !form) setForm(prefillFromExample(example, route));
-    setOpen(!open);
+    const next = !open;
+    if (next && live && !form) setForm(prefillFromExample(example, route));
+    if (next) window.location.hash = slug;
+    else if (window.location.hash === `#${slug}`) window.location.hash = "";
+    setOpen(next);
   };
 
   const fire = async () => {
@@ -32,7 +45,7 @@ export const ExampleAccordion = ({
 
   const ok2xx = example.response.status >= 200 && example.response.status < 300;
   return (
-    <div style={{ borderTop: "1px solid #eee" }}>
+    <div id={slug} ref={ref} style={{ borderTop: "1px solid #eee", scrollMarginTop: 16 }}>
       <div onClick={toggle} style={{ display: "flex", gap: 10, alignItems: "center", padding: "9px 4px", cursor: "pointer" }}>
         <span style={{ opacity: 0.5, width: 12 }}>{open ? "▾" : "▸"}</span>
         <span

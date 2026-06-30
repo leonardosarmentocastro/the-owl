@@ -10,7 +10,7 @@ const example: Example = {
   response: { status: 200, headers: {}, body: { id: 2, name: "Paul" } },
 };
 
-afterEach(() => { cleanup(); delete window.__THE_OWL_LIVE__; });
+afterEach(() => { cleanup(); delete window.__THE_OWL_LIVE__; window.location.hash = ""; });
 
 describe("ExampleAccordion", () => {
   it("is collapsed by default and shows status + name", () => {
@@ -30,6 +30,54 @@ describe("ExampleAccordion", () => {
     render(<ExampleAccordion method="GET" route="/users/:id" example={example} baseUrl="http://localhost:3000" />);
     fireEvent.click(screen.getByText(/returns the user/));
     expect(screen.getByText(/curl -X GET 'http:\/\/localhost:3000\/users\/2'/)).toBeTruthy();
+  });
+
+  it("auto-opens and carries its slug as id when activeHash matches", () => {
+    const { container } = render(
+      <ExampleAccordion
+        method="GET"
+        route="/users/:id"
+        example={example}
+        baseUrl="http://localhost:3000"
+        activeHash="get-users-id-returns-the-user"
+      />,
+    );
+    expect(container.querySelector("#get-users-id-returns-the-user")).toBeTruthy();
+    expect(screen.getByText(/"name": "Paul"/)).toBeTruthy();
+  });
+
+  it("stays collapsed when activeHash does not match", () => {
+    render(
+      <ExampleAccordion
+        method="GET"
+        route="/users/:id"
+        example={example}
+        baseUrl="http://localhost:3000"
+        activeHash="some-other-slug"
+      />,
+    );
+    expect(screen.queryByText(/"name": "Paul"/)).toBeNull();
+  });
+
+  it("clears the URL hash when collapsing the active example", () => {
+    window.location.hash = "#get-users-id-returns-the-user";
+    render(
+      <ExampleAccordion
+        method="GET"
+        route="/users/:id"
+        example={example}
+        baseUrl="http://localhost:3000"
+        activeHash="get-users-id-returns-the-user"
+      />,
+    );
+    // auto-opens because activeHash matches
+    expect(screen.getByText(/"name": "Paul"/)).toBeTruthy();
+    // click to collapse
+    fireEvent.click(screen.getByText(/returns the user/));
+    // body is gone
+    expect(screen.queryByText(/"name": "Paul"/)).toBeNull();
+    // hash is cleared
+    expect(window.location.hash).not.toBe("#get-users-id-returns-the-user");
   });
 
   describe("live mode", () => {

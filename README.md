@@ -147,6 +147,12 @@ if (process.env.NODE_ENV === "staging") {
   values appear as `<CHANGE_ME:name>` so it's obvious what to fill in before
   running the command.
 
+Either way, the docs page carries a **left navigation** that lists every endpoint
+as a collapsible group of its Examples. Selecting one deep-links to that Example
+via the URL hash — expanding and scrolling to it — so you can share a link
+straight to a single Example, and reloading that URL reopens it. On narrow screens
+the navigation collapses behind a ☰ menu.
+
 ## Secret redaction
 
 Captured traffic is sanitized before it touches disk. By default, sensitive

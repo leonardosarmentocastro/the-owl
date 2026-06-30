@@ -1,7 +1,7 @@
 import type { Endpoint } from "../api";
 import { ExampleAccordion } from "./ExampleAccordion";
 
-export const EndpointCard = ({ endpoint, baseUrl }: { endpoint: Endpoint; baseUrl: string }) => (
+export const EndpointCard = ({ endpoint, baseUrl, activeHash }: { endpoint: Endpoint; baseUrl: string; activeHash?: string }) => (
   <section style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16, marginTop: 16 }}>
     <h2 style={{ fontFamily: "monospace" }}>
       <span style={{ color: "#067" }}>{endpoint.method}</span> {endpoint.route}
@@ -13,6 +13,7 @@ export const EndpointCard = ({ endpoint, baseUrl }: { endpoint: Endpoint; baseUr
         route={endpoint.route}
         example={example}
         baseUrl={baseUrl}
+        activeHash={activeHash}
       />
     ))}
   </section>
