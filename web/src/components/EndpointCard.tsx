@@ -1,7 +1,7 @@
 import type { Endpoint } from "../api";
 import { ExampleAccordion } from "./ExampleAccordion";
-import { cn } from "@/lib/utils";
-import { methodColorClass } from "../http-style";
+import { cn } from "@/lib/shadcn/utils";
+import { methodColorClass } from "../theme/http-color-mapper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const EndpointCard = ({ endpoint, baseUrl, activeHash }: { endpoint: Endpoint; baseUrl: string; activeHash?: string }) => (

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Endpoint } from "../api";
 import { exampleSlug } from "../nav/slug";
-import { cn } from "@/lib/utils";
-import { methodColorClass, statusColorClass } from "../http-style";
+import { cn } from "@/lib/shadcn/utils";
+import { methodColorClass, statusColorClass } from "../theme/http-color-mapper";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const SidebarGroup = ({ endpoint, activeHash, onNavigate }: {

@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import { statusColorClass } from "../http-style";
+import { cn } from "@/lib/shadcn/utils";
+import { statusColorClass } from "../theme/http-color-mapper";
 
 const REASON_PHRASES: Record<number, string> = {
   200: "OK",

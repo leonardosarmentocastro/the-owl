@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Play, Trash2 } from "lucide-react";
 import { validateForm } from "../request/build-request";
 import type { KeyValue, RequestFormState } from "../request/types";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shadcn/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
