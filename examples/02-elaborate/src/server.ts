@@ -21,6 +21,13 @@ export const createApp = (): Express => {
     res.status(200).json(user);
   });
 
+  // Versioned APIs under a shared /api prefix. With THE_OWL_GROUPING_REGEX=^/api$
+  // the docs sidebar strips /api and groups these under V1 / V2.
+  app.get("/api/v1/users", (_req, res) => res.status(200).json(users));
+  app.get("/api/v2/users", (_req, res) =>
+    res.status(200).json(users.map((u) => ({ ...u, email: `${u.name.toLowerCase()}@example.com` }))),
+  );
+
   if (process.env.THE_OWL_DOCS) app.use("/docs", theOwl.docs());
   return app;
 };

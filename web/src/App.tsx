@@ -26,7 +26,7 @@ export const App = () => {
   const baseUrl = isLive() ? window.location.origin : (catalog.baseUrl ?? DEFAULT_DOCS_HOST);
 
   const sidebar = (
-    <Sidebar endpoints={catalog.endpoints} activeHash={activeHash} onNavigate={() => setDrawerOpen(false)} />
+    <Sidebar endpoints={catalog.endpoints} activeHash={activeHash} grouping={catalog.grouping} onNavigate={() => setDrawerOpen(false)} />
   );
 
   const generatedAt = new Date(catalog.generatedAt).toLocaleString();

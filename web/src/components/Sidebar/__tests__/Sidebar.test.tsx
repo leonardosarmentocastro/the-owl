@@ -45,6 +45,23 @@ describe("Sidebar", () => {
     expect(onNavigate).toHaveBeenCalled();
   });
 
+  it("strips the grouping-regex prefix so versioned routes group by version", () => {
+    const versioned: Endpoint[] = [
+      {
+        method: "GET", route: "/api/v1/users",
+        examples: [{ name: "v1 users", request: { url: "u", method: "GET", path: "/api/v1/users", query: {}, headers: {}, body: null }, response: { status: 200, headers: {}, body: [] } }],
+      },
+      {
+        method: "GET", route: "/api/v2/users",
+        examples: [{ name: "v2 users", request: { url: "u", method: "GET", path: "/api/v2/users", query: {}, headers: {}, body: null }, response: { status: 200, headers: {}, body: [] } }],
+      },
+    ];
+    render(<Sidebar endpoints={versioned} activeHash="" grouping="^/api$" />);
+    expect(screen.getByText("V1")).toBeTruthy();
+    expect(screen.getByText("V2")).toBeTruthy();
+    expect(screen.queryByText("Api")).toBeNull();
+  });
+
   it("links the logo to the GitHub repository", () => {
     render(<Sidebar endpoints={endpoints} activeHash="" />);
     const link = screen.getByRole("link", { name: /the-owl/i });

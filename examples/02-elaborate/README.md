@@ -3,7 +3,8 @@
 A slightly richer example showing how to set up `the-owl` with Express.js and
 the Vitest test runner. On top of [`01-minimal`](../01-minimal), it demonstrates
 a route with a path param (`/users/:id`), a `404` case, that **unmarked** requests
-are ignored, and serving the docs live via `theOwl.docs()`.
+are ignored, versioned APIs grouped in the sidebar via `THE_OWL_GROUPING_REGEX`,
+and serving the docs live via `theOwl.docs()`.
 
 ## Prerequisite: build `the-owl` first
 
@@ -29,17 +30,29 @@ pnpm install
 In `src/server.ts`:
 
 - `theOwl.connect(app)` adds the capture middleware (**Step 1**).
-- Two routes are defined: `/users` and `/users/:id` (the latter returns `404`
-  for unknown ids).
+- Routes are defined: `/users`, `/users/:id` (returns `404` for unknown ids),
+  and two versioned APIs, `/api/v1/users` and `/api/v2/users`.
 - When `THE_OWL_DOCS` is set, `app.use("/docs", theOwl.docs())` serves the docs live.
 
-In `test/users.test.ts`:
+In `test/users.test.ts` and `test/api-versions.test.ts`:
 
 - An **unmarked** warm-up call to `/users` (no `owlHeaders()`) demonstrates that
   only requests carrying `...owlHeaders()` are captured (**Step 2**).
-- Both the `200` and `404` paths of `/users/:id` are marked and documented.
+- Both the `200` and `404` paths of `/users/:id`, and the two versioned
+  `/api/vN/users` routes, are marked and documented.
 - `theOwl.save()` runs in `afterAll` to drain captured Examples to `.owl/`
   (**Step 3**).
+
+## Grouping the sidebar by resource
+
+By default the docs sidebar groups Endpoints by their first path segment, so
+`/users` and `/users/:id` sit under **Users**. To group by a segment further
+down the path, set `THE_OWL_GROUPING_REGEX` when building — it strips the
+longest matching leading prefix before grouping. This example's
+`test:create-docs` script sets `THE_OWL_GROUPING_REGEX=^/api$`, so `/api` is
+stripped and `/api/v1/users` and `/api/v2/users` group under **V1** and **V2**
+(each holding a `/users` endpoint). Use `^/api/v[1-9]\d*$` instead to strip the
+version too and merge both under **Users**.
 
 ## How can I see docs being generated?
 
