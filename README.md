@@ -170,8 +170,8 @@ for all three wired into its `test:create-docs` scripts.
 | Variable | Read at | Purpose | Example |
 | --- | --- | --- | --- |
 | [`CREATE_DOCS`](./documentation/02-process-variables.md#create-docs) | test run | Gate for [`save()`](./documentation/01-api.md#save): when unset, draining is a no-op, so everyday `vitest run` and watch mode never write to `.owl/`. Set it only on the run that (re)generates docs. | `CREATE_DOCS=true vitest run` |
-| `THE_OWL_DOCS_HOST` | `the-owl build` | Base URL baked into the static build's **Copy as cURL** commands. Defaults to `http://localhost:3000`. | `THE_OWL_DOCS_HOST=https://api.example.com the-owl build` |
-| `THE_OWL_GROUPING_REGEX` | `the-owl build` | Strips the longest matching leading path prefix before the sidebar groups **Endpoints**, so grouping falls on the next segment (`^/api$` groups `/api/v1/…` under **V1**). When unset, Endpoints group by their first path segment. | `THE_OWL_GROUPING_REGEX=^/api$ the-owl build` |
+| [`THE_OWL_DOCS_HOST`](./documentation/02-process-variables.md#the-owl-docs-host) | `the-owl build` | Base URL baked into the static build's **Copy as cURL** commands. Defaults to `http://localhost:3000`. | `THE_OWL_DOCS_HOST=https://api.example.com the-owl build` |
+| [`THE_OWL_GROUPING_REGEX`](./documentation/02-process-variables.md#the-owl-grouping-regex) | `the-owl build` | Strips the longest matching leading path prefix before the sidebar groups **Endpoints**, so grouping falls on the next segment (`^/api$` groups `/api/v1/…` under **V1**). When unset, Endpoints group by their first path segment. | `THE_OWL_GROUPING_REGEX=^/api$ the-owl build` |
 
 > `THE_OWL_DOCS` and `PORT` in [`examples/02-elaborate`](./examples/02-elaborate)
 > are that example app's own conventions (whether to mount `theOwl.docs()`, and
