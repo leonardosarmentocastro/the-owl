@@ -31,4 +31,9 @@ export interface Catalog {
   /** Base URL baked at build time from THE_OWL_DOCS_HOST; used by the static
    * docs to render runnable curl commands. Absent when the env var is unset. */
   baseUrl?: string;
+  /** Regex source baked at build time from THE_OWL_GROUPING_REGEX. The docs
+   * sidebar strips the longest matching leading path prefix before grouping
+   * Endpoints (e.g. `^/api$` groups `/api/v1/...` under V1). Absent when the
+   * env var is unset, in which case Endpoints group by their first segment. */
+  grouping?: string;
 }

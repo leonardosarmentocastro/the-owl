@@ -26,13 +26,19 @@ export const App = () => {
   const baseUrl = isLive() ? window.location.origin : (catalog.baseUrl ?? DEFAULT_DOCS_HOST);
 
   const sidebar = (
-    <Sidebar endpoints={catalog.endpoints} activeHash={activeHash} onNavigate={() => setDrawerOpen(false)} />
+    <Sidebar endpoints={catalog.endpoints} activeHash={activeHash} grouping={catalog.grouping} onNavigate={() => setDrawerOpen(false)} />
   );
+
+  const generatedAt = new Date(catalog.generatedAt).toLocaleString();
 
   const content = (
     <main className="box-border min-w-0 max-w-[1400px] flex-1 p-3 sm:p-6">
-      <h1 className="text-2xl font-bold">API docs</h1>
-      <small className="text-muted-foreground">Generated {new Date(catalog.generatedAt).toLocaleString()}</small>
+      {!isNarrow && (
+        <>
+          <h1 className="text-2xl font-bold">API docs</h1>
+          <small className="text-muted-foreground">Generated {generatedAt}</small>
+        </>
+      )}
       {catalog.endpoints.map((endpoint) => (
         <EndpointCard
           key={`${endpoint.method} ${endpoint.route}`}
@@ -59,7 +65,10 @@ export const App = () => {
               {sidebar}
             </SheetContent>
           </Sheet>
-          <strong>API docs</strong>
+          <div className="flex min-w-0 items-baseline gap-2">
+            <strong>API docs</strong>
+            <small className="truncate text-muted-foreground">Generated {generatedAt}</small>
+          </div>
         </header>
         {content}
       </div>

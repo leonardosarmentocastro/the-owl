@@ -16,6 +16,14 @@ _Avoid_: route, path, doc file.
 The merged set of every **Endpoint**; the complete dataset an output (e.g. the HTML app) renders.
 _Avoid_: spec, collection, docs.
 
+**Group**:
+A render-time grouping of **Endpoints** by their first path segment
+(`/users/:id` and `/users/:id/orders` → Users). An optional build-time regex,
+`THE_OWL_GROUPING_REGEX`, strips the longest matching leading prefix first, so
+grouping falls on the first segment after it (`^/api$` groups `/api/v1/...`
+under V1). The regex is baked onto the **Catalog** at build time.
+_Avoid_: section, category, tag.
+
 **Collector**:
 The module that holds the **Examples** captured during one test process and drains them into a serialized **Endpoint**.
 _Avoid_: store, redux, state.

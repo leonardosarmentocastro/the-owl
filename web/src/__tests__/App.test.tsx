@@ -31,9 +31,20 @@ beforeEach(() => stubMatchMedia(false));
 afterEach(() => { cleanup(); window.location.hash = ""; });
 
 describe("App", () => {
-  it("renders the content heading and the sidebar nav group", async () => {
+  it("desktop: shows the heading and generated date in the main content", async () => {
+    stubMatchMedia(false);
     render(<App />);
     expect(await screen.findByRole("heading", { name: /API docs/i })).toBeTruthy();
+    expect(screen.getByText(/Generated/i)).toBeTruthy();
     expect(screen.getByRole("button", { name: /GET \/users/i })).toBeTruthy();
+  });
+
+  it("mobile: shows the generated date in the header and omits the main heading", async () => {
+    stubMatchMedia(true);
+    render(<App />);
+    // The menu button proves we are in the mobile shell.
+    expect(await screen.findByRole("button", { name: /open navigation/i })).toBeTruthy();
+    expect(screen.getByText(/Generated/i)).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: /API docs/i })).toBeNull();
   });
 });

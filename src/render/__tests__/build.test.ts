@@ -70,4 +70,26 @@ describe("build", () => {
     const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
     expect(catalog.baseUrl).toBeUndefined();
   });
+
+  it("bakes THE_OWL_GROUPING_REGEX into catalog.grouping when set", () => {
+    const seeded = seedRoot();
+    root = seeded.r;
+    process.env.THE_OWL_GROUPING_REGEX = "^/api$";
+    try {
+      runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+    } finally {
+      delete process.env.THE_OWL_GROUPING_REGEX;
+    }
+    const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
+    expect(catalog.grouping).toBe("^/api$");
+  });
+
+  it("omits catalog.grouping when THE_OWL_GROUPING_REGEX is unset", () => {
+    delete process.env.THE_OWL_GROUPING_REGEX;
+    const seeded = seedRoot();
+    root = seeded.r;
+    runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+    const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
+    expect(catalog.grouping).toBeUndefined();
+  });
 });

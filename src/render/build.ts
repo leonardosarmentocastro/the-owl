@@ -6,5 +6,6 @@ import type { BuildOptions } from "./types";
 export const runBuild = ({ owlDir, outDir, webBundleDir }: BuildOptions): void => {
   const catalog = readCatalog(owlDir);
   if (process.env.THE_OWL_DOCS_HOST) catalog.baseUrl = process.env.THE_OWL_DOCS_HOST;
+  if (process.env.THE_OWL_GROUPING_REGEX) catalog.grouping = process.env.THE_OWL_GROUPING_REGEX;
   emitHtml(catalog, outDir, webBundleDir);
 };

@@ -12,6 +12,8 @@ Generate **interactive HTML API docs** from your functional tests — a browsabl
 site where, when served live, each captured request is editable and fireable
 right from the page.
 
+<img width="1287" height="1088" alt="Image" src="https://github.com/user-attachments/assets/8e16d922-f2ee-4a8e-b6f2-f6b288739732" />
+
 `the-owl` watches the request/response traffic of your Express app while its
 functional tests run, then turns that traffic into a browsable docs site — no
 hand-written `.yml` or `@jsdoc` to keep in sync. You mark the requests you care
@@ -160,6 +162,22 @@ header values (`authorization`, `cookie`, `set-cookie`, `proxy-authorization`)
 and body/query keys (`password`, `token`, `secret`, …) are masked with
 `«redacted»` — the key is kept, the value is replaced. Customize via
 `connect(app, options)`. See [the API docs](./documentation/01-api.md#redaction).
+
+## Environment variables
+
+`the-owl` reads a few environment variables — one while your tests run, the rest
+at `the-owl build` time. See [`examples/02-elaborate`](./examples/02-elaborate)
+for all three wired into its `test:create-docs` scripts.
+
+| Variable | Read at | Purpose | Example |
+| --- | --- | --- | --- |
+| [`CREATE_DOCS`](./documentation/02-process-variables.md#create-docs) | test run | Gate for [`save()`](./documentation/01-api.md#save): when unset, draining is a no-op, so everyday `vitest run` and watch mode never write to `.owl/`. Set it only on the run that (re)generates docs. | `CREATE_DOCS=true vitest run` |
+| [`THE_OWL_DOCS_HOST`](./documentation/02-process-variables.md#the-owl-docs-host) | `the-owl build` | Base URL baked into the static build's **Copy as cURL** commands. Defaults to `http://localhost:3000`. | `THE_OWL_DOCS_HOST=https://api.example.com the-owl build` |
+| [`THE_OWL_GROUPING_REGEX`](./documentation/02-process-variables.md#the-owl-grouping-regex) | `the-owl build` | Strips the longest matching leading path prefix before the sidebar groups **Endpoints**, so grouping falls on the next segment (`^/api$` groups `/api/v1/…` under **V1**). When unset, Endpoints group by their first path segment. | `THE_OWL_GROUPING_REGEX=^/api$ the-owl build` |
+
+> `THE_OWL_DOCS` and `PORT` in [`examples/02-elaborate`](./examples/02-elaborate)
+> are that example app's own conventions (whether to mount `theOwl.docs()`, and
+> which port to listen on) — not variables `the-owl` itself reads.
 
 ## Motivation
 
