@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import express, { type RequestHandler } from "express";
 import type { DocsOptions } from "./types";
+import { resolveSiteOutputDir } from "./output-dir";
 
 const LIVE_FLAG = "<script>window.__THE_OWL_LIVE__ = true</script>";
 
@@ -15,7 +16,7 @@ export const injectLiveFlag = (html: string): string =>
 export const docs = (options: DocsOptions = {}): RequestHandler => {
   const here = dirname(fileURLToPath(import.meta.url));
   const bundleDir = options.bundleDir ?? join(here, "web");
-  const catalogPath = options.catalog ?? join(process.cwd(), "docs", "site", "catalog.json");
+  const catalogPath = options.catalog ?? join(resolveSiteOutputDir(), "catalog.json");
   const indexPath = join(bundleDir, "index.html");
 
   const router = express.Router();
