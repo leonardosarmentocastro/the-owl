@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build:the-owl": "npm --prefix ../.. install && npm --prefix ../.. run build && pnpm install",
+    "start": "THE_OWL_SITE_OUTPUT_DIR=public/api-docs node src/start.ts",
     "test": "vitest run",
     "pretest:create-docs": "pnpm run build:the-owl",
     "test:create-docs": "rimraf .owl public && CREATE_DOCS=true vitest run && THE_OWL_SITE_OUTPUT_DIR=public/api-docs the-owl build"
