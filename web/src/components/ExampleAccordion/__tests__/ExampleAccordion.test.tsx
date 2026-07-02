@@ -102,5 +102,19 @@ describe("ExampleAccordion", () => {
       expect(screen.getByRole("button", { name: /try it out/i })).toBeTruthy();
       expect(screen.getByText(/"name": "Paul"/)).toBeTruthy();
     });
+
+    it("shows the Try it out form when auto-opened via activeHash", () => {
+      render(
+        <ExampleAccordion
+          method="GET"
+          route="/users/:id"
+          example={example}
+          baseUrl="http://localhost:3000"
+          activeHash="get-users-id-returns-the-user"
+        />,
+      );
+      // auto-opened by the anchor, not by a manual click — the dynamic form must still render
+      expect(screen.getByRole("button", { name: /try it out/i })).toBeTruthy();
+    });
   });
 });

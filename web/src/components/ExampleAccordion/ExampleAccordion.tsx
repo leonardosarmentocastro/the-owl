@@ -36,6 +36,7 @@ export const ExampleAccordion = ({
 
   useEffect(() => {
     if (activeHash && activeHash === slug) {
+      if (live && !form) setForm(prefillFromExample(example, route));
       setOpen(true);
       ref.current?.scrollIntoView?.({ behavior: "smooth", block: "start" });
     }
