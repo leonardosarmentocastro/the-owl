@@ -9,7 +9,7 @@ documentation/
 coverage/
 
 # Files
-contributing.md
+CONTRIBUTING.md
 package-lock.json
 .travis.yml
 .gitignore

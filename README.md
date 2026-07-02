@@ -203,4 +203,4 @@ Please see the [files in the `/documentation` directory](./documentation):
 
 ## Contributing
 
-Please refer to [this](./contributing.md) document.
+Please refer to [this](./CONTRIBUTING.md) document.
