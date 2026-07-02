@@ -18,7 +18,7 @@ export const Sidebar = ({ endpoints, activeHash, onNavigate, grouping }: {
       rel="noopener noreferrer"
       className="mb-4 mx-auto block w-fit"
     >
-      <img src={logoUrl} alt="the-owl" className="h-12 w-auto" />
+      <img src={logoUrl} alt="the-owl" className="h-[90px] w-auto" />
     </a>
     <ul className="m-0 p-0">
       {groupEndpoints(endpoints, grouping).map((group) => (
