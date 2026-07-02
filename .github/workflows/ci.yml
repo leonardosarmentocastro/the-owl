@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: test + coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: true
+
+  examples:
+    name: example ${{ matrix.example }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [01-minimal, 02-elaborate, 03-site-output-dir]
+    env:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: corepack enable
+      - run: npm ci
+      - run: npm run build
+      - name: Install example deps
+        working-directory: examples/${{ matrix.example }}
+        run: pnpm install
+      - name: Run example tests
+        working-directory: examples/${{ matrix.example }}
+        run: pnpm test
+      - name: Run example doc pipeline (end-to-end)
+        working-directory: examples/${{ matrix.example }}
+        run: pnpm run test:create-docs
