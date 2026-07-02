@@ -25,9 +25,9 @@ describe("build", () => {
     });
     drainToDisk(c, owlDir);
 
-    runBuild({ owlDir, outDir: join(root, "docs"), webBundleDir: bundle });
-
     const site = join(root, "docs", "site");
+    runBuild({ owlDir, siteDir: site, webBundleDir: bundle });
+
     expect(existsSync(join(site, "index.html"))).toBe(true);
     const catalog = JSON.parse(readFileSync(join(site, "catalog.json"), "utf8"));
     expect(catalog.endpoints[0].route).toBe("/users/:id");
@@ -54,7 +54,7 @@ describe("build", () => {
     root = seeded.r;
     process.env.THE_OWL_DOCS_HOST = "https://api.example.com";
     try {
-      runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+      runBuild({ owlDir: seeded.owlDir, siteDir: join(root, "docs", "site"), webBundleDir: seeded.bundle });
     } finally {
       delete process.env.THE_OWL_DOCS_HOST;
     }
@@ -66,7 +66,7 @@ describe("build", () => {
     delete process.env.THE_OWL_DOCS_HOST;
     const seeded = seedRoot();
     root = seeded.r;
-    runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+    runBuild({ owlDir: seeded.owlDir, siteDir: join(root, "docs", "site"), webBundleDir: seeded.bundle });
     const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
     expect(catalog.baseUrl).toBeUndefined();
   });
@@ -76,7 +76,7 @@ describe("build", () => {
     root = seeded.r;
     process.env.THE_OWL_GROUPING_REGEX = "^/api$";
     try {
-      runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+      runBuild({ owlDir: seeded.owlDir, siteDir: join(root, "docs", "site"), webBundleDir: seeded.bundle });
     } finally {
       delete process.env.THE_OWL_GROUPING_REGEX;
     }
@@ -88,8 +88,20 @@ describe("build", () => {
     delete process.env.THE_OWL_GROUPING_REGEX;
     const seeded = seedRoot();
     root = seeded.r;
-    runBuild({ owlDir: seeded.owlDir, outDir: join(root, "docs"), webBundleDir: seeded.bundle });
+    runBuild({ owlDir: seeded.owlDir, siteDir: join(root, "docs", "site"), webBundleDir: seeded.bundle });
     const catalog = JSON.parse(readFileSync(join(root, "docs", "site", "catalog.json"), "utf8"));
     expect(catalog.grouping).toBeUndefined();
+  });
+
+  it("writes the site directly into the given siteDir (no /site appended)", () => {
+    const seeded = seedRoot();
+    root = seeded.r;
+    const siteDir = join(root, "public", "api-docs");
+    runBuild({ owlDir: seeded.owlDir, siteDir, webBundleDir: seeded.bundle });
+
+    expect(existsSync(join(siteDir, "index.html"))).toBe(true);
+    expect(existsSync(join(siteDir, "catalog.json"))).toBe(true);
+    // The old `<parent>/site` layout must NOT be created.
+    expect(existsSync(join(root, "public", "api-docs", "site"))).toBe(false);
   });
 });

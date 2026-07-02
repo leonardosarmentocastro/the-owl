@@ -3,9 +3,9 @@ import { emitHtml } from "./html";
 import type { BuildOptions } from "./types";
 
 /** Build the docs site: read + merge the Catalog, then render it. Used by the CLI. */
-export const runBuild = ({ owlDir, outDir, webBundleDir }: BuildOptions): void => {
+export const runBuild = ({ owlDir, siteDir, webBundleDir }: BuildOptions): void => {
   const catalog = readCatalog(owlDir);
   if (process.env.THE_OWL_DOCS_HOST) catalog.baseUrl = process.env.THE_OWL_DOCS_HOST;
   if (process.env.THE_OWL_GROUPING_REGEX) catalog.grouping = process.env.THE_OWL_GROUPING_REGEX;
-  emitHtml(catalog, outDir, webBundleDir);
+  emitHtml(catalog, siteDir, webBundleDir);
 };

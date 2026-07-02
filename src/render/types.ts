@@ -1,7 +1,8 @@
-/** Options for `runBuild()` — where to read drain fragments and where to emit the site. */
+/** Options for `runBuild()` — where to read drain fragments and the full
+ * directory to emit the static site into. */
 export interface BuildOptions {
   owlDir: string;
-  outDir: string;
+  siteDir: string;
   webBundleDir?: string;
 }
 
