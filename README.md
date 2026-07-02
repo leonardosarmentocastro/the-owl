@@ -12,6 +12,8 @@ Generate **interactive HTML API docs** from your functional tests — a browsabl
 site where, when served live, each captured request is editable and fireable
 right from the page.
 
+<img width="1287" height="1088" alt="Image" src="https://github.com/user-attachments/assets/8e16d922-f2ee-4a8e-b6f2-f6b288739732" />
+
 `the-owl` watches the request/response traffic of your Express app while its
 functional tests run, then turns that traffic into a browsable docs site — no
 hand-written `.yml` or `@jsdoc` to keep in sync. You mark the requests you care
