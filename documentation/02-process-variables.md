@@ -10,6 +10,7 @@ rimraf .owl docs && CREATE_DOCS=true vitest run && THE_OWL_GROUPING_REGEX=^/api$
 * [CREATE_DOCS](#create-docs)
 * [THE_OWL_DOCS_HOST](#the-owl-docs-host)
 * [THE_OWL_GROUPING_REGEX](#the-owl-grouping-regex)
+* [THE_OWL_SITE_OUTPUT_DIR](#the-owl-site-output-dir)
 
 #### `CREATE_DOCS=true` <a name="create-docs"></a>
 
@@ -68,3 +69,21 @@ ignored (grouping falls back to the first-segment default). The value is baked
 onto the **Catalog** at build time; the docs app reads it from there. See
 [`examples/02-elaborate`](../examples/02-elaborate), which sets `^/api$` to group
 its versioned APIs under `V1` / `V2`.
+
+#### `THE_OWL_SITE_OUTPUT_DIR` <a name="the-owl-site-output-dir"></a>
+
+_Read at `the-owl build` time and by the live `theOwl.docs()` router._
+
+The **full** directory the static docs site is written to. When unset it defaults
+to `docs/site`. Relative paths resolve against the current working directory;
+absolute paths are used as-is. Unlike a parent directory, no `site/` subfolder is
+appended — the value *is* the site directory.
+
+```sh
+# writes the built site to ./public/api-docs (open public/api-docs/index.html)
+rimraf .owl public && CREATE_DOCS=true vitest run && THE_OWL_SITE_OUTPUT_DIR=public/api-docs the-owl build
+```
+
+The live `theOwl.docs()` router reads the same variable to locate `catalog.json`
+by default, so a custom build location serves correctly without passing
+`docs({ catalog })` explicitly. See [`examples/03-site-output-dir`](../examples/03-site-output-dir).

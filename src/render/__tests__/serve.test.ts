@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll, afterEach } from "vitest";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -47,5 +47,37 @@ describe("docs() router", () => {
     const res = await fetch(`${base}/docs/`);
     expect(res.status).toBe(200);
     expect(await res.text()).toContain("window.__THE_OWL_LIVE__ = true");
+  });
+});
+
+describe("docs() default catalog honors THE_OWL_SITE_OUTPUT_DIR", () => {
+  const KEY = "THE_OWL_SITE_OUTPUT_DIR";
+  const original = process.env[KEY];
+  let server: Server;
+
+  afterEach(() => {
+    if (original === undefined) delete process.env[KEY];
+    else process.env[KEY] = original;
+  });
+  afterAll(() => server && new Promise<void>((r) => server.close(() => r())));
+
+  it("serves catalog.json from the custom output dir when no catalog option is given", async () => {
+    const outDir = mkdtempSync(join(tmpdir(), "owl-out-"));
+    writeFileSync(join(outDir, "catalog.json"), JSON.stringify({ endpoints: [] }));
+    process.env[KEY] = outDir; // absolute -> used as-is
+
+    const bundleDir = mkdtempSync(join(tmpdir(), "owl-web-"));
+    writeFileSync(join(bundleDir, "index.html"), "<html><head></head><body>d</body></html>");
+
+    const app = express();
+    app.use("/docs", docs({ bundleDir })); // no catalog option -> falls back to the resolver
+    await new Promise<void>((resolve) => {
+      server = app.listen(0, () => resolve());
+    });
+    const port = (server.address() as AddressInfo).port;
+
+    const res = await fetch(`http://127.0.0.1:${port}/docs/catalog.json`);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ endpoints: [] });
   });
 });
