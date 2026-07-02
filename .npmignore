@@ -11,5 +11,4 @@ coverage/
 # Files
 CONTRIBUTING.md
 package-lock.json
-.travis.yml
 .gitignore
