@@ -166,14 +166,18 @@ and body/query keys (`password`, `token`, `secret`, …) are masked with
 ## Environment variables
 
 `the-owl` reads a few environment variables — one while your tests run, the rest
-at `the-owl build` time. See [`examples/02-elaborate`](./examples/02-elaborate)
-for all three wired into its `test:create-docs` scripts.
+at `the-owl build` time (one is also read by the live `theOwl.docs()` router).
+See [`examples/02-elaborate`](./examples/02-elaborate) for `THE_OWL_DOCS_HOST` and
+`THE_OWL_GROUPING_REGEX` wired into its `test:create-docs` scripts, and
+[`examples/03-site-output-dir`](./examples/03-site-output-dir) for
+`THE_OWL_SITE_OUTPUT_DIR`.
 
 | Variable | Read at | Purpose | Example |
 | --- | --- | --- | --- |
 | [`CREATE_DOCS`](./documentation/02-process-variables.md#create-docs) | test run | Gate for [`save()`](./documentation/01-api.md#save): when unset, draining is a no-op, so everyday `vitest run` and watch mode never write to `.owl/`. Set it only on the run that (re)generates docs. | `CREATE_DOCS=true vitest run` |
 | [`THE_OWL_DOCS_HOST`](./documentation/02-process-variables.md#the-owl-docs-host) | `the-owl build` | Base URL baked into the static build's **Copy as cURL** commands. Defaults to `http://localhost:3000`. | `THE_OWL_DOCS_HOST=https://api.example.com the-owl build` |
 | [`THE_OWL_GROUPING_REGEX`](./documentation/02-process-variables.md#the-owl-grouping-regex) | `the-owl build` | Strips the longest matching leading path prefix before the sidebar groups **Endpoints**, so grouping falls on the next segment (`^/api$` groups `/api/v1/…` under **V1**). When unset, Endpoints group by their first path segment. | `THE_OWL_GROUPING_REGEX=^/api$ the-owl build` |
+| [`THE_OWL_SITE_OUTPUT_DIR`](./documentation/02-process-variables.md#the-owl-site-output-dir) | `the-owl build` & live `theOwl.docs()` | Full directory the static site is written to (no `site/` suffix appended). Relative paths resolve against the cwd; absolute paths are used as-is. Defaults to `docs/site`. The live `docs()` router reads it to locate `catalog.json` too. | `THE_OWL_SITE_OUTPUT_DIR=public/api-docs the-owl build` |
 
 > `THE_OWL_DOCS` and `PORT` in [`examples/02-elaborate`](./examples/02-elaborate)
 > are that example app's own conventions (whether to mount `theOwl.docs()`, and
