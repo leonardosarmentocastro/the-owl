@@ -11,5 +11,18 @@ export default defineConfig({
     include: ["src/**/*.test.ts", "web/**/*.test.{ts,tsx}"],
     environment: "node",
     setupFiles: ["./web/src/test-setup.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "lcov"],
+      reportsDirectory: "./coverage",
+      include: ["src/**", "web/src/**"],
+      exclude: [
+        "**/__tests__/**",
+        "**/__helpers__/**",
+        "**/__fixtures__/**",
+        "**/*.d.ts",
+        "web/src/test-setup.ts",
+      ],
+    },
   },
 });
