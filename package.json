@@ -2,6 +2,10 @@
   "name": "the-owl",
   "version": "2.0.0",
   "description": "Generate interactive API docs from your functional tests",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardosarmentocastro/the-owl.git"
+  },
   "type": "module",
   "engines": {
     "node": ">=24"
@@ -10,7 +14,7 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "the-owl": "./dist/bin/cli.js"
+    "the-owl": "dist/bin/cli.js"
   },
   "exports": {
     ".": {
