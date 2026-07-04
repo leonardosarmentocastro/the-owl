@@ -8,7 +8,6 @@
 
 <p align="center">
   <a href="https://github.com/leonardosarmentocastro/the-owl/actions/workflows/ci.yml"><img src="https://github.com/leonardosarmentocastro/the-owl/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>
-  <a href="https://codecov.io/gh/leonardosarmentocastro/the-owl"><img src="https://codecov.io/gh/leonardosarmentocastro/the-owl/branch/master/graph/badge.svg" alt="coverage" /></a>
   <a href="https://www.npmjs.com/package/the-owl"><img src="https://img.shields.io/npm/v/the-owl" alt="npm version" /></a>
 </p>
 
