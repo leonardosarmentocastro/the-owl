@@ -6,6 +6,11 @@
   </picture>
 </p>
 
+<p align="center">
+  <a href="https://github.com/leonardosarmentocastro/the-owl/actions/workflows/ci.yml"><img src="https://github.com/leonardosarmentocastro/the-owl/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>
+  <a href="https://www.npmjs.com/package/the-owl"><img src="https://img.shields.io/npm/v/the-owl" alt="npm version" /></a>
+</p>
+
 # the-owl
 
 Generate **interactive HTML API docs** from your functional tests — a browsable
@@ -201,4 +206,4 @@ Please see the [files in the `/documentation` directory](./documentation):
 
 ## Contributing
 
-Please refer to [this](./contributing.md) document.
+Please refer to [this](./CONTRIBUTING.md) document.
